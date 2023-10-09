@@ -1,0 +1,110 @@
+{% extends 'base/logged_in.html.j2' %}
+
+{% block body %}
+
+<section class="py-2">
+<div class="w-full bg-slate-400 bg-opacity-90 lg:w-8/12 mx-auto mt-6 max-w-[1250px]">
+<form method="POST" action="">
+  {{ form.hidden_tag() }}
+  <div
+    class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
+    <div class="flex items-center justify-between rounded-t bg-white mb-0 px-6 py-6">
+      <h6 class="text-blueGray-700 text-xl font-bold">
+      {% if navbar_highlight_profile %} {# Own profile #} 
+        {{ _('Your Profile') }}
+      {% else %}
+        {{ _('Edit User') }}
+      {% endif %}
+      </h6>
+      {{ form.submit(value_=_('Save'), class_="hover:cursor-pointer relative text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800") }}
+    </div>
+  </div>
+  <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+      <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+        {{ _('User Information') }}
+      </h6>
+      <div class="flex flex-wrap items-center">
+        <div class="w-full lg:w-6/12 px-4">
+          <div class="relative w-full mb-3">
+            <label for="name" class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+              {{ _('Name') }}
+            </label>
+            {{ form.name(value_=user.name, class_="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150") }}
+          </div>
+        </div>
+        <div class="w-full lg:w-6/12 px-4">
+          <div class="relative w-full mb-3">
+            <label for="email" class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+              {{ _('Email address') }}
+            </label>
+            {{ form.email(value_=user.email, class_="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150") }}
+          </div>
+        </div>
+        <div class="w-full lg:w-6/12 px-4">
+          <div class="relative w-full mb-3">
+            <label for="password" class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+              {{ _('Password') }}
+            </label>
+            {{ form.password(required=False, class_="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150") }}
+
+            <div id="password_hints">
+              <span class="text-red-700">
+                <i class="fa fa-times"></i> {{ _('Lowercase') }}
+              </span>
+              <span class="text-red-700">
+                <i class="fa fa-times"></i> {{ _('Uppercase') }}
+              </span>
+              <span class="text-red-700">
+                <i class="fa fa-times"></i> {{ _('Digit') }}
+              </span>
+              <span class="text-red-700">
+                <i class="fa fa-times"></i> {{ _('8+ Characters') }}
+              </span>
+              <span class="text-red-700">
+                <i class="fa fa-times"></i> {{ _('Symbol') }}
+              </span>
+            </div>
+
+          </div>
+        </div>
+        <div class="w-full lg:w-6/12 px-4" style="margin-top:1rem">
+          <div class="relative w-full mb-3">
+            <label for="password_confirm" class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+              {{ _('Confirm password') }}
+            </label>
+            {{ form.password_confirm(required=False, class_="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150") }}
+  
+            <div id="password_confirm_hints">
+              <span class="text-red-700">
+                <i class="fa fa-times"></i> {{ _('Passwords do not match') }}
+              </span>
+              <span class="text-green-700" style="display:none;">
+                <i class="fa fa-check"></i> {{ _('Passwords match') }}
+              </span>
+            </div>
+        </div>
+        <div class="flex flex-wrap" style="margin-top:1rem">
+          <div class="md:w-3/12">
+            <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2">{{ _('LANGUAGE') }} </label>
+            {{ form.language(class_="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5") }}<br>
+          </div>
+          {% if current_user.admin %}
+            <div class="mx-4 flex items-center">
+              <label for="admin">{{ _('Admin:') }}</label>
+              {{ form.admin(checked=user.admin) }}<br>
+            </div>
+            <div class="mx-4 flex items-center">
+              <label for="active">{{ _('Active:') }}</label>
+              {{ form.active(checked=user.active) }}<br>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+    <script class="text-green-600" src="{{ url_for('static', filename='js/register_check.js') }}"></script>
+  </div>
+</div>
+</div>
+</section>
+
+{% endblock %}

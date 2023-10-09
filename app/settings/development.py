@@ -1,0 +1,9 @@
+# Flask settings
+DEBUG = True
+DEVELOPMENT = True
+SECRET_KEY = 'do-i-really-need-this'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///hydrolab.db'
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+SMTP_PASSWORD = ''
+SMTP_USERNAME = 'ericroyalmonacid@gmail.com'
+GOOGLE_AUTH_FILE_ABSOLUTE_PATH = ''

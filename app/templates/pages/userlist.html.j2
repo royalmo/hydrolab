@@ -1,0 +1,94 @@
+{% extends 'base/logged_in.html.j2' %}
+
+{% block body %}
+
+{% with
+    h1_text=_('Registered users'),
+    left_button_text=_('Your profile'),
+    left_button_url=url_for('main.users.profile'),
+    search_form=search_form 
+%}
+  {% include 'includes/title.html.j2' %}
+{% endwith %}
+
+{% if userlist|length == 0 %}
+  <div class="flex justify-center items-center">
+    <div class="p-5 bg-white bg-opacity-50 rounded-lg flex items-center justify-center border-2 border-black">
+      <p class="text-center text-red-800 font-bold">{{_('Sorry! Looks like there are no matches with your search. Try again!')}}</p>
+    </div>
+  </div>
+{% else %}
+<table class="w-full max-w-[1250px] mx-auto xs:px-0">
+  <thead class="bg-gray-200 border-2 border-gray-300 font-bold text-gray-500">
+    <tr class="h-12">
+      <th class="xg:hidden"></th>
+      <th>{{ _('NAME') }}</th>
+      <th class="xg:hidden">{{ _('MAIL') }}</th>
+      <th class="xm:hidden">{{ _('ADMIN') }}</th>
+      <th class="xm:hidden">{{ _('ACTIVE') }}</th>
+      <th class="xg:hidden">{{ _('LANGUAGE') }}</th>
+      <th>{{ _('ACTIONS') }}</th>
+    </tr>
+  </thead>
+  <tbody class="bg-white">
+    {% for eachuser in userlist %}
+      <tr class="hover:bg-gray-200 border-2 border-gray-300">
+        <th class="xg:hidden">
+          <div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+            <span class="font-medium text-gray-600 dark:text-gray-300">{{ eachuser.name[0]|e }}</span>
+          </div>
+        </th>
+        <th class="font-normal">{{ eachuser.name|e }}</th>
+        <th class="font-normal xg:hidden">{{ eachuser.email|e }}</th>
+        <th class="font-normal xm:hidden">
+          {% if eachuser.admin %}
+            {{ _('Yes') }}
+          {% else %}
+            {{ _('No') }}
+          {% endif %}
+        </th>
+        <th class="font-normal xm:hidden">
+          {% if eachuser.active %}
+            {{ _('Yes') }}
+          {% else %}
+            {{ _('No') }}
+          {% endif %}
+        </th>
+
+        <th class="font-normal xg:hidden">{{ eachuser.parsed_lang() }}</th>
+        <th>
+          <div class="my-5 w-42">
+            <a href="{{url_for('.edit_user', user_id=eachuser.id)}}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{{ _('Edit') }}</a>
+            <button id="{{ 'delete_button'+eachuser.id|string }}" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+              <i class="fa fa-spinner" style="display:none;"></i>
+              <span>{{ _('Delete') }}</span>
+            </button>
+            <script>
+              const {{ 'delete_button'+eachuser.id|string }} = document.querySelector('{{ '#delete_button'+eachuser.id|string }}');
+              {{ 'delete_button'+eachuser.id|string }}.addEventListener('click', async function(event) {
+                event.preventDefault();
+                const isConfirmed = confirm("{{ _('Are you sure you want to delete this user?') }}");
+                if (!isConfirmed) return;
+
+                event.target.closest('button').children[0].style.display="block";
+                event.target.closest('button').children[1].style.display="none";
+
+                var response = await fetch('{{url_for('.delete_user', user_id=eachuser.id)}}', {method: 'DELETE'});
+                if (response.ok) {
+                  window.location.reload();
+                  return;
+                }
+                // Catching
+                event.target.closest('button').children[0].style.display="none";
+                event.target.closest('button').children[1].style.display="block";
+                alert(await response.text());
+              });
+            </script>
+          </div>
+        </th>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

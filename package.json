@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "tailwindcss": "^3.1.8"
+  },
+  "scripts": {
+    "create-css": "npx tailwindcss -i ./app/static/src/style.css -o ./app/static/css/main.css --minify",
+    "create-css-forever": "npx tailwindcss -i ./app/static/src/style.css -o ./app/static/css/main.css --minify --watch"
+  }
+}

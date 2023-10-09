@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html class="relative h-screen w-full">
+  {% include 'includes/head.html.j2' %}
+
+  <body class="flex flex-col h-full font-mono">
+
+    {% include 'includes/navbar.html.j2' %}
+    
+    <main class="relative p-7 flex w-full h-full justify-center items-center bg-transparent">
+      {% block body %}{% endblock %}
+    </main>
+
+    {% include 'includes/footer.html.j2' %}
+  </body>
+</html>

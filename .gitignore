@@ -1,0 +1,14 @@
+**/__pycache__/
+env
+app/hydrolab.db
+node_modules
+app/static/css/main.css
+app/static/.webassets-cache
+app/translations/*/LC_MESSAGES/messages.mo
+venv
+api/Arduino/libpbn/libpbn.a
+/app/static/media/**
+!/app/static/media/.keep
+api/Arduino/main
+**/*.o
+google-services.json

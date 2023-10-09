@@ -1,0 +1,23 @@
+{% extends 'base/map_base.html.j2' %}
+{% block body %}
+
+<div id="map" class="border border-black absolute h-full w-full" ></div>
+
+    <script>
+        // Create a Leaflet map and set its center and zoom level
+        var map = L.map('map').setView([41.38, 2.16], 13);
+
+        // Add a base map layer (e.g., OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Add a marker to the map
+        L.marker([41.38, 2.16]).addTo(map)
+            .bindPopup('A sample marker.');
+
+        // You can add more markers, polygons, etc. as needed
+
+    </script>
+
+{% endblock %}

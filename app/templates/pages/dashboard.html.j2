@@ -1,0 +1,97 @@
+{% extends 'base/logged_in.html.j2' %}
+
+{% block body %}
+
+{% with
+  h1_text=_('Service list'),
+  left_button_text=_('New service'),
+  left_button_url=url_for('.servers.newserver'),
+  search_form=search_form
+%}
+  {% include 'includes/title.html.j2' %}
+{% endwith %}
+
+<div id="card-list" class="flex justify-center items-center">
+  {% if serverlist|length == 0 %}
+    <div class="p-5 bg-white bg-opacity-50 rounded-lg flex items-center justify-center border-2 border-black">
+      <p class="text-center text-red-800 font-bold">{{_('Sorry! Looks like there are no matches with your search. Try again!')}}</p>
+    </div>
+  {%else%}
+
+  {% for eachserver in serverlist %}
+  <article class="{{ 'active' if eachserver.status else '' }}" data-id="{{ eachserver.id }}">
+    <a href="{{ url_for( '.servers.edit' , id=eachserver.id|int ) }}">
+      <h2 class="p-2">{{ eachserver.name|e }}</h2>
+      <div class="flex">
+        <div class="w-8/12">
+          <span class="state-off text-red-500 text-xl">
+            <i class="fa fa-times"></i>
+            {{ _('Off') }}
+          </span>
+          <span class="state-processing text-gray-500 text-xl">
+            <i class="fa fa-spinner animate-spin"></i>
+            .....
+          </span>
+          <span class="state-on text-green-500 text-xl">
+            <i class="fa fa-check"></i>
+            {{ _('Active') }}
+          </span>
+          <br />
+          <br />
+
+          {% if current_user.admin %}
+            <button class="start-button
+              bg-green-400 hover:bg-green-600 p-2 rounded text-white status-off status-button">
+              <i class="fa fa-power-off"></i>
+              {{ _('Start') }}
+            </button>
+            <button class="cancel-button
+              bg-gray-400 hover:bg-gray-600 p-2 rounded text-white status-off status-button">
+              <i class="fa fa-spinner animate-spin"></i>
+              {{ _('Cancel') }}
+            </button>
+            <button class="processing-button
+              bg-gray-400 p-2 rounded text-white status-off status-button cursor-not-allowed" disabled>
+              <i class="fa fa-spinner animate-spin"></i>
+              {{ _('Processing') }}
+            </button>
+            <button class="stop-button
+              bg-red-400 hover:bg-red-600 p-2 rounded text-white status-off status-button">
+              <i class="fa fa-power-off"></i>
+              {{ _('Stop') }}
+            </button>
+          {% endif %}
+
+        </div>
+        <div class="w-4/12 flex justify-center items-center">
+          <picture>
+            {% if eachserver.image|e is not none %}
+              <source srcset="{{ eachserver.image|e }}" />
+            {% endif %}
+            <img src="{{ url_for('static', filename='images/no-server-placeholder.png') }}" alt="placeholder"
+              onerror="onError.call(this)" />
+          </picture>
+        </div>
+      </div>
+    </a>
+  </article>
+  {% endfor %}
+  <article class="new items-center justify-center flex">
+    <a href="{{ url_for('.servers.newserver') }}">
+      <h2>+</h2>
+    </a>
+  </article>
+  {%endif%}
+</div>
+
+<script>
+  function onError() {
+    this.onerror = null;
+    this.parentNode.children[0].srcset = this.parentNode.children[1].srcset = this.src;
+  }
+</script>
+
+<script class="text-green-600" src="{{ url_for('static', filename='js/server_toggle.js') }}"></script>
+<script class="text-green-600" src="{{ url_for('static', filename='js/server_update.js') }}"></script>
+
+{% endblock %}
