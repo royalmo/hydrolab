@@ -1,0 +1,86 @@
+{% extends 'base/logged_in.html.j2' %}
+
+{% block body %}
+
+{% with
+    h1_text=_('Registered sensors'),
+    search_form=search_form,
+    left_button_text=_('Add Sensor'),
+    left_button_url=url_for('main.sensors.newsensor')
+%}
+  {% include 'includes/title.html.j2' %}
+{% endwith %}
+
+{% if sensors|length == 0 %}
+  <div class="flex justify-center items-center">
+    <div class="p-5 bg-white bg-opacity-50 rounded-lg flex items-center justify-center border-2 border-black">
+      <p class="text-center text-red-800 font-bold">{{_('Sorry! Looks like there are no matches with your search. Try again!')}}</p>
+    </div>
+  </div>
+{% else %}
+<table class="w-full max-w-[1250px] mx-auto xs:px-0">
+  <thead class="bg-gray-200 border-2 border-gray-300 font-bold text-gray-500">
+    <tr class="h-12">
+      <th class="xg:hidden"></th>
+      <th>{{ _('NAME') }}</th>
+      <th class="xm:hidden">{{ _('ACTIVE') }}</th>
+      <th>{{ _('ADDRESS') }}</th>
+      <th>{{ _('ACTIONS') }}</th>
+    </tr>
+  </thead>
+  <tbody class="bg-white">
+    {% for eachsensor in sensors %}
+      <tr class="hover:bg-gray-200 border-2 border-gray-300" id="sensor-{{ eachsensor.id }}" data-sensorLatitude="{{ eachsensor.location.latitude }}" data-sensorLongitude="{{ eachsensor.location.longitude }}">        <th class="xg:hidden">
+          <div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+            <span class="font-medium text-gray-600 dark:text-gray-300">{{ eachsensor.name[0]|e }}</span>
+          </div>
+        </th>
+        <th class="font-normal">{{ eachsensor.name|e }}</th>
+        <th class="font-normal xm:hidden">
+          {% if eachsensor.lastActiveStatus %}
+            {{ _('Yes') }}
+          {% else %}
+            {{ _('No') }}
+          {% endif %}
+        </th>
+        <th class="address-cell">Loading...</th> <!-- Display a loading message -->
+        <th>
+          <div class="my-5 w-42">
+            <a href="{{url_for('main.map', lat=eachsensor.location.latitude, lon=eachsensor.location.longitude)}}" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-1 mr-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">{{ _('View Map') }}</a>
+            <a href="{{url_for('.edit', id=eachsensor.id)}}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{{ _('Edit') }}</a>
+            <button id="{{ 'delete_button'+eachsensor.id|string }}" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+              <i class="fa fa-spinner" style="display:none;"></i>
+              <span>{{ _('Delete') }}</span>
+            </button>
+            <script>
+              const {{ 'delete_button'+eachsensor.id|string }} = document.querySelector('{{ '#delete_button'+eachsensor.id|string }}');
+              {{ 'delete_button'+eachsensor.id|string }}.addEventListener('click', async function(event) {
+                event.preventDefault();
+                const isConfirmed = confirm("{{ _('Are you sure you want to delete this user?') }}");
+                if (!isConfirmed) return;
+
+                event.target.closest('button').children[0].style.display="block";
+                event.target.closest('button').children[1].style.display="none";
+
+                var response = await fetch('{{url_for('.remove', id=eachsensor.id)}}', {method: 'DELETE'});
+                if (response.ok) {
+                  window.location.reload();
+                  return;
+                }
+                // Catching
+                event.target.closest('button').children[0].style.display="none";
+                event.target.closest('button').children[1].style.display="block";
+                alert(await response.text());
+              });
+            </script>
+          </div>
+        </th>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+<script src="/static/js/sensors_address.js"></script>
+
+{% endblock %}

@@ -1,5 +1,4 @@
 from ..extensions import db
-from .sample import Sample
 
 class Monitor(db.Model):
     id = db.Column(db.Integer, primary_key=True)

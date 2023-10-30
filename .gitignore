@@ -1,5 +1,5 @@
 **/__pycache__/
-env
+.env
 app/hydrolab.db
 node_modules
 app/static/css/main.css
