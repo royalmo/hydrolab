@@ -6,8 +6,7 @@ from requests import put
 
 from ..extensions import db, auth_header_required
 from ..extensions.login_manager import load_user_from_auth_header
-from ..models import Sensor, FirebaseToken, SensorHistory
-from ..models.monitor import get_monitor_data
+from ..models import Sensor, FirebaseToken, SensorHistory, Monitor
 import os
 import re
 
@@ -32,7 +31,7 @@ def sensors():
 @app.route('/monitoring')
 @auth_header_required
 def monitors():
-    return make_response(jsonify({'data' : get_monitor_data(), 'admin' : load_user_from_auth_header().admin}), 200)
+    return make_response(jsonify({'data' : Monitor.get_monitor_data(), 'admin' : load_user_from_auth_header().admin}), 200)
 
 ########################
 
@@ -79,78 +78,81 @@ def history(id):
     return make_response(history, 200)
     
 @app.route('/ttn/uplink', methods=['POST'])
-async def uplink(id):
-    headersApiKey = request.headers.get('x-downlink-apikey')
-    ApiKey = os.getenv('X-DOWNLINK-APIKEY')
+def uplink():
+    headersApiKey = request.headers.get('X-Downlink-Apikey')
+    ApiKey = os.getenv('X-UPLINK-APIKEY')
 
     if (ApiKey != headersApiKey):
         return make_response('Forbidden', 403)
 
-
     body = request.json
-    dev_eui = int(body.end_device_ids.dev_eui, 16)
+    import json
+    print(json.dumps(body, indent=4))
+    dev_eui = int(body['end_device_ids']['device_id'][3:], 16)
     sensor = Sensor.query.filter_by(eui=dev_eui)
     if not sensor:
         return make_response('Not found', 404)
 
-    timestamp = body.end_device_ids.received_at
-    payload = body.decoded_payload.text
-    
+    time_trim = body['received_at'][:-4] + "Z"
+    timestamp = datetime.strptime(time_trim, "%Y-%m-%dT%H:%M:%S.%fZ")
+    payload = body['uplink_message']['decoded_payload']['text']
     
     parsed_data = parse_custom_string(payload)
-    if parsed_data:
-        print(parsed_data)
-    else:
+    if not parsed_data:
         print("Invalid input string")
         return make_response('Bad request', 400)
 
-    rx_metadata = body.uplink_message.rx_metadata[0]
-    rssi = rx_metadata.rssi
-    snr = rx_metadata.snr
-    location = rx_metadata.location
+    rx_metadata = body['uplink_message']['rx_metadata'][0]
+    rssi = rx_metadata['rssi']
+    snr = rx_metadata['snr']
+    location = rx_metadata['location']
 
-    settings = body.uplink_message.settings
-    bandwidth = settings.data_rate.lora.bandwidth
-    frequency = settings.data_rate.frequency
+    settings = body['uplink_message']['settings']
+    bandwidth = settings['data_rate']['lora']['bandwidth']
+    frequency = settings['frequency']
 
-    await SensorHistory.create({eui: dev_eui, 
-                                timestamp: timestamp,
-                                humidity: parsed_data.H,
-                                battery: parsed_data.V,
-                                temperature: parsed_data.T,
-                                bandwidth: bandwidth, 
-                                frequency: frequency, 
-                                snr: snr, 
-                                rssi: rssi})
+    new_history = SensorHistory(eui=dev_eui,
+                                timestamp=timestamp,
+                                humidity=parsed_data['H'],
+                                battery=parsed_data['V'],
+                                temperature=parsed_data['T'],
+                                bandwidth=bandwidth, 
+                                frequency=frequency, 
+                                snr=snr, 
+                                rssi=rssi)
+    db.session.add(new_history)
+    db.session.commit()
 
     return make_response("Sensor updated", 200)
 
-
 def parse_custom_string(input_string):
-    # Define a regular expression pattern to match the required format
-    pattern = r'T(\d+)H(\d+)R([0-9A-Fa-f]{4})L(\d+)%@(\d+)Z'
+    # Define individual patterns for each parameter
+    patterns = {
+        'T': r'T(\d+(?:\.\d+)?)',
+        'H': r'H(\d+)',
+        'V': r'V(\d+)',
+        'R': r'R([0-9A-Fa-f]{4})',
+        'L': r'L(\d+(?:\.\d+)?)',
+        '@': r'%@(\d+)',
+        'Z': r'Z(\d+)'
+    }
+    
+    result = {}
+    
+    for key, pattern in patterns.items():
+        match = re.search(pattern, input_string)
+        if match:
+            # If pattern matches a float (contains a dot), convert to float, otherwise to int
+            if '.' in match.group(1):
+                result[key] = float(match.group(1))
+            else:
+                # For the 'R' key, we want the string value
+                if key == 'R':
+                    result[key] = match.group(1)
+                else:
+                    result[key] = int(match.group(1))
+        else:
+            # If no match is found, set the key to None
+            result[key] = None
 
-    # Use regular expressions to extract values from the input string
-    match = re.match(pattern, input_string)
-
-    if match:
-        # Extract values from the matched groups
-        t_value = int(match.group(1))
-        h_value = int(match.group(2))
-        r_value = match.group(3)
-        l_value = float(match.group(4))
-        z_value = int(match.group(5))
-
-        # Create a dictionary to store the key-value pairs
-        result = {
-            'T': t_value,
-            'H': h_value,
-            'R': r_value,
-            'L': l_value,
-            '@': z_value
-        }
-        
-        return result
-    else:
-        # If the input string doesn't match the expected format, return None
-        return None
+    return result
