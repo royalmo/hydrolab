@@ -1,15 +1,15 @@
 {
-    "name": "NavLab",
-    "short_name": "NavLab",
-    "start_url": "/dashboard",
+    "name": "Hydrolab",
+    "short_name": "Hydrolab",
+    "start_url": "/map",
     "display": "standalone",
     "background_color": "#fff",
-    "description": "A dashboard for controlling different services.",
+    "description": "A dashboard for IOT humidity sensor devices.",
     "icons": [
-	{
-	    "src": "/static/favicon.ico",
-	    "sizes": "256x256",
-	    "type": "image/svg+xml"
-	}
+        {
+            "src": "/static/favicon.ico",
+            "sizes": "256x256",
+            "type": "image/svg+xml"
+	    }
     ]
 }

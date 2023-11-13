@@ -1,8 +1,4 @@
-from ..extensions import db, notification_manager
-from .sensor_history import SensorHistory
-
-from requests import get, put
-from datetime import datetime
+from ..extensions import db
 
 class Sensor(db.Model):
     id = db.Column(db.Integer, primary_key=True)

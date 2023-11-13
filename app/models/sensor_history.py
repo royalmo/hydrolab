@@ -1,5 +1,6 @@
 from ..extensions import db
 from datetime import datetime
+from .sensor import Sensor
 
 class SensorHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
