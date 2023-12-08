@@ -46,7 +46,7 @@
         <th class="address-cell">Loading...</th> <!-- Display a loading message -->
         <th>
           <div class="my-5 w-42">
-            <a href="{{url_for('main.map', lat=eachsensor.location.latitude, lon=eachsensor.location.longitude)}}" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-1 mr-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">{{ _('View Map') }}</a>
+            <a href="{{url_for('main.map', lat=eachsensor.location.latitude, lon=eachsensor.location.longitude)}}" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-1 mr-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">{{ _('Map') }}</a>
             <a href="{{url_for('.edit', id=eachsensor.id)}}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{{ _('Edit') }}</a>
             <button id="{{ 'delete_button'+eachsensor.id|string }}" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
               <i class="fa fa-spinner" style="display:none;"></i>

@@ -88,7 +88,7 @@ def uplink():
     body = request.json
     import json
     print(json.dumps(body, indent=4))
-    dev_eui = int(body['end_device_ids']['device_id'][3:], 16)
+    dev_eui = int(body['end_device_ids']['device_id'][4:], 16)
     sensor = Sensor.query.filter_by(eui=dev_eui)
     if not sensor:
         return make_response('Not found', 404)

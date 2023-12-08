@@ -12,6 +12,9 @@ app = Blueprint('monitors', __name__)
 def monitoring():
     time_range = request.args.get('time_range', '24h')  # Get the time range from the query string, default to 24 hours
     data = Monitor.get_monitor_data(time_range=time_range)
+
+    if (not data): return "error"
+
     print(data)
 
     return render_template('pages/monitoring.html.j2',
@@ -23,7 +26,8 @@ def monitoring():
 @app.route('/monitoring/raw')
 @login_required
 def monitoring_raw():
-    data = Monitor.get_monitor_data()
+    time_range = request.args.get('time_range', '24h')  # Get the time range from the query string, default to 24 hours
+    data = Monitor.get_monitor_data(time_range=time_range)
 
     return jsonify(data)
 

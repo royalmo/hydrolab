@@ -4,7 +4,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.0"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.30.1/date_fns.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-<script>var charts = {};</script>
+<script>var charts = {humidity: {}, temperature: {}, battery: {}, snr: {}}</script>
 
 <script>
   function getRandomColor() {
@@ -17,11 +17,12 @@
   }
 
   function updateCharts() {
+    
     var timeRange = document.getElementById('timeRangeSelect').value;
     var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?time_range=' + timeRange;
     window.history.pushState({path:newurl},'',newurl);
 
-    fetch('/monitor_data?time_range=' + timeRange)
+    fetch('/monitoring/raw?time_range=' + timeRange)
       .then(response => response.json())
       .then(data => {
         data.forEach(monitor => {
@@ -57,8 +58,8 @@
   document.addEventListener('DOMContentLoaded', updateCharts);
 </script>
 
-<div class="flex flex-row justify-between w-3/5 mx-auto p-2 rounded-lg bg-white opacity-80">
-  <div class="flex flex-col border border-black bg-gray-100 rounded-md w-1/3 m-1">
+<div class="flex flex-col md:flex-row justify-between w-3/5 md:w-3/5 mx-auto p-2 rounded-lg bg-white opacity-80">
+    <div class="flex flex-col border border-black bg-gray-100 rounded-md w-full md:w-1/3 m-1">
     <h1 class="font-bold mx-auto">Litres Regats</h1>
     <div class="flex flex-row">
       <div class=" flex flex-col w-2/3 mx-auto my-2 items-center">
@@ -67,7 +68,7 @@
       </div>
     </div>
   </div>
-  <div class="flex flex-col border border-black bg-gray-100 font-bold rounded-md w-1/3 m-1">
+      <div class="flex flex-col border border-black bg-gray-100 rounded-md w-full md:w-1/3 m-1">
     <h1 class="font-bold mx-auto">Temperatura Mitjana</h1>
       <div class="flex flex-row">
       <div class=" flex flex-col w-2/3 mx-auto my-2 items-center">
@@ -76,7 +77,7 @@
       </div>
     </div>
   </div>
-  <div class="flex flex-col border border-black bg-gray-100 font-bold rounded-md w-1/3 m-1">
+      <div class="flex flex-col border border-black bg-gray-100 rounded-md w-full md:w-1/3 m-1">
     <h1 class="font-bold mx-auto">Lorem</h1>
       <div class="flex flex-row">
       <div class=" flex flex-col w-2/3 mx-auto my-2 items-center">
@@ -85,7 +86,7 @@
       </div>
     </div>
   </div>
-  <div class="flex flex-col border border-black bg-gray-100 font-bold rounded-md w-1/3 m-1">
+      <div class="flex flex-col border border-black bg-gray-100 rounded-md w-full md:w-1/3 m-1">
     <div class="flex flex-col justify-center items-center h-full">
       <form id="timeRangeForm" class="text-center">
         <label for="timeRangeSelect" class="block text-sm font-bold mb-2">Select Time Range:</label>
@@ -195,7 +196,10 @@
       }
     }
   });
-    charts[eachmonitor.key] = chart;
+
+    //console.log({{ eachmonitor['key'] }})
+
+    charts['{{eachmonitor['key']}}'] = chart;
 
   // Append custom legend to chart's container
     document.getElementById('monitor_frame_{{ eachmonitor.id|int }}').insertAdjacentHTML('beforeend', generateLegend(chart));

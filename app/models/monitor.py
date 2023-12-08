@@ -38,19 +38,17 @@ class Monitor(db.Model):
             for eui, name in sensors:
                 # Get the sensor history for each sensor EUI based on the monitor's key
                 # and within the specified time range.
-                sensor_history = SensorHistory.query.filter(
-                    SensorHistory.eui == eui
-                ).order_by(SensorHistory.timestamp.desc()).limit(100)
-
+            
                 sensor_history = SensorHistory.query.filter(
                     SensorHistory.eui == eui,
                     SensorHistory.timestamp >= start_time
                 ).order_by(SensorHistory.timestamp.desc()).limit(100)
 
+
                 x_axis = [history.timestamp.strftime('%Y-%m-%d %H:%M:%S') for history in sensor_history]
                 y_axis = [getattr(history, monitor.key) for history in sensor_history]
 
-                # Reverse the lists to have time go from past to present
+               # Reverse the lists to have time go from past to present
                 x_axis.reverse()
                 y_axis.reverse()
 
