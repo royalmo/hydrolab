@@ -44,12 +44,13 @@ def newsensor():
 @login_required
 def edit(id):
     sensor = Sensor.query.get_or_404(id)
-    sensor.eui = sensor.formatted_eui(  )
     sensor_history_list = SensorHistory.query.filter_by(id=id).order_by(SensorHistory.timestamp.desc()).limit(10).all()
     sensor_form=SensorForm(obj=sensor)
     if sensor_form.is_submitted():
+        print(sensor_form)
         if current_user.admin: # Only admins can edit
             for key, val in sensor_form.data.items():
+                print("KEY VAL: ", key, val)
                 if key in ['submit', 'csrf_token']: continue
                 setattr(sensor, key, val)
             db.session.commit()

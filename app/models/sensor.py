@@ -10,6 +10,3 @@ class Sensor(db.Model):
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    
-    def formatted_eui(self):
-        return str((hex(int(self.eui))))[2:].upper()

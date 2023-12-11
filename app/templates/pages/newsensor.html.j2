@@ -72,6 +72,37 @@
 
       <hr class="mt-6 border-b-1 border-blueGray-300">
 
+      <!-- 24-Hour Selection Component -->
+      <div class="flex-auto w-full px-4 lg:px-10 pt-0">
+        <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+          {{ _('Select Hours') }}
+        </h6>
+        <div class="flex flex-wrap w-full">
+          {% for i in range(24) %}
+          <div class="flex-1 min-w-[6%] lg:min-w-[2%] m-1">
+            <label class="hour-block block bg-gray-200 hover:bg-gray-300 text-center rounded-lg shadow cursor-pointer h-full">
+              <input type="checkbox" name="hour-{{ i }}" class="hidden hour-checkbox">
+              <span class="block py-2">{{ i }}</span>
+            </label>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <style>
+        .selected-hour {
+          background-color: #3182ce; /* Tailwind's blue-500 */
+        }
+      </style>
+
+      <script>
+        document.querySelectorAll('.hour-checkbox').forEach(function(checkbox) {
+          checkbox.addEventListener('change', function() {
+            this.parentElement.classList.toggle('selected-hour', this.checked);
+          });
+        });
+      </script>
+
       </form>
     </div>
 
