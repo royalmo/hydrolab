@@ -19,6 +19,10 @@ RUN apt install sqlite3 -y
 # Installing SSH
 RUN apt install openssh-server -y
 
+# Disallow password-based SSH logins
+RUN sed -E -i 's|^#?(PasswordAuthentication)\s.*|\1 no|' /etc/ssh/sshd_config && \
+    if ! grep '^PasswordAuthentication\s' /etc/ssh/sshd_config; then echo 'PasswordAuthentication no' >> /etc/ssh/sshd_config; fi
+
 # Create SSH directory and authorized_keys file
 RUN mkdir /root/.ssh
 RUN touch /root/.ssh/authorized_keys
@@ -49,7 +53,7 @@ RUN python3 -m pip install -r requirements.txt
 COPY . .
 
 # Setting up database
-RUN python3 db_init.py
+RUN if [ ! -f *.db ]; then python3 db_init.py; fi
 
 # Compiling CSS
 RUN npm run create-css
