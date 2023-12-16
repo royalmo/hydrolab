@@ -26,12 +26,12 @@ def sensors():
         }
         for server in Sensor.query.all()
     ]
-    return make_response(jsonify({'data' : response, 'admin' : load_user_from_auth_header().admin}), 200)
+    return make_response(jsonify({'data' : response, 'admin' : load_user_from_auth_header().role == "Admin"}), 200)
 
 @app.route('/monitoring')
 @auth_header_required
 def monitors():
-    return make_response(jsonify({'data' : Monitor.get_monitor_data(), 'admin' : load_user_from_auth_header().admin}), 200)
+    return make_response(jsonify({'data' : Monitor.get_monitor_data(), 'admin' : load_user_from_auth_header().role == "Admin"}), 200)
 
 ########################
 
@@ -63,7 +63,7 @@ def unregister_token():
 @auth_header_required
 def start(id):
     current_user = load_user_from_auth_header()
-    if not current_user.admin:
+    if not current_user.role == "Admin":
         return make_response('Forbidden', 403)
 
     Sensor.query.get_or_404(id).start(current_user)

@@ -16,6 +16,10 @@
     return color;
   }
 
+  function hasData(sensor) {
+      return sensor.y_axis && sensor.y_axis.length > 0;
+    }
+
   function updateCharts() {
     
     var timeRange = document.getElementById('timeRangeSelect').value;
@@ -32,7 +36,7 @@
           var newDatasets = sensorData.map(sensor => ({
             label: sensor.sensor_name,
             data: sensor.y_axis.map((y, index) => ({x: sensor.x_axis[index], y: y})),
-            borderColor: getRandomColor(),
+            borderColor: hasData(sensor) ? getRandomColor() : '#808080',
             fill: false
           }));
 
@@ -120,24 +124,10 @@
     return {
       label: data.sensor_name, // Removed "Sensor" prefix to use it in the legend title
       data: data.y_axis,
-      borderColor: getRandomColor(),
+      borderColor: hasData(data) ? getRandomColor() : '#808080',
       fill: false,
     };
   });
-
-  // Add this function to create custom HTML for the legend
-  function generateLegend(chart) {
-    const ul = document.createElement('ul');
-    ul.className = 'legend-labels';
-    chart.data.datasets.forEach((dataset, index) => {
-      ul.innerHTML += `
-        <li>
-          <span style="background-color: ${dataset.borderColor};"></span> 
-          <span style="font-size: 0.8em;">${dataset.label}</span>
-        </li>`;
-    });
-    return ul.outerHTML;
-  }
   
   var ctx = document.getElementById('monitor_{{ eachmonitor.key|e }}').getContext('2d');
   var chart = new Chart(ctx, {
@@ -158,7 +148,6 @@
                 return {
                   text: dataset.label,
                   fillStyle: dataset.borderColor,
-                  // Custom styling for the labels
                   font: {
                     size: 8 // Smaller font size for eui numbers
                   }
@@ -197,12 +186,8 @@
     }
   });
 
-    //console.log({{ eachmonitor['key'] }})
-
     charts['{{eachmonitor['key']}}'] = chart;
 
-  // Append custom legend to chart's container
-    document.getElementById('monitor_frame_{{ eachmonitor.id|int }}').insertAdjacentHTML('beforeend', generateLegend(chart));
   </script>
 
 {% endfor %}

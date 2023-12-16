@@ -99,16 +99,12 @@ def edit_user(user_id):
     form = UserForm()
 
     if form.validate_on_submit():
-        # FIXME Failing users with id <=2 for the sake of demonstration.
-        if user.id <= 2:
-            return make_response("For the sake of demonstration, you can't touch demo profiles!", 403)
-
-        user.update_with_form(form, current_user.admin)
+        user.update_with_form(form, current_user.role == "Admin")
         return redirect(url_for('.users'))
 
     form.language.default=user.lang
     form.process()
-    return render_template('pages/newuser.html.j2', user=user, form=form, title=gettext('Edit user'))
+    return render_template('pages/newuser.html.j2', user=user, form=form, title=gettext('Edit user'), User=User)
 
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
@@ -121,9 +117,9 @@ def profile():
         if user.id <= 2:
             return make_response("For the sake of demonstration, you can't touch demo profiles!", 403)
 
-        user.update_with_form(form, current_user.admin)
+        user.update_with_form(form, current_user.role == "Admin")
         return redirect(url_for('.profile'))
 
     form.language.default=user.lang
     form.process()
-    return render_template('pages/newuser.html.j2', user=user, form=form, navbar_highlight_profile=True, title=gettext('Your Profile'))
+    return render_template('pages/newuser.html.j2', user=user, form=form, navbar_highlight_profile=True, title=gettext('Your Profile'), User=User)

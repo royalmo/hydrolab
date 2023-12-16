@@ -49,7 +49,7 @@ def edit(id):
     monitor = Monitor.query.get_or_404(id)
     monitor_form=MonitorForm(obj=monitor)
     if monitor_form.is_submitted():
-        if current_user.admin: # Only admins can edit
+        if current_user.role == "Admin": # Only admins can edit
             for key, val in monitor_form.data.items():
                 if key in ['submit', 'csrf_token']: continue
                 setattr(monitor, key, val)

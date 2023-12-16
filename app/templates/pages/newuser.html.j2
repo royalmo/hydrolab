@@ -88,16 +88,28 @@
             <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2">{{ _('LANGUAGE') }} </label>
             {{ form.language(class_="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5") }}<br>
           </div>
-          {% if current_user.admin %}
-            <div class="mx-4 flex items-center">
-              <label for="admin">{{ _('Admin:') }}</label>
-              {{ form.admin(checked=user.admin) }}<br>
+          {% if current_user.role == "Admin" %}
+            <div class="px-4">
+              <div class="relative w-full mb-3">
+                <label for="role" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                  {{ _('Role') }}
+                </label>
+                <select name="role" id="role" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                  {% for role_name, role_id in User.ROLES.items() %}
+                    <option value="{{ role_name }}" {% if user.role == role_name %}selected{% endif %}>{{ role_name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
             </div>
             <div class="mx-4 flex items-center">
               <label for="active">{{ _('Active:') }}</label>
               {{ form.active(checked=user.active) }}<br>
             </div>
           {% endif %}
+            <div class="mx-4 flex items-center">
+              <label for="notifications">{{ _('Notifications:') }}</label>
+              {{ form.notifications(checked=user.notifications) }}<br>
+            </div>
         </div>
       </div>
     </form>

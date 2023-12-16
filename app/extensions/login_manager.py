@@ -35,7 +35,7 @@ def admin_login_required(func):
     @wraps(func)
     @active_login_required
     def wrapper(*args, **kwargs):
-        if current_user.admin:
+        if current_user._role == User.ROLES["Admin"]:
             return func(*args, **kwargs)
         else:
             return make_response('Forbidden', 403)

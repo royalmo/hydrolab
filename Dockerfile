@@ -2,20 +2,38 @@
 
 FROM ubuntu:22.04
 
-RUN apt update -y
-
-# Installing python
+# Update packages and install dependencies
+RUN apt update -y && apt upgrade -y
 RUN apt install software-properties-common -y
 RUN add-apt-repository ppa:deadsnakes/ppa
+
+# Installing Python
 RUN apt install python3 python3-pip -y
 
-# Installing nodejs
+# Installing Node.js
 RUN apt install nodejs npm -y
 
-# Installing sqlite3
+# Installing SQLite3
 RUN apt install sqlite3 -y
 
-# Changing directory
+# Installing SSH
+RUN apt install openssh-server -y
+
+# Create SSH directory and authorized_keys file
+RUN mkdir /root/.ssh
+RUN touch /root/.ssh/authorized_keys
+
+# Add your public key (replace with your actual public key)
+RUN echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC37HFQ3ZO0bAOyeVCu+0S/u+oV5uf4r82+aZGX3YnSKY6tc38dowHHi5UayLiUvCu3QHnI6+r56+0jKYXpCOtWT8K58Xjhv/iMRmI1hbmB7t/VzsQ0C+bjzzF/g87V0nP4PjpegCyPVgLxAB/a5IhF2NhplEqRsNiig+wzpt4nnjxPDZHmL5MOkZyZEv7r0J9oVIGV7dX9uUIaoHGy3E9diyV6U2fB0POmIwnUseSuRcrtUUzAZIcfIaQUBO1RUCNlAckSzKL8mWsoyxzUdrxQzcx6T55aDkgju5Gt345a6iAKiJ7gTnjANEmEednwBXdsLSfQXotGKlGXlGvCljtqd0Omnmj1+ADnAJBrcJTBVAy859p+nmtmKtThClXI5/XKrr/qYqp72Jgs/eZWLzekzNTthSvLRLZucD7w9nzrPC6D3Axr2tNgVRWZ++l2PcOoYoimi6epaSLR3QfhtyvY+M+UTyvLpZwP96tfKDmXxHCnHUcVr75ZyMRqhysMWsU= isaac@FlyingKomputer" >> /root/.ssh/authorized_keys
+
+# Set permissions for SSH directory and authorized_keys file
+RUN chmod 700 /root/.ssh
+RUN chmod 600 /root/.ssh/authorized_keys
+
+# Starting SSH service
+RUN service ssh start
+
+# Change directory
 WORKDIR /hydrolab
 
 # NPM requirements
@@ -39,7 +57,11 @@ RUN npm run create-css
 # Compiling translations
 RUN pybabel compile -f -d app/translations
 
-# Run
-EXPOSE 5000
+# Expose port for SSH and the application
+EXPOSE 22 5000
+
+# Environment variable
 ENV PRODUCTION=True
-CMD python3 app.py
+
+# Starting SSH and the application
+CMD service ssh start && python3 app.py

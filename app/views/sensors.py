@@ -48,7 +48,7 @@ def edit(id):
     sensor_form=SensorForm(obj=sensor)
     if sensor_form.is_submitted():
         print(sensor_form)
-        if current_user.admin: # Only admins can edit
+        if current_user.role == "Admin": # Only admins can edit
             for key, val in sensor_form.data.items():
                 print("KEY VAL: ", key, val)
                 if key in ['submit', 'csrf_token']: continue

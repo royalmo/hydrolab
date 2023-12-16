@@ -12,5 +12,6 @@ class UserForm(FlaskForm):
     password_confirm = PasswordField(validators=[], render_kw={"placeholder": gettext("••••••••")})
     language = SelectField(choices=get_locales)
     submit = SubmitField(gettext('Register'))
-    admin = BooleanField(gettext('Admin?'))
+    role = StringField(gettext('Role?'))
     active = BooleanField(gettext('Active?'))
+    notifications = BooleanField(gettext('Notifications'))

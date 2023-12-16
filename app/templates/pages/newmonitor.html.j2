@@ -1,7 +1,7 @@
 {% extends 'base/logged_in.html.j2' %}
 
 {% block body %}
-{% set view_only = not current_user.admin %}
+{% set view_only = not (current_user.role == "Admin" %}
 
 <section class="py-2 disabled-input-gray">
 

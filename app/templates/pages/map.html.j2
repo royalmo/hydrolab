@@ -13,7 +13,9 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        
+        var bounds = new L.LatLngBounds();
+        var sensorsAdded = false;
+
         var greenIcon = new L.Icon({
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -33,30 +35,39 @@
         shadowSize: [41, 41]
         });
 
+        let icon = null
 
         {% for eachsensor in sensors %}
-            var sensorPopupContent = `
-            <b>Name:</b> {{ eachsensor.name }}<br>
-            <b>Description:</b> {{ eachsensor.description }}<br>
-            <b>Sensor Status:</b> {{ eachsensor.status }}<br>
-            <div class="bg-blue-200 text-white font-bold py-1 px-2 rounded cursor-pointer w-2/3 text-center mx-auto my-2">
-                <a href="{{ url_for('.sensors.edit', id=eachsensor.id) }}" target="_blank">Modify Sensor</a>
-            </div>
 
-            `;
+            {% if eachsensor.location and eachsensor.location.latitude is not none and eachsensor.location.longitude is not none %}
+                var sensorLocation = new L.LatLng({{ eachsensor.location.latitude }}, {{ eachsensor.location.longitude }});
+                bounds.extend(sensorLocation);
+                sensorsAdded = true;
 
-            let icon = null
-            {% if eachsensor.status %}
-                icon = greenIcon
-            {% else %}
-                icon = redIcon
+                var sensorPopupContent = `
+                    // Popup content settings...
+                `;
+
+                {% if eachsensor.status %}
+                    icon = greenIcon;
+                {% else %}
+                    icon = redIcon;
+                {% endif %}
+
+                L.marker(sensorLocation, {icon: icon})
+                    .addTo(map)
+                    .bindPopup(sensorPopupContent);
+            
             {% endif %}
-
-        L.marker([{{ eachsensor.location.latitude }}, {{ eachsensor.location.longitude }}], {icon: icon})
-            .addTo(map)
-            .bindPopup(sensorPopupContent);
         {% endfor %} 
         
+        // Adjust the map view to include all sensors
+        if (sensorsAdded) {
+            map.fitBounds(bounds);
+        } else {
+            // Fallback to default view if no sensors are present
+            map.setView([41.38, 2.16], 9);
+        }
 
     </script>
 

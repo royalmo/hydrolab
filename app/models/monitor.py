@@ -30,30 +30,31 @@ class Monitor(db.Model):
         start_time = datetime.utcnow() - time_delta
         print(f"Start time for query: {start_time}")
 
-        # Get all unique sensors with their EUIs and Names
-        sensors = db.session.query(SensorHistory.eui, Sensor.name).join(Sensor, SensorHistory.eui == Sensor.eui).distinct().all()
+        # Get all sensors, not just those with history
+        all_sensors = Sensor.query.all()
 
         for monitor in monitors:
             monitor_data = []
-            for eui, name in sensors:
-                # Get the sensor history for each sensor EUI based on the monitor's key
-                # and within the specified time range.
-            
+            for sensor in all_sensors:
+                # Get the sensor history for this sensor and monitor
                 sensor_history = SensorHistory.query.filter(
-                    SensorHistory.eui == eui,
+                    SensorHistory.eui == sensor.eui,
                     SensorHistory.timestamp >= start_time
                 ).order_by(SensorHistory.timestamp.desc()).limit(100)
 
+                if sensor_history.count() > 0:
+                    x_axis = [history.timestamp.strftime('%Y-%m-%d %H:%M:%S') for history in sensor_history]
+                    y_axis = [getattr(history, monitor.key) for history in sensor_history]
 
-                x_axis = [history.timestamp.strftime('%Y-%m-%d %H:%M:%S') for history in sensor_history]
-                y_axis = [getattr(history, monitor.key) for history in sensor_history]
-
-               # Reverse the lists to have time go from past to present
-                x_axis.reverse()
-                y_axis.reverse()
+                    # Reverse the lists to have time go from past to present
+                    x_axis.reverse()
+                    y_axis.reverse()
+                else:
+                    x_axis = []
+                    y_axis = []
 
                 monitor_data.append({
-                    'sensor_name': name,  # Use sensor.name instead of sensor_eui
+                    'sensor_name': sensor.name,
                     'x_axis': x_axis,
                     'y_axis': y_axis
                 })

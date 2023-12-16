@@ -1,12 +1,23 @@
 -- Data to seed the database
 
 INSERT INTO user VALUES
-    (1, 'root', 'root@root', '{0}', 1, 1, 'en')
+    (1, 'root', 'root@root', '{0}', 1, 2, 'en', 0),
+    (2, 'user', 'user@user', '{0}', 1, 1, 'en', 0)
 ;
 
 INSERT INTO sensor (name, description, status, location, eui) VALUES
-    ('Test S1', 'Sensor test 1 Hydrolab', 'on', '{{"latitude": 41.72, "longitude": 1.81}}', '70B3D57ED8001CAB')
-;
+    ('Test S1', 'Sensor test 1 Hydrolab', 'on', '{{"latitude": 41.72, "longitude": 1.81}}', '70B3D57ED8001CAB'),
+    ('Test S2', 'Sensor test 2 Hydrolab', 'on', '{{"latitude": 41.72, "longitude": 1.81045}}', '70B3D57ED8001CAC'),
+    ('Test S3', 'Sensor test 3 Hydrolab', 'on', '{{"latitude": 41.72, "longitude": 1.81090}}', '70B3D57ED8001CAD'),
+    ('Test S4', 'Sensor test 4 Hydrolab', 'on', '{{"latitude": 41.72, "longitude": 1.81135}}', '70B3D57ED8001CAE'),
+    ('Test S5', 'Sensor test 5 Hydrolab', 'on', '{{"latitude": 41.72, "longitude": 1.81180}}', '70B3D57ED8001CAF'),
+    ('Test S6', 'Sensor test 6 Hydrolab', 'on', '{{"latitude": 41.72, "longitude": 1.81225}}', '70B3D57ED8001CB0'),
+    ('Test S7', 'Sensor test 7 Hydrolab', 'on', '{{"latitude": 41.72, "longitude": 1.81270}}', '70B3D57ED8001CB1'),
+    ('Test S8', 'Sensor test 8 Hydrolab', 'on', '{{"latitude": 41.72, "longitude": 1.81315}}', '70B3D57ED8001CB2'),
+    ('Test S9', 'Sensor test 9 Hydrolab', 'on', '{{"latitude": 41.72, "longitude": 1.81360}}', '70B3D57ED8001CB3'),
+    ('Test S10', 'Sensor test 10 Hydrolab', 'on', '{{"latitude": 41.72, "longitude": 1.81405}}', '70B3D57ED8001CB4'),
+    ('Test S11', 'Sensor test 11 Hydrolab', 'on', '{{"latitude": 41.72, "longitude": 1.81450}}', '70B3D57ED8001CB5');
+
 
 INSERT INTO monitor (key, title, label, min_value, max_value) VALUES
     ('humidity', 'Humidity Graph', '%', '0', '100'),

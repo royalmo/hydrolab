@@ -21,7 +21,6 @@
 <table class="w-full max-w-[1250px] mx-auto xs:px-0">
   <thead class="bg-gray-200 border-2 border-gray-300 font-bold text-gray-500">
     <tr class="h-12">
-      <th class="xg:hidden"></th>
       <th>{{ _('NAME') }}</th>
       <th class="xm:hidden">{{ _('ACTIVE') }}</th>
       <th>{{ _('ADDRESS') }}</th>
@@ -30,11 +29,7 @@
   </thead>
   <tbody class="bg-white">
     {% for eachsensor in sensors %}
-      <tr class="hover:bg-gray-200 border-2 border-gray-300" id="sensor-{{ eachsensor.id }}" data-sensorLatitude="{{ eachsensor.location.latitude }}" data-sensorLongitude="{{ eachsensor.location.longitude }}">        <th class="xg:hidden">
-          <div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-            <span class="font-medium text-gray-600 dark:text-gray-300">{{ eachsensor.name[0]|e }}</span>
-          </div>
-        </th>
+      <tr class="hover:bg-gray-200 border-2 border-gray-300" id="sensor-{{ eachsensor.id }}" data-sensorLatitude="{{ eachsensor.location.latitude }}" data-sensorLongitude="{{ eachsensor.location.longitude }}">
         <th class="font-normal">{{ eachsensor.name|e }}</th>
         <th class="font-normal xm:hidden">
           {% if eachsensor.lastActiveStatus %}
