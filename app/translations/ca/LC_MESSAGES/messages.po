@@ -537,8 +537,8 @@ msgid "Once your account will be activated by an admin, you will be able to"
 msgstr "Quan el teu compte sigui revisat per un administrador, podràs"
 
 #: app/templates/pages/users/signup_success.html.j2:21
-msgid "to NavLab!"
-msgstr "a NavLab!"
+msgid "to HydroLab!"
+msgstr "a HydroLab!"
 
 #: app/templates/pages/users/signup_success.html.j2:25
 msgid "What do I need to do?"

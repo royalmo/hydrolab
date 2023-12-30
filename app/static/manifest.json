@@ -1,6 +1,6 @@
 {
-    "name": "Hydrolab",
-    "short_name": "Hydrolab",
+    "name": "HydroLab",
+    "short_name": "HydroLab",
     "start_url": "/map",
     "display": "standalone",
     "background_color": "#fff",

@@ -457,7 +457,7 @@ msgstr "Voulez-vous vraiement supprimer cet utilisateur ?"
 
 #: app/templates/pages/users/login.html.j2:9
 msgid "Log into your account"
-msgstr "Se connecter à NavLab"
+msgstr "Se connecter à HydroLab"
 
 #: app/templates/pages/users/login.html.j2:18
 msgid "Incorrect credentials"
@@ -532,8 +532,8 @@ msgid "Once your account will be activated by an admin, you will be able to"
 msgstr "Une fois votre compte va être activé, vous pourrez vous"
 
 #: app/templates/pages/users/signup_success.html.j2:21
-msgid "to NavLab!"
-msgstr "à NavLab !"
+msgid "to HydroLab!"
+msgstr "à HydroLab !"
 
 #: app/templates/pages/users/signup_success.html.j2:25
 msgid "What do I need to do?"

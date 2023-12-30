@@ -37,7 +37,7 @@ def new_user(user):
     - Language: {Locale(user.lang).display_name.capitalize()}
 
     Activate it or edit it through this link:
-    https://navlab.ericroy.net/users/{user.id}/edit"""
+    https://hydrolab.ericroy.net/users/{user.id}/edit"""
     message.attach(MIMEText(body, 'plain'))
 
     # Connect to Gmail's SMTP server and send the email

@@ -529,7 +529,7 @@ msgid "Once your account will be activated by an admin, you will be able to"
 msgstr ""
 
 #: app/templates/pages/users/signup_success.html.j2:21
-msgid "to NavLab!"
+msgid "to HydroLab!"
 msgstr ""
 
 #: app/templates/pages/users/signup_success.html.j2:25

@@ -131,7 +131,7 @@ msgstr "Todos los derechos reservados"
 
 #: app/templates/includes/footer.html.j2:8
 msgid "About"
-msgstr "Sobre NavLab"
+msgstr "Sobre HydroLab"
 
 #: app/templates/includes/footer.html.j2:11
 msgid "Privacy Policy"
@@ -534,8 +534,8 @@ msgid "Once your account will be activated by an admin, you will be able to"
 msgstr "¡Una vez activada por un administrador, podrás"
 
 #: app/templates/pages/users/signup_success.html.j2:21
-msgid "to NavLab!"
-msgstr "a NavLab!"
+msgid "to HydroLab!"
+msgstr "a HydroLab!"
 
 #: app/templates/pages/users/signup_success.html.j2:25
 msgid "What do I need to do?"
