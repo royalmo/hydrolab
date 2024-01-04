@@ -1,6 +1,5 @@
 from ..extensions import db
 from datetime import datetime
-from .sensor import Sensor
 
 class Uplink(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,4 +27,5 @@ class Uplink(db.Model):
     rssi = db.Column(db.Integer)
 
     def get_sensor(self):
+        from .sensor import Sensor
         return Sensor.query.get(self.sensor_id)

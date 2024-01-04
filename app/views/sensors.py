@@ -4,10 +4,6 @@ from flask_babel import gettext
 
 from ..extensions import db, login_required, admin_required
 from ..models import Sensor, SensorForm, SearchForm
-from app.models.sensor_history import SensorHistory
-from datetime import datetime
-from requests import put
-import os
 
 app = Blueprint('sensors', __name__)
 
@@ -69,12 +65,6 @@ def remove(id):
 def start(id):
     Sensor.query.get_or_404(id).start(current_user)
     return make_response("Sensor started", 204)
-
-@app.route('/sensor/<int:id>/stop', methods=['GET', 'POST'])
-@admin_required
-def stop(id):
-    Sensor.query.get_or_404(id).stop(current_user)
-    return make_response("Sensor stopped", 204)
 
 @app.route('/sensor/raw')
 @login_required

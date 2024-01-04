@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-05-25 00:54+0200\n"
+"POT-Creation-Date: 2024-01-04 17:21+0100\n"
 "PO-Revision-Date: 2023-05-12 23:34+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -67,7 +67,7 @@ msgid "User Name"
 msgstr "Nom"
 
 #: app/models/forms/register_form.py:15 app/models/forms/user_form.py:14
-#: app/views/users.py:56
+#: app/views/users.py:57
 msgid "Register"
 msgstr "Créer un compte"
 
@@ -79,33 +79,36 @@ msgstr "Cette addresse existe déjà. Éssayez avec une autre."
 msgid "Search"
 msgstr "Chercher"
 
-#: app/models/forms/server_form.py:7
-msgid "Minecraft Server"
-msgstr "Serveur de Minecraft"
+#: app/models/forms/sensor_form.py:7
+#, fuzzy
+msgid "Sensor name"
+msgstr "Nom"
 
-#: app/models/forms/server_form.py:8
-msgid "https://image.com/ssh.png"
-msgstr "https://image.com/ssh.png"
-
-#: app/models/forms/server_form.py:9
-msgid "About Server"
-msgstr "Déscription du serveur"
-
-#: app/models/forms/server_form.py:10
-msgid "http://127.0.0.1:5002/led"
+#: app/models/forms/sensor_form.py:8
+msgid "About Sensor"
 msgstr ""
 
-#: app/models/forms/server_form.py:11
-msgid "Submit Service"
-msgstr "Envoyer serveur"
+#: app/models/forms/sensor_form.py:14
+msgid "TTN ID"
+msgstr ""
+
+#: app/models/forms/sensor_form.py:15
+#, fuzzy
+msgid "Submit Sensor"
+msgstr "Envoyer le moniteur"
 
 #: app/models/forms/user_form.py:15
-msgid "Admin?"
-msgstr "Administrateur ?"
+#, fuzzy
+msgid "Role?"
+msgstr "Profil"
 
 #: app/models/forms/user_form.py:16
 msgid "Active?"
 msgstr "Activé ?"
+
+#: app/models/forms/user_form.py:17
+msgid "Notifications"
+msgstr ""
 
 #: app/templates/errors/404.html.j2:13
 msgid "Error"
@@ -145,184 +148,81 @@ msgstr "Contact"
 msgid "Open main menu"
 msgstr "Ouvrir le menu principal"
 
-#: app/templates/includes/navbar.html.j2:17 app/views/__init__.py:36
-msgid "Dashboard"
-msgstr "Panneau principal"
+#: app/templates/includes/navbar.html.j2:17
+#: app/templates/pages/sensors.html.j2:44
+msgid "Map"
+msgstr ""
 
-#: app/templates/includes/navbar.html.j2:20 app/views/monitors.py:43
+#: app/templates/includes/navbar.html.j2:20 app/views/sensors.py:28
+#, fuzzy
+msgid "Sensors"
+msgstr "Utilisateurs"
+
+#: app/templates/includes/navbar.html.j2:23 app/views/monitors.py:21
 msgid "Monitoring"
 msgstr "Statistiques"
 
-#: app/templates/includes/navbar.html.j2:23
+#: app/templates/includes/navbar.html.j2:26
 msgid "Profile"
 msgstr "Profil"
 
-#: app/templates/includes/navbar.html.j2:27 app/views/users.py:79
+#: app/templates/includes/navbar.html.j2:30 app/views/users.py:80
 msgid "Users"
 msgstr "Utilisateurs"
 
-#: app/templates/includes/navbar.html.j2:31
+#: app/templates/includes/navbar.html.j2:34
 msgid "Log Out"
 msgstr "Sortir"
 
-#: app/templates/pages/dashboard.html.j2:6
-msgid "Service list"
-msgstr "Liste de services"
-
-#: app/templates/pages/dashboard.html.j2:7
-msgid "New service"
-msgstr "Nouveau service"
-
-#: app/templates/pages/dashboard.html.j2:17
-#: app/templates/pages/userlist.html.j2:17
-msgid "Sorry! Looks like there are no matches with your search. Try again!"
-msgstr "Il n'y a pas de résultats pour votre cherche. Éssayez à nouveau !"
-
-#: app/templates/pages/dashboard.html.j2:29
-msgid "Off"
-msgstr "Éteint"
-
-#: app/templates/pages/dashboard.html.j2:37
-msgid "Active"
-msgstr "Actif"
-
-#: app/templates/pages/dashboard.html.j2:46
-msgid "Start"
-msgstr "Démarrer"
-
-#: app/templates/pages/dashboard.html.j2:51
-msgid "Cancel"
-msgstr "Annuler"
-
-#: app/templates/pages/dashboard.html.j2:56
-msgid "Processing"
-msgstr "En procés"
-
-#: app/templates/pages/dashboard.html.j2:61
-msgid "Stop"
-msgstr "Arrêter"
-
-#: app/templates/pages/monitoring.html.j2:10
-msgid "Statistics"
-msgstr "Statistiques"
-
-#: app/templates/pages/monitoring.html.j2:11 app/views/monitors.py:65
-msgid "New Monitor"
-msgstr "Nouveau moniteur"
-
-#: app/templates/pages/monitoring.html.j2:26
-msgid "Last sample"
-msgstr "Dernière donnée"
-
-#: app/templates/pages/newmonitor.html.j2:13
-msgid "Add New Monitor"
+#: app/templates/pages/newsensor.html.j2:13
+#, fuzzy
+msgid "Add New Sensor"
 msgstr "Ajouter nouveau moniteur"
 
-#: app/templates/pages/newmonitor.html.j2:15
-msgid "Modify Monitor"
+#: app/templates/pages/newsensor.html.j2:15
+#, fuzzy
+msgid "Modify Sensor"
 msgstr "Modifier le moniteur"
 
-#: app/templates/pages/newmonitor.html.j2:24
-msgid "Do you really wish to remove this monitor?"
-msgstr "Voulez-vous vraiement supprimer ce moniteur?"
-
-#: app/templates/pages/newmonitor.html.j2:27
-msgid "Remove Monitor"
-msgstr "Supprimer le moniteur"
-
-#: app/templates/pages/newmonitor.html.j2:32
-msgid "You need to be an admin to modify a monitor"
-msgstr "Vous devez être administrateur pour modifier les moniteurs"
-
-#: app/templates/pages/newmonitor.html.j2:38
-msgid "Monitor Information"
-msgstr "Information du moniteur"
-
-#: app/templates/pages/newmonitor.html.j2:44
-msgid "Monitor Title"
-msgstr "Titre du moniteur"
-
-#: app/templates/pages/newmonitor.html.j2:54
-msgid "Monitor Key"
-msgstr "Clé de monitorage"
-
-#: app/templates/pages/newmonitor.html.j2:68
-msgid "Monitor Data Units"
-msgstr "Unités du moniteur"
-
-#: app/templates/pages/newmonitor.html.j2:80
-msgid "Monitor Graph Details"
-msgstr "Détails du graphique"
-
-#: app/templates/pages/newmonitor.html.j2:88
-msgid "Minimum value"
-msgstr "Valeur minimum"
-
-#: app/templates/pages/newmonitor.html.j2:102
-msgid "Maximum value"
-msgstr "Valeur maximum"
-
-#: app/templates/pages/newserver.html.j2:13
-msgid "Add New Service"
-msgstr "Nouveau service"
-
-#: app/templates/pages/newserver.html.j2:15
-msgid "Modify Service"
-msgstr "Modifier le service"
-
-#: app/templates/pages/newserver.html.j2:24
-msgid "Do you really wish to remove this server?"
+#: app/templates/pages/newsensor.html.j2:24
+#, fuzzy
+msgid "Do you really wish to remove this sensor?"
 msgstr "Voulez-vous vraiement supprimer ce service?"
 
-#: app/templates/pages/newserver.html.j2:27
-msgid "Remove Service"
-msgstr "Supprimer Service"
+#: app/templates/pages/newsensor.html.j2:27
+#, fuzzy
+msgid "Remove Sensor"
+msgstr "Supprimer le moniteur"
 
-#: app/templates/pages/newserver.html.j2:32
-msgid "You need to be an admin to modify a service"
+#: app/templates/pages/newsensor.html.j2:32
+#, fuzzy
+msgid "You need to be an admin to modify a sensor"
 msgstr "Vous devez être administrateur pour modifier les services"
 
-#: app/templates/pages/newserver.html.j2:38
-msgid "Server Information"
-msgstr "Information du service"
+#: app/templates/pages/newsensor.html.j2:38
+#, fuzzy
+msgid "Sensor Information"
+msgstr "Information de l'utilisateur"
 
-#: app/templates/pages/newserver.html.j2:44
-msgid "Server Name"
-msgstr "Nom du service"
+#: app/templates/pages/newsensor.html.j2:44
+#, fuzzy
+msgid "Sensor Name"
+msgstr "Nom"
 
-#: app/templates/pages/newserver.html.j2:54
-msgid "Server Image URL"
-msgstr "Lien de l'image du service"
+#: app/templates/pages/newsensor.html.j2:55
+msgid "Sensor TTN ID"
+msgstr ""
 
-#: app/templates/pages/newserver.html.j2:64
-msgid "Server Description"
+#: app/templates/pages/newsensor.html.j2:65
+#, fuzzy
+msgid "Sensor Description"
 msgstr "Désctiption du service"
 
-#: app/templates/pages/newserver.html.j2:75
-msgid "Server Commands"
-msgstr "Commandes du service"
+#: app/templates/pages/newsensor.html.j2:78
+msgid "Select Hours"
+msgstr ""
 
-#: app/templates/pages/newserver.html.j2:82
-msgid "Endpoint URL"
-msgstr "API URL"
-
-#: app/templates/pages/newserver.html.j2:94
-msgid "Server History"
-msgstr "Historique de statuts"
-
-#: app/templates/pages/newserver.html.j2:101
-msgid "started"
-msgstr "démarré"
-
-#: app/templates/pages/newserver.html.j2:103
-msgid "stopped"
-msgstr "arrêté"
-
-#: app/templates/pages/newserver.html.j2:105
-msgid "by"
-msgstr "par"
-
-#: app/templates/pages/newuser.html.j2:14 app/views/users.py:128
+#: app/templates/pages/newuser.html.j2:14 app/views/users.py:125
 msgid "Your Profile"
 msgstr "Votre profil"
 
@@ -393,17 +293,81 @@ msgid "Passwords match"
 msgstr "Les mots de passe concordent"
 
 #: app/templates/pages/newuser.html.j2:88
-#: app/templates/pages/userlist.html.j2:29
+#: app/templates/pages/userlist.html.j2:28
 msgid "LANGUAGE"
 msgstr "LANGUE"
 
-#: app/templates/pages/newuser.html.j2:93
-msgid "Admin:"
-msgstr "Administrateur:"
+#: app/templates/pages/newuser.html.j2:95
+#, fuzzy
+msgid "Role"
+msgstr "Profil"
 
-#: app/templates/pages/newuser.html.j2:97
+#: app/templates/pages/newuser.html.j2:105
 msgid "Active:"
 msgstr "Actif:"
+
+#: app/templates/pages/newuser.html.j2:110
+msgid "Notifications:"
+msgstr ""
+
+#: app/templates/pages/sensors.html.j2:6
+#, fuzzy
+msgid "Registered sensors"
+msgstr "Utilisateurs"
+
+#: app/templates/pages/sensors.html.j2:8
+msgid "Add Sensor"
+msgstr ""
+
+#: app/templates/pages/sensors.html.j2:17
+#: app/templates/pages/userlist.html.j2:17
+msgid "Sorry! Looks like there are no matches with your search. Try again!"
+msgstr "Il n'y a pas de résultats pour votre cherche. Éssayez à nouveau !"
+
+#: app/templates/pages/sensors.html.j2:24
+#: app/templates/pages/userlist.html.j2:24
+msgid "NAME"
+msgstr "NOM"
+
+#: app/templates/pages/sensors.html.j2:25
+#: app/templates/pages/userlist.html.j2:27
+msgid "ACTIVE"
+msgstr "ACTIVÉ"
+
+#: app/templates/pages/sensors.html.j2:26
+#, fuzzy
+msgid "ADDRESS"
+msgstr "Addresse email"
+
+#: app/templates/pages/sensors.html.j2:27
+#: app/templates/pages/userlist.html.j2:29
+msgid "ACTIONS"
+msgstr "ACTIONS"
+
+#: app/templates/pages/sensors.html.j2:36
+#: app/templates/pages/userlist.html.j2:42
+msgid "Yes"
+msgstr "Oui"
+
+#: app/templates/pages/sensors.html.j2:38
+#: app/templates/pages/userlist.html.j2:44
+msgid "No"
+msgstr "Non"
+
+#: app/templates/pages/sensors.html.j2:45
+#: app/templates/pages/userlist.html.j2:51
+msgid "Edit"
+msgstr "Modifier"
+
+#: app/templates/pages/sensors.html.j2:48
+#: app/templates/pages/userlist.html.j2:54
+msgid "Delete"
+msgstr "Supprimer"
+
+#: app/templates/pages/sensors.html.j2:54
+#: app/templates/pages/userlist.html.j2:60
+msgid "Are you sure you want to delete this user?"
+msgstr "Voulez-vous vraiement supprimer cet utilisateur ?"
 
 #: app/templates/pages/userlist.html.j2:6
 msgid "Registered users"
@@ -414,46 +378,13 @@ msgid "Your profile"
 msgstr "Votre profil"
 
 #: app/templates/pages/userlist.html.j2:25
-msgid "NAME"
-msgstr "NOM"
-
-#: app/templates/pages/userlist.html.j2:26
 msgid "MAIL"
 msgstr "EMAIL"
 
-#: app/templates/pages/userlist.html.j2:27
-msgid "ADMIN"
-msgstr "ADMIN"
-
-#: app/templates/pages/userlist.html.j2:28
-msgid "ACTIVE"
-msgstr "ACTIVÉ"
-
-#: app/templates/pages/userlist.html.j2:30
-msgid "ACTIONS"
-msgstr "ACTIONS"
-
-#: app/templates/pages/userlist.html.j2:45
-#: app/templates/pages/userlist.html.j2:52
-msgid "Yes"
-msgstr "Oui"
-
-#: app/templates/pages/userlist.html.j2:47
-#: app/templates/pages/userlist.html.j2:54
-msgid "No"
-msgstr "Non"
-
-#: app/templates/pages/userlist.html.j2:61
-msgid "Edit"
-msgstr "Modifier"
-
-#: app/templates/pages/userlist.html.j2:64
-msgid "Delete"
-msgstr "Supprimer"
-
-#: app/templates/pages/userlist.html.j2:70
-msgid "Are you sure you want to delete this user?"
-msgstr "Voulez-vous vraiement supprimer cet utilisateur ?"
+#: app/templates/pages/userlist.html.j2:26
+#, fuzzy
+msgid "ROLE"
+msgstr "Profil"
 
 #: app/templates/pages/users/login.html.j2:9
 msgid "Log into your account"
@@ -474,7 +405,9 @@ msgstr "Email"
 
 #: app/templates/pages/users/login.html.j2:42
 msgid "Sorry, not implemented!\\nAsk an admin to change your password."
-msgstr "Désolé, ceci n'est pas disponible!\\nContactez un administrateur pour changer votre mot de passe."
+msgstr ""
+"Désolé, ceci n'est pas disponible!\\nContactez un administrateur pour "
+"changer votre mot de passe."
 
 #: app/templates/pages/users/login.html.j2:42
 msgid "Forgot password?"
@@ -551,22 +484,154 @@ msgstr ""
 msgid "indicating the reason of your hurry."
 msgstr "tout en indiquant la raison pour laquelle vous êtes préssé."
 
-#: app/views/monitors.py:79
+#: app/views/monitors.py:44
+msgid "New Monitor"
+msgstr "Nouveau moniteur"
+
+#: app/views/monitors.py:58
 msgid "Edit Monitor"
 msgstr "Modifier le moniteur"
 
-#: app/views/servers.py:23
-msgid "New Server"
-msgstr "Nouveau service"
+#: app/views/sensors.py:41
+msgid "New Sensor"
+msgstr ""
 
-#: app/views/servers.py:38
-msgid "Edit Server"
-msgstr "Modifier le service"
+#: app/views/sensors.py:58
+#, fuzzy
+msgid "Edit Sensor"
+msgstr "Modifier l'utilisateur"
 
-#: app/views/users.py:63
+#: app/views/users.py:64
 msgid "Registered!"
 msgstr "Compte créé !"
 
-#: app/views/users.py:110
+#: app/views/users.py:107
 msgid "Edit user"
 msgstr "Modifier l'utilisateur"
+
+#~ msgid "Minecraft Server"
+#~ msgstr "Serveur de Minecraft"
+
+#~ msgid "https://image.com/ssh.png"
+#~ msgstr "https://image.com/ssh.png"
+
+#~ msgid "About Server"
+#~ msgstr "Déscription du serveur"
+
+#~ msgid "http://127.0.0.1:5002/led"
+#~ msgstr ""
+
+#~ msgid "Submit Service"
+#~ msgstr "Envoyer serveur"
+
+#~ msgid "Admin?"
+#~ msgstr "Administrateur ?"
+
+#~ msgid "Dashboard"
+#~ msgstr "Panneau principal"
+
+#~ msgid "Service list"
+#~ msgstr "Liste de services"
+
+#~ msgid "New service"
+#~ msgstr "Nouveau service"
+
+#~ msgid "Off"
+#~ msgstr "Éteint"
+
+#~ msgid "Active"
+#~ msgstr "Actif"
+
+#~ msgid "Start"
+#~ msgstr "Démarrer"
+
+#~ msgid "Cancel"
+#~ msgstr "Annuler"
+
+#~ msgid "Processing"
+#~ msgstr "En procés"
+
+#~ msgid "Stop"
+#~ msgstr "Arrêter"
+
+#~ msgid "Statistics"
+#~ msgstr "Statistiques"
+
+#~ msgid "Last sample"
+#~ msgstr "Dernière donnée"
+
+#~ msgid "Do you really wish to remove this monitor?"
+#~ msgstr "Voulez-vous vraiement supprimer ce moniteur?"
+
+#~ msgid "You need to be an admin to modify a monitor"
+#~ msgstr "Vous devez être administrateur pour modifier les moniteurs"
+
+#~ msgid "Monitor Information"
+#~ msgstr "Information du moniteur"
+
+#~ msgid "Monitor Title"
+#~ msgstr "Titre du moniteur"
+
+#~ msgid "Monitor Key"
+#~ msgstr "Clé de monitorage"
+
+#~ msgid "Monitor Data Units"
+#~ msgstr "Unités du moniteur"
+
+#~ msgid "Monitor Graph Details"
+#~ msgstr "Détails du graphique"
+
+#~ msgid "Minimum value"
+#~ msgstr "Valeur minimum"
+
+#~ msgid "Maximum value"
+#~ msgstr "Valeur maximum"
+
+#~ msgid "Add New Service"
+#~ msgstr "Nouveau service"
+
+#~ msgid "Modify Service"
+#~ msgstr "Modifier le service"
+
+#~ msgid "Remove Service"
+#~ msgstr "Supprimer Service"
+
+#~ msgid "Server Information"
+#~ msgstr "Information du service"
+
+#~ msgid "Server Name"
+#~ msgstr "Nom du service"
+
+#~ msgid "Server Image URL"
+#~ msgstr "Lien de l'image du service"
+
+#~ msgid "Server Commands"
+#~ msgstr "Commandes du service"
+
+#~ msgid "Endpoint URL"
+#~ msgstr "API URL"
+
+#~ msgid "Server History"
+#~ msgstr "Historique de statuts"
+
+#~ msgid "started"
+#~ msgstr "démarré"
+
+#~ msgid "stopped"
+#~ msgstr "arrêté"
+
+#~ msgid "by"
+#~ msgstr "par"
+
+#~ msgid "Admin:"
+#~ msgstr "Administrateur:"
+
+#~ msgid "ADMIN"
+#~ msgstr "ADMIN"
+
+#~ msgid "New Server"
+#~ msgstr "Nouveau service"
+
+#~ msgid "Edit Server"
+#~ msgstr "Modifier le service"
+

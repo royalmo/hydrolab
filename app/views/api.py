@@ -6,7 +6,7 @@ from requests import put
 
 from ..extensions import db, auth_header_required
 from ..extensions.login_manager import load_user_from_auth_header
-from ..models import Sensor, SubscriptionToken, Uplink, Downlink
+from ..models import Sensor, Uplink
 
 import os, re
 

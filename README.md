@@ -42,13 +42,12 @@ npm install
 
 ### Set up database
 
-Again, from the same project directory. It will create 3 test users:
+Again, from the same project directory. It will create 2 test users:
 
-- Super User: super@user.com
-- Aleix Llusà: aleix.llusa@upc.edu
-- Deactivated User: foo@bar.com
+- Super User: root@root
+- Normal User: user@user
 
-All 3 users have the same password: `1234ABc$` .
+Both users have the same password: `root12.$`.
 
 ```
 python3 db_init.py

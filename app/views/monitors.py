@@ -3,19 +3,14 @@ from flask_login import current_user
 from flask_babel import gettext
 
 from ..extensions import db, login_required, admin_required
-from ..models import Monitor, MonitorForm
 
 app = Blueprint('monitors', __name__)
 
 @app.route('/monitoring')
 @login_required
 def monitoring():
-    time_range = request.args.get('time_range', '24h')  # Get the time range from the query string, default to 24 hours
-    data = Monitor.get_monitor_data(time_range=time_range)
-
-    if (not data): return "error"
-
-    print(data)
+    # Get the time range from the query string, default to 24 hours
+    data = Monitor.get_monitor_data(time_range=request.args.get('time_range', '24h'))
 
     return render_template('pages/monitoring.html.j2',
                            title=gettext("Monitoring"),
@@ -26,40 +21,6 @@ def monitoring():
 @app.route('/monitoring/raw')
 @login_required
 def monitoring_raw():
-    time_range = request.args.get('time_range', '24h')  # Get the time range from the query string, default to 24 hours
-    data = Monitor.get_monitor_data(time_range=time_range)
+    data = Monitor.get_monitor_data(time_range=request.args.get('time_range', '24h'))
 
     return jsonify(data)
-
-@app.route('/monitor/new', methods=['GET', 'POST'])
-@login_required
-def new():
-    form = MonitorForm()
-    
-    if form.is_submitted():
-        new_monitor = Monitor(**{key : val for key, val in form.data.items() if key not in ['submit', 'csrf_token']})
-        db.session.add(new_monitor)
-        db.session.commit()
-        return redirect(url_for('main.monitors.monitoring'))
-    return render_template('pages/newmonitor.html.j2', title=gettext("New Monitor"), current_user=current_user, monitor=form, new=True)
-
-@app.route('/monitor/<int:id>/edit', methods=['GET', 'POST'])
-@login_required
-def edit(id):
-    monitor = Monitor.query.get_or_404(id)
-    monitor_form=MonitorForm(obj=monitor)
-    if monitor_form.is_submitted():
-        if current_user.role == "Admin": # Only admins can edit
-            for key, val in monitor_form.data.items():
-                if key in ['submit', 'csrf_token']: continue
-                setattr(monitor, key, val)
-            db.session.commit()
-        return redirect(url_for('main.monitors.monitoring'))
-    return render_template('pages/newmonitor.html.j2', title=gettext("Edit Monitor"), current_user=current_user, monitor=monitor_form, new=False, id=id)
-
-@app.route('/monitor/<int:id>/remove', methods=['GET', 'POST'])
-@admin_required
-def remove(id):
-    Monitor.query.filter(Monitor.id == id).delete()
-    db.session.commit()
-    return redirect(url_for('main.monitors.monitoring'))
