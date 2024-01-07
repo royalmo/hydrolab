@@ -6,15 +6,15 @@ DEFAULT_PWD = os.environ['NAVLAB_DEFAULT_PASSWORD'] if 'NAVLAB_DEFAULT_PASSWORD'
 ENCRYPTED_DEFAULT_PWD = bcrypt.generate_password_hash(DEFAULT_PWD)
 
 # Remove the database file if it exists
-if os.path.exists('app/hydrolab.db'):
-    os.remove('app/hydrolab.db')
+if os.path.exists('app/hydrolab_db/hydrolab.db'):
+    os.remove('app/hydrolab_db/hydrolab.db')
 
 # Create app tables
 with app.app_context():
     db.create_all()
 
 # Connect to the database and populate them
-conn = sqlite3.connect('app/hydrolab.db')
+conn = sqlite3.connect('app/hydrolab_db/hydrolab.db')
 
 with open('db_seed.sql', 'r') as f:
     sql = f.read().format(ENCRYPTED_DEFAULT_PWD.decode('utf-8'))

@@ -6,14 +6,6 @@ INSERT INTO user VALUES
 ;
 
 INSERT INTO sensor (eui, name) VALUES
-    ('123456789', 'Test S1'),
-    ('987654321', 'Test S1')
+    ('eui-70b3d57ed8001cab', 'HydroLab OTAA 1')
+    ('eui-70b3d57ed80024ae', 'HydroLab OTAA 2')
 ;
-
-
--- INSERT INTO monitor (key, title, label, min_value, max_value) VALUES
---     ('humidity', 'Humidity Graph', '%', '0', '100'),
---     ('temperature', 'Temperature Graph', 'C', '0', '30'),
---     ('battery', 'Battery Graph', '%', '0', '100'),
---     ('snr', 'SNR Graph', '', '0', '10')
--- ;

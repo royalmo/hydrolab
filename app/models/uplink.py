@@ -7,7 +7,7 @@ class Uplink(db.Model):
     received_at = db.Column(db.DateTime, default=datetime.now)
 
     humidity = db.Column(db.Integer)
-    temperature = db.Column(db.Integer)
+    temperature = db.Column(db.Float)
     battery = db.Column(db.Integer)
 
     # Errors are bit-stored:

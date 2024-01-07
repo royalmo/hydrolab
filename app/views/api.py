@@ -1,6 +1,4 @@
-# This file is used to serve Apache-Cordova's font-end.
-
-from flask import Blueprint, jsonify, request, make_response
+from flask import Blueprint, request, make_response
 from datetime import datetime
 from requests import put
 
@@ -14,27 +12,27 @@ app = Blueprint('api', __name__)
 
 ########################
 
-@app.route('/register_token', methods=['POST'])
-@auth_header_required
-def register_token():
-    current_user = load_user_from_auth_header()
-    data = request.get_json()
-    token = data.get('token')
+# @app.route('/register_token', methods=['POST'])
+# @auth_header_required
+# def register_token():
+#     current_user = load_user_from_auth_header()
+#     data = request.get_json()
+#     token = data.get('token')
 
-    FirebaseToken.register_token(current_user, token)
+#     FirebaseToken.register_token(current_user, token)
 
-    return make_response('OK', 200)
+#     return make_response('OK', 200)
 
-@app.route('/unregister_token', methods=['POST'])
-@auth_header_required
-def unregister_token():
-    current_user = load_user_from_auth_header()
-    data = request.get_json()
-    token = data.get('token')
+# @app.route('/unregister_token', methods=['POST'])
+# @auth_header_required
+# def unregister_token():
+#     current_user = load_user_from_auth_header()
+#     data = request.get_json()
+#     token = data.get('token')
 
-    FirebaseToken.unregister_token(current_user, token)
+#     FirebaseToken.unregister_token(current_user, token)
 
-    return make_response('OK', 200)
+#     return make_response('OK', 200)
 
 ########################
     
@@ -47,7 +45,6 @@ def uplink():
         return make_response('Forbidden', 403)
 
     body = request.json
-
     print(body)
 
     dev_eui = body['end_device_ids']['device_id']
@@ -58,6 +55,8 @@ def uplink():
     time_trim = body['received_at'][:-4] + "Z"
     timestamp = datetime.strptime(time_trim, "%Y-%m-%dT%H:%M:%S.%fZ")
     payload = body['uplink_message']['decoded_payload']['text']
+    # Example payload
+    # T24.63H8V0L0M0N0@-1S0E3R0Z
     
     parsed_data = parse_custom_string(payload)
     if not parsed_data:
@@ -69,44 +68,58 @@ def uplink():
     location = rx_metadata['location']
 
     uplink = Uplink(sensor_id=sensor.id,
-                    timestamp=timestamp,
-                    humidity=parsed_data['H'],
-                    battery=parsed_data['V'],
-                    temperature=parsed_data['T'],
+                    received_at=timestamp,
+
+                    humidity=int(parsed_data['H']),
+                    battery=int(parsed_data['V']),
+                    temperature=float(parsed_data['T']),
+
+                    minutes_since_last_watering = int(parsed_data['@']),
+                    time_between_waterings = int(parsed_data['M']),
+                    watering_time = int(parsed_data['N']),
+                    hours_range = int(parsed_data['R'], base=16),
+                    watering_threshold = int(parsed_data['L']),
+                    minutes_between_uplinks = int(parsed_data['S']),
+
                     rssi=rssi)
     db.session.add(uplink)
+    sensor.location = location
     db.session.commit()
 
     return make_response("Created", 201)
 
 def parse_custom_string(input_string):
     # Define individual patterns for each parameter
-    patterns = {
-        'T': r'T(\d+(?:\.\d+)?)',
-        'H': r'H(\d+)',
-        'V': r'V(\d+)',
-        'R': r'R([0-9A-Fa-f]{4})',
-        'L': r'L(\d+(?:\.\d+)?)',
-        '@': r'%@(\d+)',
-        'Z': r'Z(\d+)'
-    }
-    
-    result = {}
-    
-    for key, pattern in patterns.items():
-        match = re.search(pattern, input_string)
-        if match:
-            # If pattern matches a float (contains a dot), convert to float, otherwise to int
-            if '.' in match.group(1):
-                result[key] = float(match.group(1))
-            else:
-                # For the 'R' key, we want the string value
-                if key == 'R':
-                    result[key] = match.group(1)
-                else:
-                    result[key] = int(match.group(1))
-        else:
-            # If no match is found, set the key to None
-            result[key] = None
 
-    return result
+    current_command = None
+    buffer = ""
+
+    found_commands = {
+        'T' : None,
+        'H' : None,
+        'V' : None,
+        'R' : None,
+        'L' : None,
+        '@' : None,
+        'S' : None,
+        'M' : None,
+        'N' : None,
+        'E' : None,
+        'Z' : None
+    }
+
+    payload = input_string
+    while len(payload) > 0:
+        if payload[0] in found_commands.keys():
+            if current_command is not None:
+                found_commands[current_command] = buffer
+            current_command = payload[0]
+            if current_command == 'E':
+                found_commands[payload[:2]] = True
+                payload = payload[1:]
+        else:
+            buffer += payload[0]
+
+        payload = payload[1:]
+
+    return found_commands

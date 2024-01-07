@@ -1,6 +1,6 @@
 **/__pycache__/
 env
-app/hydrolab.db
+app/hydrolab_db/hydrolab.db
 node_modules
 app/static/css/main.css
 app/static/.webassets-cache
