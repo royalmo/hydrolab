@@ -18,3 +18,6 @@ class Downlink(db.Model):
     def get_sensor(self):
         from .sensor import Sensor
         return Sensor.query.get(self.sensor_id)
+
+    def send():
+        pass

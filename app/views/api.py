@@ -1,12 +1,11 @@
 from flask import Blueprint, request, make_response
 from datetime import datetime
-from requests import put
 
 from ..extensions import db, auth_header_required
 from ..extensions.login_manager import load_user_from_auth_header
 from ..models import Sensor, Uplink
 
-import os, re
+import os
 
 app = Blueprint('api', __name__)
 
