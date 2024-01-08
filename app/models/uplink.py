@@ -14,7 +14,7 @@ class Uplink(db.Model):
     # E1: errors%(2**1)==1
     # E2: errors%(2**2)==2
     # And so on
-    errors = db.Column(db.Integer)
+    errors = db.Column(db.String(5))
 
     minutes_since_last_watering = db.Column(db.Integer)
     time_between_waterings = db.Column(db.Integer)

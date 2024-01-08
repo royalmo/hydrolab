@@ -4,193 +4,210 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.0"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.30.1/date_fns.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-<script>var charts = {humidity: {}, temperature: {}, battery: {}, snr: {}}</script>
 
-<script>
-  function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
+{% set variable_translations = {
+  'humidity' : _('Relative Humidity (%%)'),
+  'temperature': _('Temperature (ºC)'),
+  'battery': _('Battery (%%)'),
+  'rssi': _('RSSI')
+} %}
 
-  function hasData(sensor) {
-      return sensor.y_axis && sensor.y_axis.length > 0;
-    }
+{% set delta_translations = {
+  '1hour' : _('1 Hour'),
+  '1day' : _('24 Hours'),
+  '7days' : _('7 Days')
+} %}
 
-  function updateCharts() {
-    
-    var timeRange = document.getElementById('timeRangeSelect').value;
-    var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?time_range=' + timeRange;
-    window.history.pushState({path:newurl},'',newurl);
+<style>
+.title-tab {
+  border-bottom: 5px solid transparent;
+}
 
-    fetch('/monitoring/raw?time_range=' + timeRange)
-      .then(response => response.json())
-      .then(data => {
-        data.forEach(monitor => {
-          var chart = charts[monitor.key];
-          var sensorData = monitor.sensor_data;
+.title-tab.active {
+  border-bottom: 5px solid darkblue;
+}
 
-          var newDatasets = sensorData.map(sensor => ({
-            label: sensor.sensor_name,
-            data: sensor.y_axis.map((y, index) => ({x: sensor.x_axis[index], y: y})),
-            borderColor: hasData(sensor) ? getRandomColor() : '#808080',
-            fill: false
-          }));
+.title-tab.active > h1 {
+  color: black !important;
+}
+</style>
 
-          chart.data.labels = sensorData.length > 0 ? sensorData[0].x_axis : [];
-          chart.data.datasets = newDatasets;
-
-          if (monitor.min_value !== 'undefined') {
-            chart.options.scales.y.min = monitor.min_value;
-          }
-          if (monitor.max_value !== 'undefined') {
-            chart.options.scales.y.max = monitor.max_value;
-          }
-
-          chart.update();
-        });
-      })
-      .catch(error => {
-        console.error('Error updating charts:', error);
-      });
-  }
-
-  // Call updateCharts on page load to initialize the charts
-  document.addEventListener('DOMContentLoaded', updateCharts);
-</script>
-
-<div class="flex flex-col md:flex-row justify-between w-3/5 md:w-3/5 mx-auto p-2 rounded-lg bg-white opacity-80">
-    <div class="flex flex-col border border-black bg-gray-100 rounded-md w-full md:w-1/3 m-1">
-    <h1 class="font-bold mx-auto">Litres Regats</h1>
-    <div class="flex flex-row">
-      <div class=" flex flex-col w-2/3 mx-auto my-2 items-center">
-        <h2 class="font-bold text-3xl"> 27L </h2>
-        <div class="relative bg-gray-500 w-1/3 h-[2px]"></div>
+<div class="bg-white bg-opacity-90 max-w-[1250px] mx-auto border-black border rounded p-4 pb-2 mb-7 justify-between">
+  <h1 class="text-blue-900 font-bold mr-4 text-2xl leading-relaxed">{{ _('Monitoring') }}</h1>
+  <div class="flex items-center">
+    {% for delta in delta_translations.keys() %}
+      <div id="tab-{{delta}}" onclick="changeTab('{{ delta }}')"
+            class="title-tab w-1/3 mt-1 py-2 cursor-pointer transition duration-300 ease-in-out hover:bg-gray-300 {% if delta == '1hour' %}active{% endif %}" >
+        <h1 class="text-gray-600 font-bold mr-4 text-center leading-relaxed">{{ delta_translations[delta] }}</h1>
       </div>
-    </div>
-  </div>
-      <div class="flex flex-col border border-black bg-gray-100 rounded-md w-full md:w-1/3 m-1">
-    <h1 class="font-bold mx-auto">Temperatura Mitjana</h1>
-      <div class="flex flex-row">
-      <div class=" flex flex-col w-2/3 mx-auto my-2 items-center">
-        <h2 class="font-bold text-3xl"> 19C </h2>
-        <div class="relative bg-gray-500 w-1/3 h-[2px]"></div>
-      </div>
-    </div>
-  </div>
-      <div class="flex flex-col border border-black bg-gray-100 rounded-md w-full md:w-1/3 m-1">
-    <h1 class="font-bold mx-auto">Lorem</h1>
-      <div class="flex flex-row">
-      <div class=" flex flex-col w-2/3 mx-auto my-2 items-center">
-        <h2 class="font-bold text-3xl"> Ipsum </h2>
-        <div class="relative bg-gray-500 w-1/3 h-[2px]"></div>
-      </div>
-    </div>
-  </div>
-      <div class="flex flex-col border border-black bg-gray-100 rounded-md w-full md:w-1/3 m-1">
-    <div class="flex flex-col justify-center items-center h-full">
-      <form id="timeRangeForm" class="text-center">
-        <label for="timeRangeSelect" class="block text-sm font-bold mb-2">Select Time Range:</label>
-        <select name="timeRange" id="timeRangeSelect" class="text-center rounded" onchange="updateCharts()" >
-          <option value="1h">Last Hour</option>
-          <option value="24h" selected>Last 24 Hours</option>
-          <option value="7d">Last 7 Days</option>
-          <option value="30d">Last 30 Days</option>
-        </select>
-      </form>
-    </div>
+    {% endfor %}
   </div>
 </div>
 
-{% for eachmonitor in monitors %}
+{% for delta in delta_translations.keys() %}
+  {% for variable in variable_translations.keys() %}
 
-<article id="monitor_frame_{{ eachmonitor.id|int }}" class="bg-white w-full max-w-[1250px] border-black border-2 rounded-md p-2 my-4 mx-auto md:p-7 cursor-pointer">
-  <a href="{{ url_for( '.edit' , id=eachmonitor.id|int ) }}">
-    <h2 class="text-2xl font-bold text-gray-500">{{ eachmonitor.title|e }}</h2>
-    <div class="relative w-full"> 
-      <canvas style="margin:1.5em;" id="monitor_{{ eachmonitor.key|e }}"></canvas>
-    </div>
-  </a>
-</article>
+    <article id="monitor_{{ delta }}_{{ variable }}" class="bg-white w-full max-w-[1250px] border-black border-2 rounded-md p-2 my-4 mx-auto md:p-7 cursor-pointer article-{{delta}}" {% if delta != '1hour' %} style="display: none;" {% endif %}>
+      <h2 class="text-2xl font-bold text-gray-500">{{ variable_translations[variable] }}</h2>
+      <div class="relative w-full"> 
+        <canvas style="margin:1.5em;" id="graph_{{ delta }}_{{ variable }}"></canvas>
+      </div>
+    </article>
 
-
-<script>
-  var sensorData = {{ eachmonitor.sensor_data | tojson }};
-  
-  var datasets = sensorData.map(function(data) {
-    return {
-      label: data.sensor_name, // Removed "Sensor" prefix to use it in the legend title
-      data: data.y_axis,
-      borderColor: hasData(data) ? getRandomColor() : '#808080',
-      fill: false,
-    };
-  });
-  
-  var ctx = document.getElementById('monitor_{{ eachmonitor.key|e }}').getContext('2d');
-  var chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: sensorData.length > 0 ? sensorData[0].x_axis : [],
-      datasets: datasets
-    },
-    options: {
-      plugins: {
-        legend: {
-          display: true,
-          position: 'right',
-          labels: {
-            // Use a custom function to generate legend item
-            generateLabels: function(chart) {
-              return chart.data.datasets.map(function(dataset, i) {
-                return {
-                  text: dataset.label,
-                  fillStyle: dataset.borderColor,
-                  font: {
-                    size: 8 // Smaller font size for eui numbers
-                  }
-                };
-              });
-            }
-          },
-          title: {
-            display: true,
-            text: 'Sensors', // The legend header
-            color: '#666',
-            font: {
-              size: 12,
-              weight: 'bold'
-            }
-          }
-        }
-      },
-      scales: {
-        y: {
-          min: {{ eachmonitor.min_value }},
-          max: {{ eachmonitor.max_value }}
-        },
-        x: {
-          type: 'time',
-          time: {
-            parser: "yyyy-MM-dd HH:mm:ss",
-          },
-          ticks: {
-            autoSkip: true,
-            maxRotation: 0,
-            autoSkipPadding: 30
-          },
-        }
-      }
-    }
-  });
-
-    charts['{{eachmonitor['key']}}'] = chart;
-
-  </script>
-
+  {% endfor %}
 {% endfor %}
 
-<script class="text-green-600" src="{{ url_for('static', filename='js/monitor_update.js') }}"></script>
+<script>
+
+  var data = {{ data | tojson }};
+  var charts = {};
+  var current_color;
+
+  function get_color() {
+    const COLORS = ['blue', 'green', 'red', 'orange'];
+    return COLORS[(current_color++)%COLORS.length];
+  }
+
+  function changeTab(tabkey) {
+    document.getElementById(`tab-${tabkey}`).classList.add('active');
+    document.querySelectorAll(`.title-tab:not(#tab-${tabkey})`).forEach(tab => {
+      tab.classList.remove('active');
+    });
+
+    document.querySelectorAll(`article.article-${tabkey}`).forEach(tab => {
+      tab.style.display = 'block';
+    });
+
+    setTimeout(() => {
+      document.querySelectorAll(`article:not(.article-${tabkey})`).forEach(tab => {
+        tab.style.display = 'none';
+      });
+    }, 100);
+  }
+
+  function parse_data() {
+    let server_date = Date.parse(data.current).toFixed();
+
+    for (const current_delta of {{ delta_translations.keys() | list | tojson }}) {
+
+      let start_date_iso;
+      if (current_delta == '1hour')
+        start_date_iso = new Date(server_date - 3600 * 1000).toISOString();
+      else if (current_delta == '1day')
+        start_date_iso = new Date(server_date - (24*3600 * 1000)).toISOString();
+      else // 7 days
+        start_date_iso = new Date(server_date - (7*24*3600 * 1000)).toISOString();
+
+      for (const current_variable of {{ variable_translations.keys() | list | tojson }}) {
+
+        current_color = 0;
+        let ctx = document.getElementById(`graph_${current_delta}_${current_variable}`).getContext('2d');
+
+        let min_value, max_value;
+        if (current_variable == 'temperature') {
+          min_value = -20;
+          max_value = 40;
+        }
+        else if (current_variable == 'rssi') {
+          min_value = -140;
+          max_value = -70;
+        }
+        else {
+          min_value = 0;
+          max_value = 100;
+        }
+
+        datasets = [];
+        for ( const sensor_name in data[current_delta] ) {
+          let sensor_data = data[current_delta][sensor_name];
+
+          let x_axis = sensor_data.time;
+          let y_axis = sensor_data[current_variable];
+
+          let parsed_data = [];
+          for (let i=0; i<x_axis.length; i++) {
+            parsed_data.push({x: x_axis[i], y: y_axis[i]});
+          }
+
+          datasets.push({
+            label: sensor_name,
+            borderColor: get_color(),
+            data: parsed_data,
+            fill: false,
+          });
+        }
+
+        const chartOptions = {
+          plugins: {
+              legend: {
+                display: true,
+                position: 'right',
+                labels: {
+                  // Use a custom function to generate legend item
+                  generateLabels: function(chart) {
+                    return chart.data.datasets.map(function(dataset, i) {
+                      return {
+                        text: dataset.label,
+                        fillStyle: dataset.borderColor,
+                        font: {
+                          size: 8 // Smaller font size for eui numbers
+                        }
+                      };
+                    });
+                  }
+                },
+                title: {
+                  display: true,
+                  text: 'Sensors', // The legend header
+                  color: '#666',
+                  font: {
+                    size: 12,
+                    weight: 'bold'
+                  }
+                }
+              }
+          },
+          scales: {
+            x: {
+              type: 'time',
+              time: {
+                parser: "yyyy-MM-dd HH:mm:ss",
+              },
+              ticks: {
+                autoSkip: true,
+                maxRotation: 0,
+                autoSkipPadding: 30
+              },
+              min: start_date_iso.split('.')[0].replace('T', ' '),
+              max: data.current.split('.')[0].replace('T', ' '),
+              //type: 'linear',
+              //position: 'bottom',
+            },
+            y: {
+              min: min_value,
+              max: max_value,
+              //type: 'linear',
+              //position: 'left',
+            },
+          },
+        };
+
+        let chart = new Chart(ctx, {
+          type: 'line',
+          data: { datasets: datasets },
+          options: chartOptions,
+        });
+
+        charts[`${current_delta}_${current_variable}`] = chart;
+
+      }
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function(event) { 
+    parse_data();
+  });
+</script>
+
+{# <script class="text-green-600" src="{{ url_for('static', filename='js/monitor_update.js') }}"></script> #}
 {% endblock %}
