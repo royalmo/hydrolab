@@ -1,15 +1,17 @@
 from flask import Blueprint, request, make_response
 from datetime import datetime
 
-from ..extensions import db, auth_header_required
-from ..extensions.login_manager import load_user_from_auth_header
-from ..models import Sensor, Uplink
+from ..extensions import db
+from ..models import Sensor, Uplink, Downlink
 
-import os
+import os, base64
 
 app = Blueprint('api', __name__)
 
 ########################
+
+# from ..extensions import auth_header_required
+# from ..extensions.login_manager import load_user_from_auth_header
 
 # @app.route('/register_token', methods=['POST'])
 # @auth_header_required
@@ -34,7 +36,38 @@ app = Blueprint('api', __name__)
 #     return make_response('OK', 200)
 
 ########################
+
+# TODO REMOVE, USED FOR DEBUG
+@app.route('/ttn/downlink')
+def downlink():
+    new = Downlink(sensor_id=2, time_between_waterings=200, watering_time=20, hours_range=0xFFF0FF, watering_threshold=20, minutes_between_uplinks=5)
+
+    db.session.add(new)
+    db.session.commit()
+
+    return make_response('done', new.send())
+
+
+@app.route('/ttn/downlink-ack', methods=['POST'])
+def downlink_ack():
+    headersApiKey = request.headers.get('X-Downlink-Apikey')
+    ApiKey = os.getenv('X-UPLINK-APIKEY')
+
+    if (ApiKey != headersApiKey):
+        return make_response('Forbidden', 403)
+
+    payload = request.json["downlink_ack"]["frm_payload"]
+    last_downlinks = Downlink.query.order_by(Downlink.sent_at.desc()).limit(5).all()
+
+    for dl in last_downlinks:
+        dl_base64 = base64.b64encode(dl.get_payload().encode('ASCII')).decode('utf-8')
+        if payload == dl_base64:
+            dl.acknowledge_now()
+            break
+
+    return make_response('Ok', 200)
     
+
 @app.route('/ttn/uplink', methods=['POST'])
 def uplink():
     headersApiKey = request.headers.get('X-Downlink-Apikey')
@@ -44,16 +77,20 @@ def uplink():
         return make_response('Forbidden', 403)
 
     body = request.json
-    print(body)
 
     dev_eui = body['end_device_ids']['device_id']
-    sensor = Sensor.query.filter_by(eui=dev_eui)
+    sensor = Sensor.query.filter_by(eui=dev_eui).first()
     if not sensor:
         return make_response('Not found', 404)
 
     time_trim = body['received_at'][:-4] + "Z"
     timestamp = datetime.strptime(time_trim, "%Y-%m-%dT%H:%M:%S.%fZ")
-    payload = body['uplink_message']['decoded_payload']['text']
+
+    try:
+        payload = body['uplink_message']['decoded_payload']['text']
+    except: # In some cases there will be no payload
+        return make_response('No content', 204)
+
     # Example payload
     # T24.63H8V0L0M0N0@-1S0E3R0Z
     
@@ -65,6 +102,10 @@ def uplink():
     rx_metadata = body['uplink_message']['rx_metadata'][0]
     rssi = rx_metadata['rssi']
     location = rx_metadata['location']
+
+    errors = ''
+    for i in range(1,5):
+        if f'E{i}' in parsed_data.keys(): errors += f'{i}'
 
     uplink = Uplink(sensor_id=sensor.id,
                     received_at=timestamp,
@@ -79,6 +120,8 @@ def uplink():
                     hours_range = int(parsed_data['R'], base=16),
                     watering_threshold = int(parsed_data['L']),
                     minutes_between_uplinks = int(parsed_data['S']),
+
+                    errors=errors,
 
                     rssi=rssi)
     db.session.add(uplink)
@@ -112,6 +155,7 @@ def parse_custom_string(input_string):
         if payload[0] in found_commands.keys():
             if current_command is not None:
                 found_commands[current_command] = buffer
+                buffer = ''
             current_command = payload[0]
             if current_command == 'E':
                 found_commands[payload[:2]] = True
