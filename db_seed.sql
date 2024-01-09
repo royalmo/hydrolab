@@ -5,7 +5,11 @@ INSERT INTO user VALUES
     (2, 'user', 'user@user', '{0}', 1, 1, 'en', 0)
 ;
 
-INSERT INTO sensor (eui, name) VALUES
-    ('eui-70b3d57ed8001cab', 'HydroLab OTAA 1'),
-    ('eui-70b3d57ed80024ae', 'HydroLab OTAA 2')
+INSERT INTO sensor (eui, name, location) VALUES
+    ('eui-70b3d57ed8001cab', 'HydroLab OTAA 1', '{{"latitude": 41.72, "longitude": 1.81}}'),
+    ('eui-70b3d57ed80024ae', 'HydroLab OTAA 2', '{{"latitude": 41.72, "longitude": 1.81045}}')
+;
+
+INSERT INTO uplink (sensor_id, humidity, temperature, battery) VALUES
+    ('1', '50', '20', '10')
 ;

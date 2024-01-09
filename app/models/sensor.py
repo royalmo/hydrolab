@@ -7,7 +7,7 @@ class Sensor(db.Model):
     description = db.Column(db.String(80), default='')
     location = db.Column(db.JSON)
 
-    minutes_since_last_watering = db.Column(db.Integer, default=-1)
+    last_watered_at = db.Column(db.String(80), default="N.A.")
     time_between_waterings = db.Column(db.Integer, default=600)
     watering_time = db.Column(db.Integer, default=10)
     hours_range = db.Column(db.Integer, default=0xFF000F)
@@ -18,7 +18,7 @@ class Sensor(db.Model):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
     def get_last_uplink(self):
         from .uplink import Uplink
-        return Uplink.query.where({'sensor_id' : self.id}).order({'received_at' : 'desc'}).first()
-    def det_last_downlink(self, received=True):
-        from .uplink import Uplink
-        return Uplink.query.where({'sensor_id' : self.id}).order({'sent_at' : 'desc'}).first()
+        return Uplink.query.filter(Uplink.sensor_id == self.id).order_by(Uplink.received_at.desc()).first()
+    def get_last_downlink(self, received=True):
+        from .downlink import Downlink
+        return Downlink.query.filter(Downlink.sensor_id == self.id).order_by(Downlink.sent_at.desc()).first()

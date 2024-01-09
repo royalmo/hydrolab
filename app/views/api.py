@@ -1,5 +1,5 @@
 from flask import Blueprint, request, make_response
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from ..extensions import db
 from ..models import Sensor, Uplink, Downlink
@@ -126,6 +126,11 @@ def uplink():
                     rssi=rssi)
     db.session.add(uplink)
     sensor.location = location
+
+    now = datetime.now()
+    event_timestamp = now - timedelta(minutes=int(parsed_data['@']))
+    sensor.last_watered_at = event_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+
     db.session.commit()
 
     return make_response("Created", 201)

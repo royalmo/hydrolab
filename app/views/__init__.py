@@ -31,9 +31,9 @@ def map():
     if (center_lat and center_lon):
         center = [center_lat, center_lon]
     for sensor in sensors:
-        sens.append(sensor.as_dict())
+        sens.append(sensor)
     
-    return render_template('pages/map.html.j2', sensors=sens, center=center)
+    return render_template('pages/map.html.j2', sensors=sens, center=center, navbar_highlight_map=True)
     
 
 @app.route('/serviceworker.js')

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, URLField
+from wtforms import StringField, SubmitField, URLField, IntegerField
 from wtforms.validators import InputRequired, Length
 from flask_babel import gettext
 
@@ -12,4 +12,5 @@ class SensorForm(FlaskForm):
         "longitude": 2.0
     }
     eui = StringField(validators=[Length(max=80)], render_kw={"placeholder": gettext("TTN ID")})
+    hours_range = IntegerField()
     submit = SubmitField(gettext('Submit Sensor'))

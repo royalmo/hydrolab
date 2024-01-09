@@ -71,23 +71,30 @@
       </div>
 
       <hr class="mt-6 border-b-1 border-blueGray-300">
-
+      {{ sensor.hours_range(type="hidden", id="hours_range") }}
       <!-- 24-Hour Selection Component -->
       <div class="flex-auto w-full px-4 lg:px-10 pt-0">
         <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
           {{ _('Select Hours') }}
         </h6>
         <div class="flex flex-wrap w-full">
-          {% for i in range(24) %}
-          <div class="flex-1 min-w-[6%] lg:min-w-[2%] m-1">
-            <label class="hour-block block bg-gray-200 hover:bg-gray-300 text-center rounded-lg shadow cursor-pointer h-full">
-              <input type="checkbox" name="hour-{{ i }}" class="hidden hour-checkbox">
-              <span class="block py-2">{{ i }}</span>
-            </label>
-          </div>
-          {% endfor %}
+          {% if sensor.hours is defined and sensor.hours is not none %}
+            {% set hours_binary = '{:024b}'.format(sensor.hours) %}
+            {% for i in range(24) %}
+            <div class="flex-1 min-w-[6%] lg:min-w-[2%] m-1">
+              <label class="hour-block block {% if hours_binary[i] == '1' %}selected-hour{% else %}bg-gray-200 hover:bg-gray-300{% endif %} text-center rounded-lg shadow cursor-pointer h-full">
+                <input type="checkbox" name="hour-{{ i }}" class="hidden hour-checkbox" {% if hours_binary[i] == '1' %}checked{% endif %}>
+                <span class="block py-2">{{ i }}</span>
+              </label>
+            </div>
+            {% endfor %}
+          {% else %}
+            <!-- Handle the case where sensor.hours_range is undefined -->
+            <p>Sensor hours range is not defined.</p>
+          {% endif %}
         </div>
       </div>
+
 
       <style>
         .selected-hour {
@@ -96,11 +103,28 @@
       </style>
 
       <script>
+        function updateHoursRange() {
+          let newValue = 0;
+          const checkboxes = document.querySelectorAll('.hour-checkbox');
+          checkboxes.forEach(function(checkbox, index) {
+            if (checkbox.checked) {
+              // Reverse the bit order here
+              newValue |= (1 << (checkboxes.length - 1 - index));
+            }
+          });
+          document.getElementById('hours_range').value = newValue;
+        }
+
         document.querySelectorAll('.hour-checkbox').forEach(function(checkbox) {
           checkbox.addEventListener('change', function() {
             this.parentElement.classList.toggle('selected-hour', this.checked);
+            updateHoursRange(); // Update the hidden input whenever a checkbox changes
           });
         });
+
+        // Initialize hours_range on page load
+        window.onload = updateHoursRange;
+
       </script>
 
       </form>
