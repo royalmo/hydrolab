@@ -40,7 +40,7 @@
     {% for eachsensor in sensors %}
 
     {% if eachsensor.location and eachsensor.location.latitude is not none and eachsensor.location.longitude is not none %}
-    var sensorLocation = new L.LatLng({{ eachsensor.location.latitude }}, { { eachsensor.location.longitude } });
+    var sensorLocation = new L.LatLng({{ eachsensor.location.latitude }}, {{ eachsensor.location.longitude }});
     bounds.extend(sensorLocation);
     sensorsAdded = true;
 
