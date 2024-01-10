@@ -10,10 +10,7 @@ class Uplink(db.Model):
     temperature = db.Column(db.Float)
     battery = db.Column(db.Integer)
 
-    # Errors are bit-stored:
-    # E1: errors%(2**1)==1
-    # E2: errors%(2**2)==2
-    # And so on
+    # Errors are single-byte chars
     errors = db.Column(db.String(5))
 
     minutes_since_last_watering = db.Column(db.Integer)

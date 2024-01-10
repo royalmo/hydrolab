@@ -1,5 +1,5 @@
 from flask import Blueprint, request, make_response
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from ..extensions import db
 from ..models import Sensor, Uplink, Downlink
@@ -36,17 +36,6 @@ app = Blueprint('api', __name__)
 #     return make_response('OK', 200)
 
 ########################
-
-# TODO REMOVE, USED FOR DEBUG
-@app.route('/ttn/downlink')
-def downlink():
-    new = Downlink(sensor_id=2, time_between_waterings=200, watering_time=20, hours_range=0xFFF0FF, watering_threshold=20, minutes_between_uplinks=5)
-
-    db.session.add(new)
-    db.session.commit()
-
-    return make_response('done', new.send())
-
 
 @app.route('/ttn/downlink-ack', methods=['POST'])
 def downlink_ack():
@@ -114,7 +103,7 @@ def uplink():
                     battery=int(parsed_data['V']),
                     temperature=float(parsed_data['T']),
 
-                    minutes_since_last_watering = int(parsed_data['@']),
+                    minutes_since_last_watering = int(parsed_data['@']) if parsed_data['@'] != '-1' else None,
                     time_between_waterings = int(parsed_data['M']),
                     watering_time = int(parsed_data['N']),
                     hours_range = int(parsed_data['R'], base=16),
@@ -126,14 +115,9 @@ def uplink():
                     rssi=rssi)
     db.session.add(uplink)
     sensor.location = location
-
-    #TODO - LAST WATERED AT
-    #now = datetime.now()
-    #event_timestamp = now - timedelta(minutes=int(parsed_data['@']))
-    #sensor.last_watered_at = event_timestamp.strftime("%Y-%m-%d %H:%M:%S")
-
     db.session.commit()
 
+    sensor.process_uplink(uplink)
     return make_response("Created", 201)
 
 def parse_custom_string(input_string):

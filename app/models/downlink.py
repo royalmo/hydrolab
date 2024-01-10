@@ -77,3 +77,20 @@ class Downlink(db.Model):
 
         print(response.text)
         return response.status_code
+    
+    def fill_with_differences(self, uplink):
+        ATTRIBUTES = [
+            'time_between_waterings',
+            'watering_time',
+            'hours_range',
+            'watering_threshold',
+            'minutes_between_uplinks',
+            ]
+        
+        sensor = self.get_sensor()
+        for attribute in ATTRIBUTES:
+            sensor_attr = sensor.getattr(attribute)
+            uplink_attr = uplink.getattr(attribute)
+
+            if sensor_attr is not None and uplink_attr is not None and sensor_attr!=uplink_attr:
+                self.__setattr__(attribute, sensor_attr)
