@@ -48,9 +48,9 @@
     var sensorPopupContent = `
                     <h2><b>{{ eachsensor.name }}</b></h2><br>
                     <b>Humidity:</b> {{ last_uplink.humidity }}%<br>
-                    <b>Temperature:</b> {{ last_uplink.temperature }}°C<br>
+                    <b>Temperature:</b> {{ last_uplink.temperature }} °C<br>
                     <b>Battery:</b>{{ last_uplink.battery }}%<br>
-                    <b>Last Watered:</b>{{ eachsensor.last_watered_at }}<br>
+                    <b>Last Watered: </b>{{ eachsensor.last_watered_at }}<br>
                     <div class="bg-blue-200 text-white font-bold py-1 px-2 rounded cursor-pointer w-2/3 text-center mx-auto my-2">
                         <a href="{{ url_for('.sensors.info', id=eachsensor.id) }}" target="_blank">Info</a>
                     </div>
