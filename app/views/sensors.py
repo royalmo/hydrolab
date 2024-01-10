@@ -78,7 +78,7 @@ def water(id):
     t.send()
     return make_response("Watering Request sent", 200)
 
-@app.route('/sensor/<int:id>/info', methods=['GET', 'POST'])
+@app.route('/sensor/<int:id>', methods=['GET'])
 @admin_required
 def info(id):
     sensor = Sensor.query.get_or_404(id)
