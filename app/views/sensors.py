@@ -42,13 +42,11 @@ def edit(id):
     sensor = Sensor.query.get_or_404(id)
     # sensor_history_list = SensorHistory.query.filter_by(id=id).order_by(SensorHistory.timestamp.desc()).limit(10).all()
     sensor_form=SensorForm(obj=sensor)
-    sensor_form.hours=sensor.hours_range
+    sensor_form.hours=sensor.hours_range or 0x000000
     # substitute sensor_form with the value of hours_range such that you can access it
     if sensor_form.is_submitted():
-        print(sensor_form)
         if current_user.role == "Admin": # Only admins can edit
             for key, val in sensor_form.data.items():
-                print("KEY VAL: ", key, val)
                 if key in ['submit', 'csrf_token']: continue
                 setattr(sensor, key, val)
             db.session.commit()

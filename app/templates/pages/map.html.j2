@@ -35,6 +35,15 @@
         shadowSize: [41, 41]
     });
 
+    var errorIcon = new L.Icon({
+        iconUrl: '{{ url_for("static", filename = "images/triangle-exclamation-solid.svg") }}', // Path to your SVG file
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [30, 50],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
     let icon = null
 
     {% for eachsensor in sensors %}
@@ -44,6 +53,10 @@
     bounds.extend(sensorLocation);
     sensorsAdded = true;
 
+    {% set has_errors = eachsensor.parsed_errors() %}
+
+    {% set number_of_errors = has_errors | length > 0 %}
+
     {% set last_uplink = eachsensor.get_last_uplink() %}
     var sensorPopupContent = `
                     <h2 class="mb-2"><b>{{ eachsensor.name }}</b></h2>
@@ -51,12 +64,21 @@
                     <b>Temperature:</b> {{ last_uplink.temperature }} °C<br>
                     <b>Battery: </b>{{ last_uplink.battery }}%<br>
                     <b>Last Watered: </b>{{ eachsensor.last_watered_at }}<br>
-                    <div class="bg-blue-200 text-white font-bold py-1 px-2 rounded cursor-pointer w-2/3 text-center mx-auto my-2">
-                        <a href="{{ url_for('.sensors.info', id=eachsensor.id) }}" target="_blank">More Info</a>
+                    <div class="flex flex-row justify-between my-2">
+                        <div class="bg-blue-200 text-white font-bold py-1 px-4 rounded cursor-pointer">
+                            <a href="{{ url_for('.sensors.info', id=eachsensor.id) }}" target="_blank">More Info</a>
+                        </div>
+                        {% if number_of_errors %}
+                        <a href="{{ url_for('.sensors.info', id=eachsensor.id) + '#errors' }}" target="_blank" class="ml-2">
+                            <img src='{{ url_for("static", filename = "images/triangle-exclamation-solid.svg") }}' alt='Warning' class="w-5 h-5" />
+                        </a>
+                        {% endif %}
                     </div>
                 `;
 
-    {% if eachsensor.status %}
+    {% if number_of_errors %}
+    icon = errorIcon;
+    {% elif eachsensor.status %}
     icon = greenIcon;
     {% else %}
     icon = redIcon;

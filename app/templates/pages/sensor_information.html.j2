@@ -54,16 +54,17 @@
       <div id="sensor-information" class="flex flex-wrap p-1 rounded m-1 relative">
         <div id="div1-background" class="absolute w-full h-full bg-white opacity-50 p-2 rounded"></div>
 
-        <div class="w-full lg:w-12/12 px-4 m-2">
-          <div class="relative flex flex-row justify-between w-full mb-3 bg-white opacity-70 p-1 rounded">
-            <label for="name" class="select-none block uppercase text-blueGray-600 underline font-bold mb-2"
-              htmlfor="grid-password">
-              {{ _('Sensor Information') }}
-            </label>
+        <div class="w-full lg:w-12/12 px-4 mx-2 mt-2">
+          <div class="relative flex flex-row justify-between w-full mb-1 opacity-70 p-1 rounded">
+            <div class="flex my-auto h-full w-full">
+              <h1 for="name" class="select-none block my-auto text-xl text-blueGray-600 font-bold">
+                {{ _('Basic') }}
+              </h1>
+            </div>
             <div class="relative flex w-10 h-10 justify-center align-center hover:cursor-pointer select-none"
               onclick="toggleSection('sensor-information-content', 'arrow-info')">
-              <span id="arrow-info" class="mx-1 my-auto text-3xl align-middle text-black">▲</span>
-              <div class="absolute top-0 left-0 bg-black opacity-20 w-full h-full rounded-full"></div>
+              <span id="arrow-info" class="relative z-10 mx-1 my-auto text-3xl align-middle text-black">▲</span>
+              <div class="absolute top-0 left-0 z-0 bg-white opacity-60 w-full h-full rounded-full"></div>
             </div>
           </div>
         </div>
@@ -75,8 +76,8 @@
                 htmlfor="grid-password">
                 {{ _('Sensor Name') }}
               </label>
-              <p class="bg-white opacity-80 p-1 rounded">
-                {{ sensor.name}}
+              <p class=" p-1 rounded">
+                {{ sensor.name | default('No Information', true)}}
               </p>
             </div>
           </div>
@@ -87,8 +88,8 @@
                 htmlfor="grid-password">
                 {{ _('Sensor TTN ID') }}
               </label>
-              <p class="bg-white opacity-80 p-1 rounded">
-                {{ sensor.eui}}
+              <p class=" p-1 rounded">
+                {{ sensor.eui | default('No Information', true)}}
               </p>
             </div>
           </div>
@@ -99,8 +100,8 @@
                 htmlfor="grid-password">
                 {{ _('Sensor Description') }}
               </label>
-              <p class="bg-white opacity-80 p-1 rounded">
-                {{ sensor.description}}
+              <p class=" p-1 rounded">
+                {{ sensor.description | default('No Information', true)}}
               </p>
             </div>
           </div>
@@ -110,8 +111,8 @@
                 htmlfor="grid-password">
                 {{ _('Last Watered At') }}
               </label>
-              <p class="bg-white opacity-80 p-1 rounded">
-                {{ sensor.last_watered_at}}
+              <p class=" p-1 rounded">
+                {{ sensor.last_watered_at | default('No Information', true)}}
               </p>
             </div>
           </div>
@@ -122,11 +123,12 @@
         <div id="div2-background" class="absolute w-full h-full bg-white opacity-50 p-2 rounded"></div>
 
         <div class="w-full lg:w-12/12 px-4 m-2">
-          <div class="relative flex flex-row justify-between w-full mb-3 bg-white opacity-70 p-1 rounded">
-            <label for="name" class="select-none block uppercase text-blueGray-600 underline font-bold mb-2"
-              htmlfor="grid-password">
-              {{ _('Uplink Information') }}
-            </label>
+          <div class="relative flex flex-row justify-between w-full mb-3 p-1 rounded">
+            <div class="flex my-auto h-full w-full">
+              <h1 for="name" class="select-none block my-auto text-xl text-blueGray-600 font-bold">
+                {{ _('Uplink') }}
+              </h1>
+            </div>
             <div class="relative flex w-10 h-10 justify-center align-center hover:cursor-pointer select-none"
               onclick="toggleSection('sensor-uplink-content', 'arrow-uplink')">
               <span id="arrow-uplink" class="mx-1 my-auto text-3xl align-middle text-black">▲</span>
@@ -140,10 +142,10 @@
             <div class="relative w-full mb-3">
               <label for="received_at" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                 htmlfor="grid-password">
-                {{ _('Last Downlink Sent') }}
+                {{ _('Last Uplink Sent At') }}
               </label>
-              <p class="bg-white opacity-80 p-1 rounded">
-                {{ uplink.received_at}}
+              <p class=" p-1 rounded">
+                {{ uplink.received_at | default('No Information', true)}}
               </p>
             </div>
           </div>
@@ -153,8 +155,8 @@
                 htmlfor="grid-password">
                 {{ _('Last humidity Reading') }}
               </label>
-              <p class="bg-white opacity-80 p-1 rounded">
-                {{ uplink.humidity}}
+              <p class=" p-1 rounded">
+                {{ uplink.humidity | default('No Information', true)}}
               </p>
             </div>
           </div>
@@ -164,8 +166,8 @@
                 htmlfor="grid-password">
                 {{ _('Last Temperature Reading') }}
               </label>
-              <p class="bg-white opacity-80 p-1 rounded">
-                {{ uplink.temperature}}
+              <p class=" p-1 rounded">
+                {{ uplink.temperature | default('No Information', true)}}
               </p>
             </div>
           </div>
@@ -175,8 +177,8 @@
                 htmlfor="grid-password">
                 {{ _('Last Battery Reading') }}
               </label>
-              <p class="bg-white opacity-80 p-1 rounded">
-                {{ uplink.battery}}
+              <p class=" p-1 rounded">
+                {{ uplink.battery | default('No Information', true)}}
               </p>
             </div>
           </div>
@@ -188,11 +190,12 @@
         <div id="div3-background" class="absolute w-full h-full bg-white opacity-50 p-2 rounded"></div>
 
         <div class="w-full lg:w-12/12 px-4 m-2">
-          <div class="relative flex flex-row justify-between w-full mb-3 bg-white opacity-70 p-1 rounded">
-            <label for="name" class="select-none block uppercase text-blueGray-600 underline font-bold mb-2"
-              htmlfor="grid-password">
-              {{ _('Downlink Information') }}
-            </label>
+          <div class="relative flex flex-row justify-between w-full mb-3 p-1 rounded">
+            <div class="flex my-auto h-full w-full">
+              <h1 for="name" class="select-none block my-auto text-xl text-blueGray-600 font-bold">
+                {{ _('Downlink') }}
+              </h1>
+            </div>
             <div class="relative flex w-10 h-10 justify-center align-center hover:cursor-pointer select-none"
               onclick="toggleSection('sensor-downlink-content', 'arrow-downlink')">
               <span id="arrow-downlink" class="mx-1 my-auto text-3xl align-middle text-black">▲</span>
@@ -206,10 +209,10 @@
             <div class="relative w-full mb-3">
               <label for="description" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                 htmlfor="grid-password">
-                {{ _('Last Downlink Sent') }}
+                {{ _('Last Downlink Sent At') }}
               </label>
-              <p class="bg-white opacity-80 p-1 rounded">
-                {{ downlink.sent_at}}
+              <p class=" p-1 rounded">
+                {{ downlink.sent_at | default('No Information', true)}}
               </p>
             </div>
           </div>
@@ -219,8 +222,8 @@
                 htmlfor="grid-password">
                 {{ _('Last Downlink Acknowledgement') }}
               </label>
-              <p class="bg-white opacity-80 p-1 rounded">
-                {{ downlink.ack_at}}
+              <p class=" p-1 rounded">
+                {{ downlink.ack_at | default('No Information', true)}}
               </p>
             </div>
           </div>
@@ -230,8 +233,8 @@
                 htmlfor="grid-password">
                 {{ _('Last Downlink Water Now Seconds') }}
               </label>
-              <p class="bg-white opacity-80 p-1 rounded">
-                {{ downlink.water_now_seconds}}
+              <p class=" p-1 rounded">
+                {{ downlink.water_now_seconds | default('No Information', true)}}
               </p>
             </div>
           </div>

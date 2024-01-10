@@ -22,3 +22,5 @@ class Sensor(db.Model):
     def get_last_downlink(self, received=True):
         from .downlink import Downlink
         return Downlink.query.filter(Downlink.sensor_id == self.id).order_by(Downlink.sent_at.desc()).first()
+    def parsed_errors(self):
+        return ['Hola Eric']

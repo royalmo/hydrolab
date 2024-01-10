@@ -10,26 +10,25 @@
       <form id="sensor_form" method="post" action="">
         <div class="flex flex-wrap items-center justify-between rounded-t bg-white mb-0 px-6 py-6">
           {% if new %}
-            <h6 class="text-blueGray-700 text-xl font-bold">{{ _('Add New Sensor') }}</h6>
+          <h6 class="text-blueGray-700 text-xl font-bold">{{ _('Add New Sensor') }}</h6>
           {% else %}
-            <h6 class="text-blueGray-700 text-xl font-bold">{{ _('Modify Sensor') }}</h6>
+          <h6 class="text-blueGray-700 text-xl font-bold">{{ _('Modify Sensor') }}</h6>
           {% endif %}
 
           {% if not view_only %}
-            <div>
-              {{ sensor.submit(class_="relative text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300
-              font-medium rounded-lg text-sm px-5 py-1.5 focus:outline-none") }}
+          <div>
+            {{ sensor.submit(class_="relative text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300
+            font-medium rounded-lg text-sm px-5 py-1.5 focus:outline-none") }}
 
-              {% if not new %}
-                <a onclick="return confirm('{{ _('Do you really wish to remove this sensor?') }}');"
-                  href="{{ url_for('main.sensors.remove', id=id) }}"
-                  class="relative text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300
+            {% if not new %}
+            <a onclick="return confirm('{{ _('Do you really wish to remove this sensor?') }}');"
+              href="{{ url_for('main.sensors.remove', id=id) }}" class="relative text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300
                   font-medium rounded-lg text-sm px-5 py-1.5 focus:outline-none">{{ _('Remove Sensor') }}
-                </a>
-              {% endif %}
-            </div>
+            </a>
+            {% endif %}
+          </div>
           {% else %}
-            <span class="text-red-700 italic">{{ _("You need to be an admin to modify a sensor") }}</span>
+          <span class="text-red-700 italic">{{ _("You need to be an admin to modify a sensor") }}</span>
           {% endif %}
         </div>
     </div>
@@ -51,21 +50,65 @@
 
         <div class="w-full lg:w-12/12 px-4">
           <div class="relative w-full mb-3">
-            <label for="description" class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+            <label for="description" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              htmlfor="grid-password">
               {{ _('Sensor TTN ID') }}
             </label>
             {{ sensor.eui(disabled=view_only, class_="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600
-          bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150")}}
+            bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all
+            duration-150")}}
           </div>
         </div>
 
         <div class="w-full lg:w-12/12 px-4">
           <div class="relative w-full mb-3">
-            <label for="description" class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+            <label for="description" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              htmlfor="grid-password">
+              {{ _('Time Between Waterings') }}
+            </label>
+            {{ sensor.time_between_waterings(disabled=view_only, class_="border-0 px-3 py-3 placeholder-blueGray-300
+            text-blueGray-600
+            bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all
+            duration-150")}}
+          </div>
+        </div>
+
+        <div class="w-full lg:w-12/12 px-4">
+          <div class="relative w-full mb-3">
+            <label for="description" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              htmlfor="grid-password">
+              {{ _('Watering Time') }}
+            </label>
+            {{ sensor.watering_time(disabled=view_only, class_="border-0 px-3 py-3 placeholder-blueGray-300
+            text-blueGray-600
+            bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all
+            duration-150")}}
+          </div>
+        </div>
+
+        <div class="w-full lg:w-12/12 px-4">
+          <div class="relative w-full mb-3">
+            <label for="description" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              htmlfor="grid-password">
+              {{ _('Watering Threshold') }}
+            </label>
+            {{ sensor.watering_threshold(disabled=view_only, class_="border-0 px-3 py-3 placeholder-blueGray-300
+            text-blueGray-600
+            bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all
+            duration-150")}}
+          </div>
+        </div>
+
+        <div class="w-full lg:w-12/12 px-4">
+          <div class="relative w-full mb-3">
+            <label for="description" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              htmlfor="grid-password">
               {{ _('Sensor Description') }}
             </label>
-            {{ sensor.description(disabled=view_only, class_="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600
-          bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150")}}
+            {{ sensor.description(disabled=view_only, class_="border-0 px-3 py-3 placeholder-blueGray-300
+            text-blueGray-600
+            bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all
+            duration-150")}}
           </div>
         </div>
       </div>
@@ -79,18 +122,20 @@
         </h6>
         <div class="flex flex-wrap w-full">
           {% if sensor.hours is defined and sensor.hours is not none %}
-            {% set hours_binary = '{:024b}'.format(sensor.hours) %}
-            {% for i in range(24) %}
-            <div class="flex-1 min-w-[6%] lg:min-w-[2%] m-1">
-              <label class="hour-block block {% if hours_binary[i] == '1' %}selected-hour{% else %}bg-gray-200 hover:bg-gray-300{% endif %} text-center rounded-lg shadow cursor-pointer h-full">
-                <input type="checkbox" name="hour-{{ i }}" class="hidden hour-checkbox" {% if hours_binary[i] == '1' %}checked{% endif %}>
-                <span class="block py-2">{{ i }}</span>
-              </label>
-            </div>
-            {% endfor %}
+          {% set hours_binary = '{:024b}'.format(sensor.hours) %}
+          {% for i in range(24) %}
+          <div class="flex-1 min-w-[6%] lg:min-w-[2%] m-1">
+            <label
+              class="hour-block block {% if hours_binary[i] == '1' %}selected-hour{% else %}bg-gray-200 hover:bg-gray-300{% endif %} text-center rounded-lg shadow cursor-pointer h-full">
+              <input type="checkbox" name="hour-{{ i }}" class="hidden hour-checkbox" {% if hours_binary[i]=='1'
+                %}checked{% endif %}>
+              <span class="block py-2">{{ i }}</span>
+            </label>
+          </div>
+          {% endfor %}
           {% else %}
-            <!-- Handle the case where sensor.hours_range is undefined -->
-            <p>Sensor hours range is not defined.</p>
+          <!-- Handle the case where sensor.hours_range is undefined -->
+          <p>Sensor hours range is not defined.</p>
           {% endif %}
         </div>
       </div>
@@ -98,7 +143,8 @@
 
       <style>
         .selected-hour {
-          background-color: #3182ce; /* Tailwind's blue-500 */
+          background-color: #3182ce;
+          /* Tailwind's blue-500 */
         }
       </style>
 
@@ -106,7 +152,7 @@
         function updateHoursRange() {
           let newValue = 0;
           const checkboxes = document.querySelectorAll('.hour-checkbox');
-          checkboxes.forEach(function(checkbox, index) {
+          checkboxes.forEach(function (checkbox, index) {
             if (checkbox.checked) {
               // Reverse the bit order here
               newValue |= (1 << (checkboxes.length - 1 - index));
@@ -115,8 +161,8 @@
           document.getElementById('hours_range').value = newValue;
         }
 
-        document.querySelectorAll('.hour-checkbox').forEach(function(checkbox) {
-          checkbox.addEventListener('change', function() {
+        document.querySelectorAll('.hour-checkbox').forEach(function (checkbox) {
+          checkbox.addEventListener('change', function () {
             this.parentElement.classList.toggle('selected-hour', this.checked);
             updateHoursRange(); // Update the hidden input whenever a checkbox changes
           });
@@ -130,7 +176,7 @@
       </form>
     </div>
 
-    </div>
+  </div>
   </div>
 </section>
 
