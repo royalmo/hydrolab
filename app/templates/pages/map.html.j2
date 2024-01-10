@@ -1,82 +1,82 @@
 {% extends 'base/map_base.html.j2' %}
 {% block body %}
 
-<div id="map" class="border border-black absolute h-full w-full" ></div>
+<div id="map" class="border border-black absolute h-full w-full"></div>
 
-    <script>
-        {%if center %}
-        var map = L.map('map').setView({{center}}, 15);
-        {% else %}
-        var map = L.map('map').setView([41.38, 2.16], 9);
-        {% endif %}
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+<script>
+    {%if center %}
+    var map = L.map('map').setView({{ center }}, 15);
+    {% else %}
+    var map = L.map('map').setView([41.38, 2.16], 9);
+    {% endif %}
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-        var bounds = new L.LatLngBounds();
-        var sensorsAdded = false;
+    var bounds = new L.LatLngBounds();
+    var sensorsAdded = false;
 
-        var greenIcon = new L.Icon({
+    var greenIcon = new L.Icon({
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
         shadowSize: [41, 41]
-        });
+    });
 
 
-        var redIcon = new L.Icon({
+    var redIcon = new L.Icon({
         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
         shadowSize: [41, 41]
-        });
+    });
 
-        let icon = null
+    let icon = null
 
-        {% for eachsensor in sensors %}
+    {% for eachsensor in sensors %}
 
-            {% if eachsensor.location and eachsensor.location.latitude is not none and eachsensor.location.longitude is not none %}
-                var sensorLocation = new L.LatLng({{ eachsensor.location.latitude }}, {{ eachsensor.location.longitude }});
-                bounds.extend(sensorLocation);
-                sensorsAdded = true;
+    {% if eachsensor.location and eachsensor.location.latitude is not none and eachsensor.location.longitude is not none %}
+    var sensorLocation = new L.LatLng({{ eachsensor.location.latitude }}, { { eachsensor.location.longitude } });
+    bounds.extend(sensorLocation);
+    sensorsAdded = true;
 
-                {% set last_uplink = eachsensor.get_last_uplink() %}
-                var sensorPopupContent = `
-                    <b>Name:</b> {{ eachsensor.name }}<br>
-                    <b>Humidity:</b> {{ last_uplink.humidity }}<br>
-                    <b>Temperature:</b> {{ last_uplink.temperature }}<br>
-                    <b>Battery:</b>{{ last_uplink.battery }}<br>
+    {% set last_uplink = eachsensor.get_last_uplink() %}
+    var sensorPopupContent = `
+                    <b>{{ eachsensor.name }}</b><br>
+                    <b>Humidity:</b> {{ last_uplink.humidity }}%<br>
+                    <b>Temperature:</b> {{ last_uplink.temperature }}C<br>
+                    <b>Battery:</b>{{ last_uplink.battery }}%<br>
                     <b>Last Watered:</b>{{ eachsensor.last_watered_at }}<br>
                     <div class="bg-blue-200 text-white font-bold py-1 px-2 rounded cursor-pointer w-2/3 text-center mx-auto my-2">
                         <a href="{{ url_for('.sensors.edit', id=eachsensor.id) }}" target="_blank">Modify Sensor</a>
                     </div>
                 `;
 
-                {% if eachsensor.status %}
-                    icon = greenIcon;
-                {% else %}
-                    icon = redIcon;
-                {% endif %}
+    {% if eachsensor.status %}
+    icon = greenIcon;
+    {% else %}
+    icon = redIcon;
+    {% endif %}
 
-                L.marker(sensorLocation, {icon: icon})
-                    .addTo(map)
-                    .bindPopup(sensorPopupContent);
-            
-            {% endif %}
-        {% endfor %} 
-        
-        // Adjust the map view to include all sensors
-        if (sensorsAdded) {
-            map.fitBounds(bounds);
-        } else {
-            // Fallback to default view if no sensors are present
-            map.setView([41.38, 2.16], 9);
-        }
+    L.marker(sensorLocation, { icon: icon })
+        .addTo(map)
+        .bindPopup(sensorPopupContent);
 
-    </script>
+    {% endif %}
+    {% endfor %}
+
+    // Adjust the map view to include all sensors
+    if (sensorsAdded) {
+        map.fitBounds(bounds, { padding: [50, 50] });
+    } else {
+        // Fallback to default view if no sensors are present
+        map.setView([41.38, 2.16], 9);
+    }
+
+</script>
 
 {% endblock %}

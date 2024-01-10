@@ -127,9 +127,10 @@ def uplink():
     db.session.add(uplink)
     sensor.location = location
 
-    now = datetime.now()
-    event_timestamp = now - timedelta(minutes=int(parsed_data['@']))
-    sensor.last_watered_at = event_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+    #TODO - LAST WATERED AT
+    #now = datetime.now()
+    #event_timestamp = now - timedelta(minutes=int(parsed_data['@']))
+    #sensor.last_watered_at = event_timestamp.strftime("%Y-%m-%d %H:%M:%S")
 
     db.session.commit()
 

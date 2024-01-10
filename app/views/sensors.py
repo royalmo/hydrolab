@@ -68,7 +68,7 @@ def start(id):
     Sensor.query.get_or_404(id).start(current_user)
     return make_response("Sensor started", 204)
 
-@app.route('/sensor/<int:id>/water', methods=['GET', 'POST'])
+@app.route('/sensor/<int:id>/water', methods=['POST'])
 @admin_required
 def water(id):
     sensor = Sensor.query.get_or_404(id)
