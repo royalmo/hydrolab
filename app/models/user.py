@@ -56,3 +56,14 @@ class User(db.Model, UserMixin):
         user.active = ((not admin) and user.active) or (admin and form.active.data)
         user.notifications = form.notifications.data
         db.session.commit()
+
+    def new_subscription(self, sub):
+        from .subscription_token import SubscriptionToken
+        st = SubscriptionToken.query.filter(SubscriptionToken.data == sub).first()
+        if st is None:
+            new_st = SubscriptionToken(user_id=self.id, data=sub)
+            db.session.add(new_st)
+            db.session.commit()
+            st = new_st
+
+        st.send(title="Test notification", body="This is a test notification!")

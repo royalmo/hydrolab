@@ -106,10 +106,12 @@
               {{ form.active(checked=user.active) }}<br>
             </div>
           {% endif %}
+          {% if navbar_highlight_profile %} {# Own profile #}
             <div class="mx-4 flex items-center">
               <label for="notifications">{{ _('Notifications:') }}</label>
-              {{ form.notifications(checked=user.notifications) }}<br>
+              {{ form.notifications(checked=user.notifications, onclick="enable_notifications()") }}<br>
             </div>
+          {% endif %}
         </div>
       </div>
     </form>

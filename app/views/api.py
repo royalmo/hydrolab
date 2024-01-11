@@ -8,35 +8,6 @@ import os, base64
 
 app = Blueprint('api', __name__)
 
-########################
-
-# from ..extensions import auth_header_required
-# from ..extensions.login_manager import load_user_from_auth_header
-
-# @app.route('/register_token', methods=['POST'])
-# @auth_header_required
-# def register_token():
-#     current_user = load_user_from_auth_header()
-#     data = request.get_json()
-#     token = data.get('token')
-
-#     FirebaseToken.register_token(current_user, token)
-
-#     return make_response('OK', 200)
-
-# @app.route('/unregister_token', methods=['POST'])
-# @auth_header_required
-# def unregister_token():
-#     current_user = load_user_from_auth_header()
-#     data = request.get_json()
-#     token = data.get('token')
-
-#     FirebaseToken.unregister_token(current_user, token)
-
-#     return make_response('OK', 200)
-
-########################
-
 @app.route('/ttn/downlink-ack', methods=['POST'])
 def downlink_ack():
     headersApiKey = request.headers.get('X-Downlink-Apikey')

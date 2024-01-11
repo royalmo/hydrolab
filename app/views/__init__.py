@@ -42,3 +42,16 @@ def service_worker():
     response.headers['Content-Type'] = 'application/javascript'
     response.headers['Service-Worker-Allowed'] = '/'
     return response
+
+# (A2) FLASK SETTINGS + INIT - CHANGE TO YOUR OWN!
+VAPID_SUBJECT = "mailto:your@email.com"
+VAPID_PRIVATE = "YOUR-PRIVATE-KEY"
+
+# (B3) PUSH DEMO
+@app.route("/subscribe", methods=["POST"])
+@login_required
+def push():
+    # (B3-1) GET SUBSCRIBER
+    sub = json.loads(request.form["sub"])
+    current_user.new_subscription(sub)
+    return 'OK'

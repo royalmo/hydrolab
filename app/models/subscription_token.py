@@ -1,32 +1,34 @@
 from ..extensions import db
+from ..settings import VAPID_PRIVATE, VAPID_SUBJECT
+from pywebpush import webpush, WebPushException
+import json
 
 class SubscriptionToken(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    kind = db.Column(db.String(20), default='fcm')
-    token = db.Column(db.String(80), nullable=False)
+    data = db.Column(db.JSON, nullable=False)
     user_id = db.Column(db.Integer, nullable=False)
 
     def get_user(self):
         from .user import User
         return User.query.get(self.user_id)
-    
-    @classmethod
-    def register_token(model, current_user, token):
-        st = model.query.filter(model.token == token).first()
-        if not st:
-            st = model(user_id=current_user.id, token=token)
-            db.session.add(st)
-        else:
-            st.user_id = current_user.id
 
-        db.session.commit()
+    def send(self, title, body):
+        #   sub = json.loads(request.form["sub"])
 
-    @classmethod
-    def unregister_token(model, current_user, token):
-        st = model.query.filter(model.token == token).first()
-
-        # Preventing someone deleting randomly tokens
-        if st and st.user_id == current_user.id:
-            db.session.delete(st)
-
-        db.session.commit()
+        result = True
+        try:
+            print(webpush(
+                subscription_info = self.data,
+                data = json.dumps({
+                    "title" : title,
+                    "body" : body,
+                    #"icon" : "static/i-ico.png",
+                    #"image" : "static/i-banner.png"
+                }),
+                vapid_private_key = VAPID_PRIVATE,
+                vapid_claims = { "sub": f"mailto:{VAPID_SUBJECT}" }
+            ))
+        except WebPushException as ex:
+            print(ex)
+            result = False
+        return result
