@@ -46,3 +46,7 @@ def new_user(user):
         server.login(sender_email, password)
         server.sendmail(sender_email, recipient_email, message.as_string())
         print("New user email sent successfully!")
+
+# Decided to not implement this part as PWA already does the job
+def sensor_inactive(sensor): pass
+def sensor_Watered(sensor, user): pass

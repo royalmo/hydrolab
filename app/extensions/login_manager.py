@@ -31,11 +31,21 @@ def active_login_required(func):
             return login_manager.unauthorized()
     return wrapper
 
+def manager_login_required(func):
+    @wraps(func)
+    @active_login_required
+    def wrapper(*args, **kwargs):
+        if current_user.permit(User.ROLES["Manager"]):
+            return func(*args, **kwargs)
+        else:
+            return make_response('Forbidden', 403)
+    return wrapper
+
 def admin_login_required(func):
     @wraps(func)
     @active_login_required
     def wrapper(*args, **kwargs):
-        if current_user._role == User.ROLES["Admin"]:
+        if current_user.permit(User.ROLES["Admin"]):
             return func(*args, **kwargs)
         else:
             return make_response('Forbidden', 403)

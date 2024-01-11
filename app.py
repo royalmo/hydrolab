@@ -1,10 +1,10 @@
 # Main file. See README.md for more details.
 
+from dotenv import load_dotenv
+load_dotenv()
+
 from app import app, is_production
 from sys import argv
-from dotenv import load_dotenv
-
-load_dotenv()
 
 if is_production() or (len(argv) == 2 and argv[1] == '--listen-all'):
     from gevent.pywsgi import WSGIServer

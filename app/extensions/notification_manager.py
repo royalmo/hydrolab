@@ -1,7 +1,7 @@
 from .firebase import get_bearer_token, send_notification
 from .db import db
 
-def send_to_admins(title, message):
+def send_to_admins(title, message, role=3):
     # Importing it here so it doesn't give circular import error.
     from ..models import FirebaseToken, User
 
@@ -18,10 +18,10 @@ def send_to_admins(title, message):
     db.session.commit()
 
 def notify_new_user(new_user):
-    send_to_admins("New User", f"User {new_user.name} just landed, activate their account!")
+    send_to_admins("New user", f"User {new_user.name} just landed, activate their account!")
 
-def notify_server_started(server, user):
-    send_to_admins("Server started", f"Server {server.name} been just started by {user.name}.")
+def notify_sensor_watered(sensor, user):
+    send_to_admins("Sensor started", f"Sensor {sensor.name} been manually watered by {user.name}.", role=2)
 
-def notify_server_stopped(server, user):
-    send_to_admins("Server stopped", f"Server {server.name} been just stopped by {user.name}.")
+def notify_sensor_inactive(sensor):
+    send_to_admins("Sensor inactive", f"Sensor {sensor.name} is not sending uplinks!", role=2)

@@ -31,7 +31,7 @@
   </thead>
   <tbody class="bg-white">
     {% for eachuser in userlist %}
-      <tr class="hover:bg-gray-200 border-2 border-gray-300">
+      <tr class="hover:bg-gray-200 border-2 border-gray-300 hover:cursor-pointer" data-url="{{ url_for('.edit_user', user_id=eachuser.id) }}">
         <th class="font-normal">{{ eachuser.name|e }}</th>
         <th class="font-normal xg:hidden">{{ eachuser.email|e }}</th>
         <th class="font-normal xm:hidden">
@@ -81,4 +81,18 @@
   </tbody>
 </table>
 {% endif %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const sensorRows = document.querySelectorAll('tr');
+    sensorRows.forEach(row => {
+      row.addEventListener('click', (e) => {
+        console.log("CLICKING")
+        if (!e.target.closest('a') && !e.target.closest('button')) { // Prevent redirection when clicking on links or buttons
+          window.location.href = row.dataset.url; // Redirect to the URL specified in data-url
+        }
+      });
+    });
+  });
+</script>
 {% endblock %}

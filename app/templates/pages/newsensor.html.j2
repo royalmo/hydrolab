@@ -1,7 +1,6 @@
 {% extends 'base/logged_in.html.j2' %}
 
 {% block body %}
-{% set view_only = not current_user.role == "Admin" %}
 
 <section class="py-2 disabled-input-gray">
 
@@ -15,7 +14,6 @@
           <h6 class="text-blueGray-700 text-xl font-bold">{{ _('Modify Sensor') }}</h6>
           {% endif %}
 
-          {% if not view_only %}
           <div>
             {{ sensor.submit(class_="relative text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300
             font-medium rounded-lg text-sm px-5 py-1.5 focus:outline-none") }}
@@ -27,14 +25,11 @@
             </a>
             {% endif %}
           </div>
-          {% else %}
-          <span class="text-red-700 italic">{{ _("You need to be an admin to modify a sensor") }}</span>
-          {% endif %}
         </div>
     </div>
     <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
       <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-        {{ _('Sensor Information') }}
+        {{ _('Basic Information') }}
       </h6>
       <div class="flex flex-wrap">
         <div class="w-full lg:w-6/12 px-4">
@@ -42,70 +37,89 @@
             <label for="name" class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
               {{ _('Sensor Name') }}
             </label>
-            {{ sensor.name(disabled=view_only, class_="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600
+            {{ sensor.name(class_="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600
             bg-white rounded
             text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150")}}
           </div>
         </div>
-
-        <div class="w-full lg:w-12/12 px-4">
-          <div class="relative w-full mb-3">
-            <label for="description" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-              htmlfor="grid-password">
-              {{ _('Sensor TTN ID') }}
-            </label>
-            {{ sensor.eui(disabled=view_only, class_="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600
-            bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all
-            duration-150")}}
-          </div>
-        </div>
-
-        <div class="w-full lg:w-12/12 px-4">
-          <div class="relative w-full mb-3">
-            <label for="description" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-              htmlfor="grid-password">
-              {{ _('Time Between Waterings') }}
-            </label>
-            {{ sensor.time_between_waterings(disabled=view_only, class_="border-0 px-3 py-3 placeholder-blueGray-300
-            text-blueGray-600
-            bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all
-            duration-150")}}
-          </div>
-        </div>
-
-        <div class="w-full lg:w-12/12 px-4">
-          <div class="relative w-full mb-3">
-            <label for="description" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-              htmlfor="grid-password">
-              {{ _('Watering Time') }}
-            </label>
-            {{ sensor.watering_time(disabled=view_only, class_="border-0 px-3 py-3 placeholder-blueGray-300
-            text-blueGray-600
-            bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all
-            duration-150")}}
-          </div>
-        </div>
-
-        <div class="w-full lg:w-12/12 px-4">
-          <div class="relative w-full mb-3">
-            <label for="description" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-              htmlfor="grid-password">
-              {{ _('Watering Threshold') }}
-            </label>
-            {{ sensor.watering_threshold(disabled=view_only, class_="border-0 px-3 py-3 placeholder-blueGray-300
-            text-blueGray-600
-            bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all
-            duration-150")}}
-          </div>
-        </div>
-
+ 
         <div class="w-full lg:w-12/12 px-4">
           <div class="relative w-full mb-3">
             <label for="description" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
               htmlfor="grid-password">
               {{ _('Sensor Description') }}
             </label>
-            {{ sensor.description(disabled=view_only, class_="border-0 px-3 py-3 placeholder-blueGray-300
+            {{ sensor.description(class_="border-0 px-3 py-3 placeholder-blueGray-300
+            text-blueGray-600
+            bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all
+            duration-150")}}
+          </div>
+        </div>
+
+        <div class="w-full lg:w-12/12 px-4">
+          <div class="relative w-full mb-3">
+            <label for="eui" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              htmlfor="grid-password">
+              {{ _('Sensor TTN ID') }}
+            </label>
+            {{ sensor.eui(class_="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600
+            bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all
+            duration-150")}}
+          </div>
+        </div>
+
+      </div>
+      <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+        {{ _('Sensor Parameters') }}
+      </h6>
+      <div class="flex flex-wrap">
+
+        <div class="w-full lg:w-12/12 px-4">
+          <div class="relative w-full mb-3">
+            <label for="watering_time" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              htmlfor="grid-password">
+              {{ _('Watering Time (seconds)') }}
+            </label>
+            {{ sensor.watering_time(class_="border-0 px-3 py-3 placeholder-blueGray-300
+            text-blueGray-600
+            bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all
+            duration-150")}}
+          </div>
+        </div>
+
+        <div class="w-full lg:w-12/12 px-4">
+          <div class="relative w-full mb-3">
+            <label for="watering_threshold" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              htmlfor="grid-password">
+              {{ _('Watering Threshold') }}
+            </label>
+            {{ sensor.watering_threshold(class_="border-0 px-3 py-3 placeholder-blueGray-300
+            text-blueGray-600
+            bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all
+            duration-150")}}
+          </div>
+        </div>
+
+        <div class="w-full lg:w-12/12 px-4">
+          <div class="relative w-full mb-3">
+            <label for="time_between_waterings" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              htmlfor="grid-password">
+              {{ _('Minutes Between Waterings') }}
+            </label>
+            {{ sensor.time_between_waterings(class_="border-0 px-3 py-3 placeholder-blueGray-300
+            text-blueGray-600
+            bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all
+            duration-150")}}
+          </div>
+        </div>
+
+        <div class="w-full lg:w-12/12 px-4">
+          <div class="relative w-full mb-3">
+            <label for="minutes_between_uplinks" class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+              htmlfor="grid-password">
+              {{ _('Minutes Between Uplinks') }}
+            </label>
+            {{ sensor.minutes_between_uplinks(class_="border-0 px-3 py-3 placeholder-blueGray-300
             text-blueGray-600
             bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all
             duration-150")}}
@@ -118,11 +132,17 @@
       <!-- 24-Hour Selection Component -->
       <div class="flex-auto w-full px-4 lg:px-10 pt-0">
         <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-          {{ _('Select Hours') }}
+          {{ _('Select Hours Where watering can be done') }}
         </h6>
         <div class="flex flex-wrap w-full">
           {% if sensor.hours is defined and sensor.hours is not none %}
-          {% set hours_binary = '{:024b}'.format(sensor.hours) %}
+              {% set sensor_hours = sensor.hours %}
+          {% else %}
+              {% set sensor_hours = 0 %}
+          {% endif %}
+
+          {% set hours_binary = '{:024b}'.format(sensor_hours) %}
+
           {% for i in range(24) %}
           <div class="flex-1 min-w-[6%] lg:min-w-[2%] m-1">
             <label
@@ -133,10 +153,6 @@
             </label>
           </div>
           {% endfor %}
-          {% else %}
-          <!-- Handle the case where sensor.hours_range is undefined -->
-          <p>Sensor hours range is not defined.</p>
-          {% endif %}
         </div>
       </div>
 

@@ -16,30 +16,30 @@
     var bounds = new L.LatLngBounds();
     var sensorsAdded = false;
 
-    var greenIcon = new L.Icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+    var okIcon = new L.Icon({
+        iconUrl: '{{ url_for("static", filename = "images/marker-error-0.svg") }}', // Path to your SVG file
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
+        iconSize: [80, 50],
+        iconAnchor: [32, 45],
         popupAnchor: [1, -34],
-        shadowSize: [41, 41]
+        shadowSize: [95, 51]
     });
 
 
-    var redIcon = new L.Icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+    var warningIcon = new L.Icon({
+        iconUrl: '{{ url_for("static", filename = "images/marker-error-1.svg") }}', // Path to your SVG file
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
+        iconSize: [80, 50],
+        iconAnchor: [32, 45],
         popupAnchor: [1, -34],
-        shadowSize: [41, 41]
+        shadowSize: [95, 51]
     });
 
     var errorIcon = new L.Icon({
         iconUrl: '{{ url_for("static", filename = "images/marker-error-2.svg") }}', // Path to your SVG file
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
         iconSize: [80, 50],
-        iconAnchor: [12, 41],
+        iconAnchor: [32, 45],
         popupAnchor: [1, -34],
         shadowSize: [95, 51]
     });
@@ -53,10 +53,6 @@
     bounds.extend(sensorLocation);
     sensorsAdded = true;
 
-    {% set has_errors = eachsensor.parsed_errors() %}
-
-    {% set number_of_errors = has_errors | length > 0 %}
-
     {% set last_uplink = eachsensor.get_last_uplink() %}
     var sensorPopupContent = `
                     <h2 class="mb-2"><b>{{ eachsensor.name }}</b></h2>
@@ -64,24 +60,27 @@
                     <b>Temperature:</b> {{ last_uplink.temperature }} °C<br>
                     <b>Battery: </b>{{ last_uplink.battery }}%<br>
                     <b>Last Watered: </b>{{ eachsensor.last_watered_at }}<br>
-                    <div class="flex flex-row justify-between my-2">
+
+                    {% for error in eachsensor.parsed_errors() %}
+                        <span class="text-red-600">
+                            <b>{% if error[0] == 'E' %}{{_('ERROR')}}{% else %}{{_('Warning')}}{% endif %}:</b>
+                            {{ error[1] }}
+                        </span><br>
+                    {% endfor %}
+
+                    <div class="flex flex-row justify-center my-2">
                         <div class="bg-blue-200 text-white font-bold py-1 px-4 rounded cursor-pointer">
                             <a href="{{ url_for('.sensors.info', id=eachsensor.id) }}" target="_blank">More Info</a>
                         </div>
-                        {% if number_of_errors %}
-                        <a href="{{ url_for('.sensors.info', id=eachsensor.id) + '#errors' }}" target="_blank" class="ml-2">
-                            <img src='{{ url_for("static", filename = "images/triangle-exclamation-solid.svg") }}' alt='Warning' class="w-5 h-5" />
-                        </a>
-                        {% endif %}
                     </div>
                 `;
 
-    {% if number_of_errors %}
+    {% if eachsensor.has_an_error() %}
     icon = errorIcon;
-    {% elif eachsensor.status %}
-    icon = greenIcon;
+    {% elif eachsensor.has_a_warning() %}
+    icon = warningIcon;
     {% else %}
-    icon = redIcon;
+    icon = okIcon;
     {% endif %}
 
     L.marker(sensorLocation, { icon: icon })

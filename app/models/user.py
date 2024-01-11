@@ -7,8 +7,8 @@ class User(db.Model, UserMixin):
     # Roles defined in a dictionary
     ROLES = {
         "User": 1,
-        "Admin": 2,
-        # Add other roles as needed
+        "Manager": 2,
+        "Admin": 3,
     }
 
     # Reverse lookup dictionary to map role IDs back to role names
@@ -35,6 +35,9 @@ class User(db.Model, UserMixin):
             self._role = self.ROLES[role_name]
         else:
             raise ValueError("Invalid role name")
+    
+    def permit(self, permission_level):
+        return self._role >= permission_level
 
     def parsed_lang(self):
         return Locale(self.lang).get_display_name().capitalize()

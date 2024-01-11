@@ -115,6 +115,7 @@ def uplink():
                     rssi=rssi)
     db.session.add(uplink)
     sensor.location = location
+    sensor.inactivity_notification_sent = False
     db.session.commit()
 
     sensor.process_uplink(uplink)

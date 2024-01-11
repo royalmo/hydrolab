@@ -58,6 +58,7 @@ class Downlink(db.Model):
         }
 
         payload = self.get_payload()
+        if payload == 'Z': return 418
         base64_payload = base64.b64encode(payload.encode('ASCII')).decode('utf-8')
         print(payload, base64_payload)
 

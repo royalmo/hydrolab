@@ -113,10 +113,6 @@ def profile():
     form = UserForm()
 
     if form.validate_on_submit():
-        # FIXME Failing users with id <=2 for the sake of demonstration.
-        if user.id <= 2:
-            return make_response("For the sake of demonstration, you can't touch demo profiles!", 403)
-
         user.update_with_form(form, current_user.role == "Admin")
         return redirect(url_for('.profile'))
 

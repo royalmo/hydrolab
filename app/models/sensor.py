@@ -1,4 +1,4 @@
-from ..extensions import db
+from ..extensions import db, mailer, notification_manager
 
 from datetime import datetime, timedelta
 from flask_babel import gettext
@@ -9,6 +9,7 @@ class Sensor(db.Model):
     name = db.Column(db.String(80))
     description = db.Column(db.String(80), default='')
     location = db.Column(db.JSON)
+    inactivity_notification_sent = db.Column(db.Boolean, default=False)
 
     last_watered_at = db.Column(db.String(80), default="N.A.")
     time_between_waterings = db.Column(db.Integer, default=600)
@@ -76,7 +77,7 @@ class Sensor(db.Model):
             errors.append(['W', gettext('More than 2h without any uplink!')])
         
         # Checking if rebooted or watchdog in the last 5 hours
-        recent_uplinks = Uplink.query.filter(Uplink.sensor_id == self.id).filter(Uplink.received_at > (datetime.now() - timedelta(hours=5))).first()
+        recent_uplinks = Uplink.query.filter(Uplink.sensor_id == self.id).filter(Uplink.received_at > (datetime.now() - timedelta(hours=5))).all()
         already_included_errors = []
         for ul in recent_uplinks:
             if '1' in ul.errors and '1' not in already_included_errors:
@@ -98,6 +99,22 @@ class Sensor(db.Model):
         if uplink is None: return 101 # More than 100 hours is considered infinite
 
         return (datetime.now() - uplink.received_at).total_seconds() / 3600
+    
+    def notify_inactivity(self):
+        if self.inactivity_notification_sent: return
+        if self.hours_since_last_uplink() <= 12: return
+
+        self.inactivity_notification_sent = True
+        db.session.commit()
+
+        mailer.sensor_inactive(self)
+        notification_manager.notify_sensor_inactive(self)
+
+    def has_an_error(self):
+        return 'E' in [x[0] for x in self.parsed_errors()]
+    
+    def has_a_warning(self):
+        return 'W' in [x[0] for x in self.parsed_errors()]
 
 def in_hour_range(hour, hour_range):
     # Range is an integer of 24 bits minimum. Each bit represents
