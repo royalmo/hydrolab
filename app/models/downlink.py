@@ -1,4 +1,5 @@
 from ..extensions import db
+from ..settings import DOWNLINK_APIKEY
 from datetime import datetime
 from requests import post
 from os import environ
@@ -53,7 +54,7 @@ class Downlink(db.Model):
         url = f'https://hydrolab.eu2.cloud.thethings.industries/api/v3/as/applications/hydrolab/webhooks/hydrolab/devices/{self.get_sensor().eui}/down/replace'
 
         headers = {
-            'Authorization': f'Bearer {environ["X-DOWNLINK-APIKEY"]}',
+            'Authorization': f'Bearer {DOWNLINK_APIKEY}',
             'Content-Type': 'application/json'
         }
 

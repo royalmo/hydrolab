@@ -3,6 +3,7 @@ from datetime import datetime
 
 from ..extensions import db
 from ..models import Sensor, Uplink, Downlink
+from ..settings import UPLINK_APIKEY
 
 import os, base64
 
@@ -11,7 +12,7 @@ app = Blueprint('api', __name__)
 @app.route('/ttn/downlink-ack', methods=['POST'])
 def downlink_ack():
     headersApiKey = request.headers.get('X-Downlink-Apikey')
-    ApiKey = os.getenv('X-UPLINK-APIKEY')
+    ApiKey = UPLINK_APIKEY
 
     if (ApiKey != headersApiKey):
         return make_response('Forbidden', 403)
@@ -31,7 +32,7 @@ def downlink_ack():
 @app.route('/ttn/uplink', methods=['POST'])
 def uplink():
     headersApiKey = request.headers.get('X-Downlink-Apikey')
-    ApiKey = os.getenv('X-UPLINK-APIKEY')
+    ApiKey = UPLINK_APIKEY
 
     if (ApiKey != headersApiKey):
         return make_response('Forbidden', 403)

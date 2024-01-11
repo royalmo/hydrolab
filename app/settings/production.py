@@ -11,3 +11,6 @@ VAPID_PRIVATE = ''
 # Put this public key also in serviceworker_register.js
 VAPID_PUBLIC = 'BKnamwulEZy2ioRbctK0aehcQU2WH3j76MVtpt8hXzLvRp-UQKYMLl5IfzGF4u6nAu3beet3amCeWFrESxJLIyE'
 VAPID_SUBJECT = 'eric@ericroy.net'
+
+DOWNLINK_APIKEY=""
+UPLINK_APIKEY=""
