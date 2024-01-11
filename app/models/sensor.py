@@ -1,7 +1,9 @@
 from ..extensions import db, mailer, notification_manager
+from ..settings import WEATHER_API_KEY
 
 from datetime import datetime, timedelta
 from flask_babel import gettext
+import requests
 
 class Sensor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -63,8 +65,10 @@ class Sensor(db.Model):
 
         last_watered_at = datetime.strptime(self.last_watered_at, "%Y-%m-%d %H:%M:%S")
         threshold_time = datetime.now() - timedelta(minutes=self.time_between_waterings)
+        if last_watered_at >= threshold_time: return False
 
-        return last_watered_at < threshold_time
+        # Check weather API
+        return not will_it_rain(self.location['latitude'], self.location['longitude'])
 
     def parsed_errors(self):
         from .uplink import Uplink
@@ -121,3 +125,30 @@ def in_hour_range(hour, hour_range):
     # an hour. For example, 0xFF0000 represents the hours from 0 to 8am.
     # This function returns true if the hour is in the range.
     return (1 << (hour % 24)) & hour_range != 0
+
+def will_it_rain(latitude, longitude):
+    if len(WEATHER_API_KEY) == 0: return
+
+    base_url = "http://api.openweathermap.org/data/2.5/onecall"
+    params = {
+        'lat': latitude,
+        'lon': longitude,
+        'exclude': 'current,minutely,hourly',
+        'appid': WEATHER_API_KEY
+    }
+
+    try:
+        response = requests.get(base_url, params=params)
+        response.raise_for_status()
+        data = response.json()
+
+        # Check if any day in the next week has rain
+        for day in data['daily']:
+            if 'rain' in day:
+                return True
+
+        return False
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error: {e}")
+        return False
