@@ -91,8 +91,8 @@ class Downlink(db.Model):
         
         sensor = self.get_sensor()
         for attribute in ATTRIBUTES:
-            sensor_attr = sensor.getattr(attribute)
-            uplink_attr = uplink.getattr(attribute)
+            sensor_attr = getattr(sensor, attribute)
+            uplink_attr = getattr(uplink, attribute)
 
             if sensor_attr is not None and uplink_attr is not None and sensor_attr!=uplink_attr:
-                self.__setattr__(attribute, sensor_attr)
+                setattr(self, attribute, sensor_attr)

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, URLField, IntegerField
 from wtforms.validators import InputRequired, Length
-from flask_babel import gettext
+from flask_babel import lazy_gettext as gettext
 
 class SensorForm(FlaskForm):
     name = StringField(validators=[InputRequired(), Length(min=3, max=80)], render_kw={"placeholder": gettext("Sensor name")})

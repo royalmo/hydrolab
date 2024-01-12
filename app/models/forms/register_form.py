@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, EmailField, SelectField
 from wtforms.validators import InputRequired, Length, ValidationError
-from flask_babel import gettext
+from flask_babel import lazy_gettext as gettext
 
 from ...extensions.babel import get_locales
 from ..user import User

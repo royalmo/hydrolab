@@ -146,7 +146,7 @@
           {% for i in range(24) %}
           <div class="flex-1 min-w-[6%] lg:min-w-[2%] m-1">
             <label
-              class="hour-block block {% if hours_binary[i] == '1' %}selected-hour{% else %}bg-gray-200 hover:bg-gray-300{% endif %} text-center rounded-lg shadow cursor-pointer h-full">
+              class="hour-block block select-none {% if hours_binary[i] == '1' %}selected-hour{% else %}bg-gray-200 hover:bg-gray-300{% endif %} text-center rounded-lg shadow cursor-pointer h-full">
               <input type="checkbox" name="hour-{{ i }}" class="hidden hour-checkbox" {% if hours_binary[i]=='1'
                 %}checked{% endif %}>
               <span class="block py-2">{{ i }}</span>
@@ -161,6 +161,9 @@
         .selected-hour {
           background-color: #3182ce;
           /* Tailwind's blue-500 */
+        }
+        .selected-hour:hover {
+          background-color: #1d4c77 !important;
         }
       </style>
 
