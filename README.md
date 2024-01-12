@@ -91,6 +91,16 @@ To set up https we recommend to follow
 [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-11).
 It uses Certbot and Let's Encrypt. It's pretty straightforward, try it!
 
+### Scheduled tasks
+
+Some notifications and tasks aren't executed in requests and must be executed
+periodically. That's why we recommend setting up a `crontab` event looking like
+this one:
+
+```
+0 * * * * docker exec hydrolab_web_1 python3 hourly_activity_checker.py
+```
+
 ## Manual installation (for developing)
 
 The manual installation is a little tedious due to the number of dependencies
