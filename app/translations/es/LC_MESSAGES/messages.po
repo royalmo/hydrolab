@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-12 15:34+0100\n"
+"POT-Creation-Date: 2024-01-12 19:48+0100\n"
 "PO-Revision-Date: 2023-05-12 23:34+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -183,6 +183,22 @@ msgstr "Usuarios"
 msgid "Log Out"
 msgstr "Salir"
 
+#: app/templates/pages/map.html.j2:59
+msgid "Humidity:"
+msgstr "Humedad:"
+
+#: app/templates/pages/map.html.j2:60
+msgid "Temperature:"
+msgstr "Temperatura:"
+
+#: app/templates/pages/map.html.j2:61
+msgid "Battery:"
+msgstr "Batería:"
+
+#: app/templates/pages/map.html.j2:62
+msgid "Last Watered:"
+msgstr "Último riegue:"
+
 #: app/templates/pages/map.html.j2:66
 msgid "ERROR"
 msgstr "ERROR"
@@ -190,6 +206,10 @@ msgstr "ERROR"
 #: app/templates/pages/map.html.j2:66
 msgid "Warning"
 msgstr "Atención"
+
+#: app/templates/pages/map.html.j2:73
+msgid "More Info"
+msgstr "Más información"
 
 #: app/templates/pages/monitoring.html.j2:9
 #, python-format
@@ -242,17 +262,17 @@ msgid "Basic Information"
 msgstr "Información básica"
 
 #: app/templates/pages/newsensor.html.j2:38
-#: app/templates/pages/sensor_information.html.j2:51
+#: app/templates/pages/sensor_information.html.j2:52
 msgid "Sensor Name"
 msgstr "Nombre del sensor"
 
 #: app/templates/pages/newsensor.html.j2:50
-#: app/templates/pages/sensor_information.html.j2:75
+#: app/templates/pages/sensor_information.html.j2:76
 msgid "Sensor Description"
 msgstr "Descripción del sensor"
 
 #: app/templates/pages/newsensor.html.j2:63
-#: app/templates/pages/sensor_information.html.j2:63
+#: app/templates/pages/sensor_information.html.j2:64
 msgid "Sensor TTN ID"
 msgstr "TTN ID"
 
@@ -363,11 +383,11 @@ msgstr "Activo:"
 msgid "Notifications:"
 msgstr "Notificaciones:"
 
-#: app/templates/pages/sensor_information.html.j2:13 app/views/sensors.py:85
+#: app/templates/pages/sensor_information.html.j2:12 app/views/sensors.py:85
 msgid "Sensor Information"
 msgstr "Información del sensor"
 
-#: app/templates/pages/sensor_information.html.j2:18
+#: app/templates/pages/sensor_information.html.j2:17
 msgid "Show on map"
 msgstr "Ver en el mapa"
 
@@ -375,53 +395,67 @@ msgstr "Ver en el mapa"
 msgid "Water"
 msgstr "Regar ahora"
 
-#: app/templates/pages/sensor_information.html.j2:24
+#: app/templates/pages/sensor_information.html.j2:25
 #: app/templates/pages/sensors.html.j2:42
 #: app/templates/pages/userlist.html.j2:51
 msgid "Edit"
 msgstr "Editar"
 
-#: app/templates/pages/sensor_information.html.j2:35
+#: app/templates/pages/sensor_information.html.j2:36
 msgid "Basic"
 msgstr "Básico"
 
-#: app/templates/pages/sensor_information.html.j2:86
+#: app/templates/pages/sensor_information.html.j2:55
+#: app/templates/pages/sensor_information.html.j2:67
+#: app/templates/pages/sensor_information.html.j2:79
+#: app/templates/pages/sensor_information.html.j2:90
+#: app/templates/pages/sensor_information.html.j2:123
+#: app/templates/pages/sensor_information.html.j2:134
+#: app/templates/pages/sensor_information.html.j2:145
+#: app/templates/pages/sensor_information.html.j2:156
+#: app/templates/pages/sensor_information.html.j2:190
+#: app/templates/pages/sensor_information.html.j2:201
+#: app/templates/pages/sensor_information.html.j2:212
+msgid "No information"
+msgstr "Sin datos"
+
+#: app/templates/pages/sensor_information.html.j2:87
 msgid "Last Watered At"
 msgstr "Último riegue a las"
 
-#: app/templates/pages/sensor_information.html.j2:103
+#: app/templates/pages/sensor_information.html.j2:104
 msgid "Uplink"
 msgstr "Uplink"
 
-#: app/templates/pages/sensor_information.html.j2:119
+#: app/templates/pages/sensor_information.html.j2:120
 msgid "Last Uplink Sent At"
 msgstr "Último uplink enviado a las"
 
-#: app/templates/pages/sensor_information.html.j2:130
+#: app/templates/pages/sensor_information.html.j2:131
 msgid "Last humidity Reading"
 msgstr "Última lectura de humedad"
 
-#: app/templates/pages/sensor_information.html.j2:141
+#: app/templates/pages/sensor_information.html.j2:142
 msgid "Last Temperature Reading"
 msgstr "Última lectura de temperatura"
 
-#: app/templates/pages/sensor_information.html.j2:152
+#: app/templates/pages/sensor_information.html.j2:153
 msgid "Last Battery Reading"
 msgstr "Última lectura de batería"
 
-#: app/templates/pages/sensor_information.html.j2:170
+#: app/templates/pages/sensor_information.html.j2:171
 msgid "Downlink"
 msgstr "Downlink"
 
-#: app/templates/pages/sensor_information.html.j2:186
+#: app/templates/pages/sensor_information.html.j2:187
 msgid "Last Downlink Sent At"
 msgstr "Último downlink enviado a"
 
-#: app/templates/pages/sensor_information.html.j2:197
+#: app/templates/pages/sensor_information.html.j2:198
 msgid "Last Downlink Acknowledgement"
 msgstr "Última confirmación de downlink"
 
-#: app/templates/pages/sensor_information.html.j2:208
+#: app/templates/pages/sensor_information.html.j2:209
 msgid "Last Downlink Water Now Seconds"
 msgstr "Segundos de riegue en el último downlink"
 
@@ -573,9 +607,7 @@ msgstr "pero no activada!"
 msgid ""
 "Your account has been created, but it first need to be reviewed by an "
 "administrator."
-msgstr ""
-"Tu cuenta ha sido creada, pero tiene que ser revisada por un "
-"administrador"
+msgstr "Tu cuenta ha sido creada, pero tiene que ser revisada por un administrador"
 
 #: app/templates/pages/users/signup_success.html.j2:19
 msgid "Once your account will be activated by an admin, you will be able to"
@@ -594,8 +626,8 @@ msgid ""
 "Nothing, you just need to wait. If you're in a hurry, however, you can "
 "send a mail to"
 msgstr ""
-"Nada, únicamente tienes que esperar. Si tienes prisa, puedes enviar "
-"un correo a"
+"Nada, únicamente tienes que esperar. Si tienes prisa, puedes enviar un "
+"correo a"
 
 #: app/templates/pages/users/signup_success.html.j2:31
 msgid "indicating the reason of your hurry."
@@ -616,3 +648,4 @@ msgstr "¡Cuenta creada!"
 #: app/views/users.py:107
 msgid "Edit user"
 msgstr "Editar usuario"
+

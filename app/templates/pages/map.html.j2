@@ -17,7 +17,7 @@
     var sensorsAdded = false;
 
     var okIcon = new L.Icon({
-        iconUrl: '{{ url_for("static", filename = "images/marker-error-0.svg") }}', // Path to your SVG file
+        iconUrl: '{{ url_for("static", filename = "images/marker-error-0.svg") }}',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
         iconSize: [80, 50],
         iconAnchor: [32, 45],
@@ -27,7 +27,7 @@
 
 
     var warningIcon = new L.Icon({
-        iconUrl: '{{ url_for("static", filename = "images/marker-error-1.svg") }}', // Path to your SVG file
+        iconUrl: '{{ url_for("static", filename = "images/marker-error-1.svg") }}',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
         iconSize: [80, 50],
         iconAnchor: [32, 45],
@@ -36,7 +36,7 @@
     });
 
     var errorIcon = new L.Icon({
-        iconUrl: '{{ url_for("static", filename = "images/marker-error-2.svg") }}', // Path to your SVG file
+        iconUrl: '{{ url_for("static", filename = "images/marker-error-2.svg") }}',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
         iconSize: [80, 50],
         iconAnchor: [32, 45],
@@ -56,10 +56,10 @@
     {% set last_uplink = eachsensor.get_last_uplink() %}
     var sensorPopupContent = `
                     <h2 class="mb-2"><b>{{ eachsensor.name }}</b></h2>
-                    <b>Humidity:</b> {{ last_uplink.humidity }}%<br>
-                    <b>Temperature:</b> {{ last_uplink.temperature }} °C<br>
-                    <b>Battery: </b>{{ last_uplink.battery }}%<br>
-                    <b>Last Watered: </b>{{ eachsensor.last_watered_at }}<br>
+                    <b>{{_('Humidity:')}}</b> {{ last_uplink.humidity }}%<br>
+                    <b>{{_('Temperature:')}}</b> {{ last_uplink.temperature }} °C<br>
+                    <b>{{_('Battery:')}}</b> {{ last_uplink.battery }}%<br>
+                    <b>{{_('Last Watered:')}}</b> {{ eachsensor.last_watered_at }}<br>
 
                     {% for error in eachsensor.parsed_errors() %}
                         <span class="text-red-600">
@@ -70,7 +70,7 @@
 
                     <div class="flex flex-row justify-center my-2">
                         <div class="bg-blue-200 text-white font-bold py-1 px-4 rounded cursor-pointer">
-                            <a href="{{ url_for('.sensors.info', id=eachsensor.id) }}" target="_blank">More Info</a>
+                            <a href="{{ url_for('.sensors.info', id=eachsensor.id) }}" target="_blank">{{_('More Info')}}</a>
                         </div>
                     </div>
                 `;
@@ -92,7 +92,9 @@
 
     // Adjust the map view to include all sensors
     if (sensorsAdded) {
-        map.fitBounds(bounds, { padding: [50, 50] });
+        {% if not center %}
+            map.fitBounds(bounds, { padding: [50, 50] });
+        {% endif %}
     } else {
         // Fallback to default view if no sensors are present
         map.setView([41.38, 2.16], 9);

@@ -86,13 +86,13 @@
   }
 
   function parse_data() {
-    let server_date = Date.parse(data.current).toFixed();
+    let server_date = Date.parse(data.current).toFixed() - (new Date().getTimezoneOffset() * 60000);
 
     for (const current_delta of {{ delta_translations.keys() | list | tojson }}) {
 
       let start_date_iso;
       if (current_delta == '1hour')
-        start_date_iso = new Date(server_date - 3600 * 1000).toISOString();
+        start_date_iso = new Date(server_date - (1*3600 * 1000)).toISOString();
       else if (current_delta == '1day')
         start_date_iso = new Date(server_date - (24*3600 * 1000)).toISOString();
       else // 7 days

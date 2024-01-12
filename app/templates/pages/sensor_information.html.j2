@@ -1,7 +1,6 @@
 {% extends 'base/logged_in.html.j2' %}
 
 {% block body %}
-{% set view_only = not current_user.role == "Admin" %}
 {% set uplink = sensor.get_last_uplink() %}
 {% set downlink = sensor.get_last_downlink() %}
 <section class="py-2 disabled-input-gray">
@@ -16,9 +15,11 @@
         <a href="{{url_for('main.map', lat=sensor.location.latitude, lon=sensor.location.longitude)}}"
           class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-1 mr-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800">{{
           _('Show on map') }}</a>
-        <button onclick="water({{sensor.id}})"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{{
-          _('Water') }}</button>
+        {% if current_user.permit(2) %}
+          <button onclick="water({{sensor.id}})"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-1 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{{
+            _('Water') }}</button>
+        {% endif %}
         <a href="{{url_for('.edit', id=sensor.id)}}"
           class="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-1 mr-2 dark:bg-orange-600 dark:hover:bg-orange-700 focus:outline-none dark:focus:ring-blue-orange">{{
           _('Edit') }}</a>
@@ -51,7 +52,7 @@
                 {{ _('Sensor Name') }}
               </label>
               <p class=" p-1 rounded">
-                {{ sensor.name | default('No Information', true)}}
+                {{ sensor.name | default(_('No information'), true)}}
               </p>
             </div>
           </div>
@@ -63,7 +64,7 @@
                 {{ _('Sensor TTN ID') }}
               </label>
               <p class=" p-1 rounded">
-                {{ sensor.eui | default('No Information', true)}}
+                {{ sensor.eui | default(_('No information'), true)}}
               </p>
             </div>
           </div>
@@ -75,7 +76,7 @@
                 {{ _('Sensor Description') }}
               </label>
               <p class=" p-1 rounded">
-                {{ sensor.description | default('No Information', true)}}
+                {{ sensor.description | default(_('No information'), true)}}
               </p>
             </div>
           </div>
@@ -86,7 +87,7 @@
                 {{ _('Last Watered At') }}
               </label>
               <p class=" p-1 rounded">
-                {{ sensor.last_watered_at | default('No Information', true)}}
+                {{ sensor.last_watered_at | default(_('No information'), true)}}
               </p>
             </div>
           </div>
@@ -119,7 +120,7 @@
                 {{ _('Last Uplink Sent At') }}
               </label>
               <p class=" p-1 rounded">
-                {{ uplink.received_at | default('No Information', true)}}
+                {{ uplink.received_at | default(_('No information'), true)}}
               </p>
             </div>
           </div>
@@ -130,7 +131,7 @@
                 {{ _('Last humidity Reading') }}
               </label>
               <p class=" p-1 rounded">
-                {{ uplink.humidity | default('No Information', true)}}
+                {{ uplink.humidity | default(_('No information'), true)}}
               </p>
             </div>
           </div>
@@ -141,7 +142,7 @@
                 {{ _('Last Temperature Reading') }}
               </label>
               <p class=" p-1 rounded">
-                {{ uplink.temperature | default('No Information', true)}}
+                {{ uplink.temperature | default(_('No information'), true)}}
               </p>
             </div>
           </div>
@@ -152,7 +153,7 @@
                 {{ _('Last Battery Reading') }}
               </label>
               <p class=" p-1 rounded">
-                {{ uplink.battery | default('No Information', true)}}
+                {{ uplink.battery | default(_('No information'), true)}}
               </p>
             </div>
           </div>
@@ -186,7 +187,7 @@
                 {{ _('Last Downlink Sent At') }}
               </label>
               <p class=" p-1 rounded">
-                {{ downlink.sent_at | default('No Information', true)}}
+                {{ downlink.sent_at | default(_('No information'), true)}}
               </p>
             </div>
           </div>
@@ -197,7 +198,7 @@
                 {{ _('Last Downlink Acknowledgement') }}
               </label>
               <p class=" p-1 rounded">
-                {{ downlink.ack_at | default('No Information', true)}}
+                {{ downlink.ack_at | default(_('No information'), true)}}
               </p>
             </div>
           </div>
@@ -208,7 +209,7 @@
                 {{ _('Last Downlink Water Now Seconds') }}
               </label>
               <p class=" p-1 rounded">
-                {{ downlink.water_now_seconds | default('No Information', true)}}
+                {{ downlink.water_now_seconds | default(_('No information'), true)}}
               </p>
             </div>
           </div>
