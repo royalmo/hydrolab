@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-04 17:21+0100\n"
+"POT-Creation-Date: 2024-01-12 15:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ca\n"
@@ -18,6 +17,26 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.11.0\n"
+
+#: app/models/sensor.py:79
+msgid "More than 12h without any uplink!"
+msgstr "Più di 12h senza uplink!"
+
+#: app/models/sensor.py:81
+msgid "More than 2h without any uplink!"
+msgstr "Più di 2h senza uplink!"
+
+#: app/models/sensor.py:89
+msgid "Sensor rebooted recently!"
+msgstr "Sensore riavviato recentemente!"
+
+#: app/models/sensor.py:92
+msgid "Sensor rebooted recently due to WatchDog!"
+msgstr "Sensore riavviato recentemente per il Watchdog!"
+
+#: app/models/sensor.py:97
+msgid "Low battery!"
+msgstr "Batteria bassa!"
 
 #: app/models/forms/login_form.py:9 app/models/forms/register_form.py:11
 #: app/models/forms/user_form.py:10
@@ -39,30 +58,6 @@ msgstr "Resta collegato."
 msgid "Log In"
 msgstr "Accedi"
 
-#: app/models/forms/monitor_form.py:7
-msgid "led"
-msgstr "led"
-
-#: app/models/forms/monitor_form.py:8
-msgid "Navarcles' Arduino: LED"
-msgstr ""
-
-#: app/models/forms/monitor_form.py:9
-msgid "State"
-msgstr "stato"
-
-#: app/models/forms/monitor_form.py:10
-msgid "-0.5"
-msgstr ""
-
-#: app/models/forms/monitor_form.py:11
-msgid "1.5"
-msgstr ""
-
-#: app/models/forms/monitor_form.py:12
-msgid "Submit Monitor"
-msgstr "Inviare Monitor"
-
 #: app/models/forms/register_form.py:10 app/models/forms/user_form.py:9
 msgid "User Name"
 msgstr "Nome del utente"
@@ -81,27 +76,40 @@ msgid "Search"
 msgstr "Cerca"
 
 #: app/models/forms/sensor_form.py:7
-#, fuzzy
 msgid "Sensor name"
-msgstr "Nome del utente"
+msgstr "Nome del sensore"
 
 #: app/models/forms/sensor_form.py:8
 msgid "About Sensor"
-msgstr ""
+msgstr "Sul sensore"
+
+#: app/models/forms/sensor_form.py:9
+msgid "TTN ID"
+msgstr "TTN ID"
+
+#: app/models/forms/sensor_form.py:11
+msgid "Time Between Waterings"
+msgstr "Tempo tra irrigazioni"
+
+#: app/models/forms/sensor_form.py:12
+msgid "Watering Time"
+msgstr "Tempo di irrigazione"
+
+#: app/models/forms/sensor_form.py:13 app/templates/pages/newsensor.html.j2:94
+msgid "Watering Threshold"
+msgstr "Massimo di irrigazioni"
 
 #: app/models/forms/sensor_form.py:14
-msgid "TTN ID"
-msgstr ""
+msgid "Minutes between uplinks"
+msgstr "Minuti tra uplink"
 
-#: app/models/forms/sensor_form.py:15
-#, fuzzy
+#: app/models/forms/sensor_form.py:17
 msgid "Submit Sensor"
-msgstr "Inviare Monitor"
+msgstr "Inviare Sensore"
 
 #: app/models/forms/user_form.py:15
-#, fuzzy
 msgid "Role?"
-msgstr "Profilo"
+msgstr "Ruolo?"
 
 #: app/models/forms/user_form.py:16
 msgid "Active?"
@@ -109,7 +117,7 @@ msgstr "Attivo?"
 
 #: app/models/forms/user_form.py:17
 msgid "Notifications"
-msgstr ""
+msgstr "Notificazioni"
 
 #: app/templates/errors/404.html.j2:13
 msgid "Error"
@@ -117,7 +125,7 @@ msgstr "Errore"
 
 #: app/templates/errors/404.html.j2:15
 msgid "Sorry, we couldn't find this page."
-msgstr "Questa pàgina non esiste."
+msgstr "Questa pagina non esiste."
 
 #: app/templates/errors/404.html.j2:17
 msgid "But dont worry, you can find plenty of other things on our homepage."
@@ -148,16 +156,16 @@ msgid "Open main menu"
 msgstr "Apri menu principale"
 
 #: app/templates/includes/navbar.html.j2:17
-#: app/templates/pages/sensors.html.j2:44
+#: app/templates/pages/sensors.html.j2:39
 msgid "Map"
-msgstr ""
+msgstr "Mappa"
 
-#: app/templates/includes/navbar.html.j2:20 app/views/sensors.py:28
-#, fuzzy
+#: app/templates/includes/navbar.html.j2:20 app/views/sensors.py:25
 msgid "Sensors"
-msgstr "Utenti"
+msgstr "Sensori"
 
-#: app/templates/includes/navbar.html.j2:23 app/views/monitors.py:21
+#: app/templates/includes/navbar.html.j2:23
+#: app/templates/pages/monitoring.html.j2:36 app/views/monitors.py:18
 msgid "Monitoring"
 msgstr "Monitoraggio"
 
@@ -173,55 +181,101 @@ msgstr "Utenti"
 msgid "Log Out"
 msgstr "Esci"
 
-#: app/templates/pages/newsensor.html.j2:13
-#, fuzzy
-msgid "Add New Sensor"
-msgstr "Aggiungi un monitor"
+#: app/templates/pages/map.html.j2:66
+msgid "ERROR"
+msgstr "Errore"
 
-#: app/templates/pages/newsensor.html.j2:15
-#, fuzzy
+#: app/templates/pages/map.html.j2:66
+msgid "Warning"
+msgstr "Attenzione"
+
+#: app/templates/pages/monitoring.html.j2:9
+#, python-format
+msgid "Relative Humidity (%%)"
+msgstr "Humidità Relativa (%%)"
+
+#: app/templates/pages/monitoring.html.j2:10
+msgid "Temperature (ºC)"
+msgstr "Temperatura (ºC) "
+
+#: app/templates/pages/monitoring.html.j2:11
+#, python-format
+msgid "Battery (%%)"
+msgstr "Batteria (%%)"
+
+#: app/templates/pages/monitoring.html.j2:12
+msgid "RSSI"
+msgstr "RSSI"
+
+#: app/templates/pages/monitoring.html.j2:16
+msgid "1 Hour"
+msgstr "1 Ora"
+
+#: app/templates/pages/monitoring.html.j2:17
+msgid "24 Hours"
+msgstr "24 Ore"
+
+#: app/templates/pages/monitoring.html.j2:18
+msgid "7 Days"
+msgstr "7 Giorni"
+
+#: app/templates/pages/newsensor.html.j2:12
+msgid "Add New Sensor"
+msgstr "Aggiungi un Sensore"
+
+#: app/templates/pages/newsensor.html.j2:14
+
 msgid "Modify Sensor"
-msgstr "Modifica un monitor"
+msgstr "Modifica un Sensore"
+
+#: app/templates/pages/newsensor.html.j2:22
+msgid "Do you really wish to remove this sensor?"
+msgstr "Sei sicuro di voler eliminare questo sensore?"
 
 #: app/templates/pages/newsensor.html.j2:24
-#, fuzzy
-msgid "Do you really wish to remove this sensor?"
-msgstr "Sei sicuro di voler eliminare questo server?"
-
-#: app/templates/pages/newsensor.html.j2:27
-#, fuzzy
 msgid "Remove Sensor"
-msgstr "Rimuovi un monitor"
+msgstr "Rimuovi un Sensore"
 
 #: app/templates/pages/newsensor.html.j2:32
-#, fuzzy
-msgid "You need to be an admin to modify a sensor"
-msgstr "Devi essere un amministratore per modificare un servizio"
+msgid "Basic Information"
+msgstr "Informazione Basica"
 
 #: app/templates/pages/newsensor.html.j2:38
-#, fuzzy
-msgid "Sensor Information"
-msgstr "Informazione dell'utente"
-
-#: app/templates/pages/newsensor.html.j2:44
-#, fuzzy
+#: app/templates/pages/sensor_information.html.j2:51
 msgid "Sensor Name"
-msgstr "Nome del utente"
+msgstr "Nome del sensore"
 
-#: app/templates/pages/newsensor.html.j2:55
-msgid "Sensor TTN ID"
-msgstr ""
-
-#: app/templates/pages/newsensor.html.j2:65
-#, fuzzy
+#: app/templates/pages/newsensor.html.j2:50
+#: app/templates/pages/sensor_information.html.j2:75
 msgid "Sensor Description"
-msgstr "Descrizione del Server"
+msgstr "Descrizione del Sensore"
 
-#: app/templates/pages/newsensor.html.j2:78
-msgid "Select Hours"
-msgstr ""
+#: app/templates/pages/newsensor.html.j2:63
+#: app/templates/pages/sensor_information.html.j2:63
+msgid "Sensor TTN ID"
+msgstr "Sensore TTN ID"
 
-#: app/templates/pages/newuser.html.j2:14 app/views/users.py:125
+#: app/templates/pages/newsensor.html.j2:73
+msgid "Sensor Parameters"
+msgstr "Parametri del sensore"
+
+#: app/templates/pages/newsensor.html.j2:81
+msgid "Watering Time (seconds)"
+msgstr "Tempo di irrigazione (secondi)"
+
+#: app/templates/pages/newsensor.html.j2:107
+msgid "Minutes Between Waterings"
+msgstr "Tempo tra Irrigazioni"
+
+#: app/templates/pages/newsensor.html.j2:120
+msgid "Minutes Between Uplinks"
+msgstr "Minuti tra Uplinks"
+
+#: app/templates/pages/newsensor.html.j2:135
+msgid "Select Hours Where watering can be done"
+msgstr "Seleziona Ore per irrigare"
+
+#: app/templates/pages/newuser.html.j2:14 app/views/users.py:121
 msgid "Your Profile"
 msgstr "Profilo"
 
@@ -297,76 +351,122 @@ msgid "LANGUAGE"
 msgstr "LINGUA"
 
 #: app/templates/pages/newuser.html.j2:95
-#, fuzzy
 msgid "Role"
-msgstr "Profilo"
+msgstr "Ruolo"
 
 #: app/templates/pages/newuser.html.j2:105
 msgid "Active:"
 msgstr "Attivi:"
 
-#: app/templates/pages/newuser.html.j2:110
+#: app/templates/pages/newuser.html.j2:111
 msgid "Notifications:"
-msgstr ""
+msgstr "Notificazioni:"
 
-#: app/templates/pages/sensors.html.j2:6
-#, fuzzy
-msgid "Registered sensors"
-msgstr "Utenti Registrati"
+#: app/templates/pages/sensor_information.html.j2:13 app/views/sensors.py:85
+msgid "Sensor Information"
+msgstr "Informazione Sensore"
 
-#: app/templates/pages/sensors.html.j2:8
-msgid "Add Sensor"
-msgstr ""
+#: app/templates/pages/sensor_information.html.j2:18
+msgid "Show on map"
+msgstr "Mostra nella mappa"
 
-#: app/templates/pages/sensors.html.j2:17
-#: app/templates/pages/userlist.html.j2:17
-msgid "Sorry! Looks like there are no matches with your search. Try again!"
-msgstr "Sembra che non ci siano corrispondenze con la tua ricerca. Riprova!"
+#: app/templates/pages/sensor_information.html.j2:21
+msgid "Water"
+msgstr "Acqua"
 
-#: app/templates/pages/sensors.html.j2:24
-#: app/templates/pages/userlist.html.j2:24
-msgid "NAME"
-msgstr "NOME"
-
-#: app/templates/pages/sensors.html.j2:25
-#: app/templates/pages/userlist.html.j2:27
-msgid "ACTIVE"
-msgstr "ATTIVO"
-
-#: app/templates/pages/sensors.html.j2:26
-#, fuzzy
-msgid "ADDRESS"
-msgstr "Indirizzo e-mail"
-
-#: app/templates/pages/sensors.html.j2:27
-#: app/templates/pages/userlist.html.j2:29
-msgid "ACTIONS"
-msgstr "AZIONI"
-
-#: app/templates/pages/sensors.html.j2:36
-#: app/templates/pages/userlist.html.j2:42
-msgid "Yes"
-msgstr "Si"
-
-#: app/templates/pages/sensors.html.j2:38
-#: app/templates/pages/userlist.html.j2:44
-msgid "No"
-msgstr "No"
-
-#: app/templates/pages/sensors.html.j2:45
+#: app/templates/pages/sensor_information.html.j2:24
+#: app/templates/pages/sensors.html.j2:42
 #: app/templates/pages/userlist.html.j2:51
 msgid "Edit"
 msgstr "Modifica"
 
-#: app/templates/pages/sensors.html.j2:48
+#: app/templates/pages/sensor_information.html.j2:35
+msgid "Basic"
+msgstr "Basico"
+
+#: app/templates/pages/sensor_information.html.j2:86
+msgid "Last Watered At"
+msgstr "Ultima irrigazione"
+
+#: app/templates/pages/sensor_information.html.j2:103
+msgid "Uplink"
+msgstr "Uplink"
+
+#: app/templates/pages/sensor_information.html.j2:119
+msgid "Last Uplink Sent At"
+msgstr "Ultimo Uplink inviato"
+
+#: app/templates/pages/sensor_information.html.j2:130
+msgid "Last humidity Reading"
+msgstr "Ultima lettura di humidità"
+
+#: app/templates/pages/sensor_information.html.j2:141
+msgid "Last Temperature Reading"
+msgstr "Ultima lettura di temperatura"
+
+#: app/templates/pages/sensor_information.html.j2:152
+msgid "Last Battery Reading"
+msgstr "Ultima lettura di batteria"
+
+#: app/templates/pages/sensor_information.html.j2:170
+msgid "Downlink"
+msgstr "Downlink"
+
+#: app/templates/pages/sensor_information.html.j2:186
+msgid "Last Downlink Sent At"
+msgstr "Ultimo Downlink Inviato"
+
+#: app/templates/pages/sensor_information.html.j2:197
+msgid "Last Downlink Acknowledgement"
+msgstr "Ultimo Downlink Acknowledgement"
+
+#: app/templates/pages/sensor_information.html.j2:208
+msgid "Last Downlink Water Now Seconds"
+msgstr "Secondi di irrigazione del ultimo Downlink"
+
+#: app/templates/pages/sensors.html.j2:6
+msgid "Registered sensors"
+msgstr "Sensori Registrati"
+
+#: app/templates/pages/sensors.html.j2:8
+msgid "Add Sensor"
+msgstr "Aggiungi Sensore"
+
+#: app/templates/pages/sensors.html.j2:18
+#: app/templates/pages/userlist.html.j2:17
+msgid "Sorry! Looks like there are no matches with your search. Try again!"
+msgstr "Sembra che non ci siano corrispondenze con la tua ricerca. Riprova!"
+
+#: app/templates/pages/sensors.html.j2:25
+#: app/templates/pages/userlist.html.j2:24
+msgid "NAME"
+msgstr "NOME"
+
+#: app/templates/pages/sensors.html.j2:26
+msgid "LAST WATERED AT"
+msgstr "ULTIMA IRRIGAZIONE"
+
+#: app/templates/pages/sensors.html.j2:27
+msgid "ALERTS"
+msgstr "ALLERTE"
+
+#: app/templates/pages/sensors.html.j2:28
+#: app/templates/pages/userlist.html.j2:29
+msgid "ACTIONS"
+msgstr "AZIONI"
+
+#: app/templates/pages/sensors.html.j2:40
+msgid "Info"
+msgstr "Informazione"
+
+#: app/templates/pages/sensors.html.j2:45
 #: app/templates/pages/userlist.html.j2:54
 msgid "Delete"
 msgstr "Elimina"
 
-#: app/templates/pages/sensors.html.j2:54
-#: app/templates/pages/userlist.html.j2:60
-msgid "Are you sure you want to delete this user?"
-msgstr "Sei sicuro di voler eliminare questo utente?"
+#: app/templates/pages/sensors.html.j2:51
+msgid "Are you sure you want to delete this sensor?"
+msgstr "Sei sicuro di voler eliminare questo sensore?"
 
 #: app/templates/pages/userlist.html.j2:6
 msgid "Registered users"
@@ -381,9 +481,24 @@ msgid "MAIL"
 msgstr "EMAIL"
 
 #: app/templates/pages/userlist.html.j2:26
-#, fuzzy
 msgid "ROLE"
-msgstr "Profilo"
+msgstr "RUOLO"
+
+#: app/templates/pages/userlist.html.j2:27
+msgid "ACTIVE"
+msgstr "ATTIVO"
+
+#: app/templates/pages/userlist.html.j2:42
+msgid "Yes"
+msgstr "Sì"
+
+#: app/templates/pages/userlist.html.j2:44
+msgid "No"
+msgstr "No"
+
+#: app/templates/pages/userlist.html.j2:60
+msgid "Are you sure you want to delete this user?"
+msgstr "Sei sicuro di voler eliminare questo utente?"
 
 #: app/templates/pages/users/login.html.j2:9
 msgid "Log into your account"
@@ -408,11 +523,11 @@ msgstr "Chiedi a un amministratore di cambiare la tua password."
 
 #: app/templates/pages/users/login.html.j2:42
 msgid "Forgot password?"
-msgstr "Ha dimenticato la password?"
+msgstr "Hai dimenticato la password?"
 
 #: app/templates/pages/users/login.html.j2:45
 msgid "Don't have an account?"
-msgstr "Non ha un account?"
+msgstr "Non hai un account?"
 
 #: app/templates/pages/users/login.html.j2:45
 msgid "Sign up"
@@ -424,7 +539,7 @@ msgstr "Registra il tuo account"
 
 #: app/templates/pages/users/signup.html.j2:20
 msgid "Email already taken. Please try another or"
-msgstr "Email già registrata. Perfavore, prova un altra"
+msgstr "Email già registrata. Per favore, prova un altra"
 
 #: app/templates/pages/users/signup.html.j2:20
 #: app/templates/pages/users/signup_success.html.j2:20
@@ -461,7 +576,7 @@ msgstr ""
 
 #: app/templates/pages/users/signup_success.html.j2:19
 msgid "Once your account will be activated by an admin, you will be able to"
-msgstr "Quando il tuo account sara attivato da un amministratore, potrai"
+msgstr "Quando il tuo account sarà attivato da un amministratore, potrai"
 
 #: app/templates/pages/users/signup_success.html.j2:21
 msgid "to HydroLab!"
@@ -481,22 +596,13 @@ msgstr "Niente, devi solo aspettare. Se hai fretta, puoi mandare una mail a"
 msgid "indicating the reason of your hurry."
 msgstr "e indica il tuo motivo."
 
-#: app/views/monitors.py:44
-msgid "New Monitor"
-msgstr "Nuovo monitor"
-
-#: app/views/monitors.py:58
-msgid "Edit Monitor"
-msgstr "Editare Monitor"
-
-#: app/views/sensors.py:41
+#: app/views/sensors.py:38
 msgid "New Sensor"
-msgstr ""
+msgstr "Nuovo Sensore"
 
-#: app/views/sensors.py:58
-#, fuzzy
+#: app/views/sensors.py:54
 msgid "Edit Sensor"
-msgstr "Edita Utente"
+msgstr "Edita Sensore"
 
 #: app/views/users.py:64
 msgid "Registered!"
@@ -505,130 +611,3 @@ msgstr "Utente registrato"
 #: app/views/users.py:107
 msgid "Edit user"
 msgstr "Edita Utente"
-
-#~ msgid "Minecraft Server"
-#~ msgstr ""
-
-#~ msgid "https://image.com/ssh.png"
-#~ msgstr ""
-
-#~ msgid "About Server"
-#~ msgstr "Sull server"
-
-#~ msgid "http://127.0.0.1:5002/led"
-#~ msgstr ""
-
-#~ msgid "Submit Service"
-#~ msgstr "Inviare servizio"
-
-#~ msgid "Admin?"
-#~ msgstr "Amministratore?"
-
-#~ msgid "Dashboard"
-#~ msgstr "Pannello di controllo"
-
-#~ msgid "Service list"
-#~ msgstr "Lista di servizi"
-
-#~ msgid "New service"
-#~ msgstr "Nuovo servizio"
-
-#~ msgid "Off"
-#~ msgstr "Inattivo"
-
-#~ msgid "Active"
-#~ msgstr "Attivo"
-
-#~ msgid "Start"
-#~ msgstr "Inizia"
-
-#~ msgid "Cancel"
-#~ msgstr "Annulla"
-
-#~ msgid "Processing"
-#~ msgstr "In processo"
-
-#~ msgid "Stop"
-#~ msgstr "Arrestare"
-
-#~ msgid "Statistics"
-#~ msgstr "Statistiche"
-
-#~ msgid "Last sample"
-#~ msgstr "Ultimo campione"
-
-#~ msgid "Do you really wish to remove this monitor?"
-#~ msgstr "Sei sicuro di voler eliminare questo monitor?"
-
-#~ msgid "You need to be an admin to modify a monitor"
-#~ msgstr "Devi essere un amministratore per modificare un monitor"
-
-#~ msgid "Monitor Information"
-#~ msgstr "Informazione del monitor"
-
-#~ msgid "Monitor Title"
-#~ msgstr "Titolo del Monitor"
-
-#~ msgid "Monitor Key"
-#~ msgstr "Chiave monitor"
-
-#~ msgid "Monitor Data Units"
-#~ msgstr "Unità monitor"
-
-#~ msgid "Monitor Graph Details"
-#~ msgstr "Dettagli grafica monitor"
-
-#~ msgid "Minimum value"
-#~ msgstr "Valor minimo"
-
-#~ msgid "Maximum value"
-#~ msgstr "Valore massimo"
-
-#~ msgid "Add New Service"
-#~ msgstr "Aggiungi nuovo servizio"
-
-#~ msgid "Modify Service"
-#~ msgstr "Modifca Servizio"
-
-#~ msgid "Remove Service"
-#~ msgstr "Eliminare Servizio"
-
-#~ msgid "Server Information"
-#~ msgstr "Informazione del Server"
-
-#~ msgid "Server Name"
-#~ msgstr "Nome del Server"
-
-#~ msgid "Server Image URL"
-#~ msgstr "URL Immagine Server"
-
-#~ msgid "Server Commands"
-#~ msgstr "Comandi del Server"
-
-#~ msgid "Endpoint URL"
-#~ msgstr ""
-
-#~ msgid "Server History"
-#~ msgstr "Storico del server"
-
-#~ msgid "started"
-#~ msgstr "Iniziato"
-
-#~ msgid "stopped"
-#~ msgstr "Fermato"
-
-#~ msgid "by"
-#~ msgstr ""
-
-#~ msgid "Admin:"
-#~ msgstr "Amministratore:"
-
-#~ msgid "ADMIN"
-#~ msgstr "ADMIN"
-
-#~ msgid "New Server"
-#~ msgstr "Nuovo Servizio"
-
-#~ msgid "Edit Server"
-#~ msgstr "Edita Server"
-
