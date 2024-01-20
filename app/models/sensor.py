@@ -84,11 +84,11 @@ class Sensor(db.Model):
         recent_uplinks = Uplink.query.filter(Uplink.sensor_id == self.id).filter(Uplink.received_at > (datetime.now() - timedelta(hours=5))).all()
         already_included_errors = []
         for ul in recent_uplinks:
-            if '1' in ul.errors and '1' not in already_included_errors:
-                already_included_errors.append('1')
-                errors.append(['W', gettext('Sensor rebooted recently!')])
             if '2' in ul.errors and '2' not in already_included_errors:
                 already_included_errors.append('2')
+                errors.append(['W', gettext('Sensor rebooted recently!')])
+            if '1' in ul.errors and '1' not in already_included_errors:
+                already_included_errors.append('1')
                 errors.append(['W', gettext('Sensor rebooted recently due to WatchDog!')])
 
         # Battery warning or error

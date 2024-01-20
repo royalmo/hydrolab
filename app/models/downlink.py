@@ -61,7 +61,6 @@ class Downlink(db.Model):
         payload = self.get_payload()
         if payload == 'Z': return 418
         base64_payload = base64.b64encode(payload.encode('ASCII')).decode('utf-8')
-        print(payload, base64_payload)
 
         data = {
             'downlinks': [{
@@ -75,9 +74,10 @@ class Downlink(db.Model):
         response = post(url, headers=headers, json=data)
         if response.status_code == 200:
             self.sent_at = datetime.now()
+            if self.water_now_seconds is not None and self.water_now_seconds > 0:
+                self.get_sensor().last_watered_at = datetime.now()
             db.session.commit()
 
-        print(response.text)
         return response.status_code
     
     def fill_with_differences(self, uplink):
