@@ -50,7 +50,7 @@ def edit(id):
             if key in ['submit', 'csrf_token']: continue
             setattr(sensor, key, val)
         db.session.commit()
-        return redirect(url_for('main.map'))
+        return redirect(url_for('main.sensors.sensors'))
     return render_template('pages/newsensor.html.j2', title=gettext("Edit Sensor"), current_user=current_user, sensor=sensor_form, new=False, id=id, navbar_highlight_sensors=True) #, sensor_history_list=sensor_history_list)
 
 @app.route('/sensor/<int:id>/remove', methods=['GET', 'POST'])

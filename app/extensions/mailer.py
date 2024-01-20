@@ -49,4 +49,4 @@ def new_user(user):
 
 # Decided to not implement this part as PWA already does the job
 def sensor_inactive(sensor): pass
-def sensor_Watered(sensor, user): pass
+def sensor_watered(sensor, user): pass

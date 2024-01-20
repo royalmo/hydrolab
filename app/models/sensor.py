@@ -38,7 +38,7 @@ class Sensor(db.Model):
             db.session.commit()
 
         template_downlink = Downlink(sensor_id=self.id)
-        template_downlink.fill_with_differences(self)
+        template_downlink.fill_with_differences(uplink)
 
         if self.should_water_now():
             template_downlink.water_now_seconds = self.watering_time

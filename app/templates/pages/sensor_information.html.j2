@@ -236,14 +236,14 @@
   function water(sensor_id) {
     var button = event.target;
 
-    button.innerText = 'Requesting...';
+    button.innerText = '{{ _("Requesting") }}...';
 
     fetch(`/sensor/${sensor_id}/water`, { method: 'POST' })
       .then(response => {
-        if (response.ok) button.innerText = 'Done!';
-        else button.innerText = 'Failed.';
+        if (response.ok) button.innerText = '{{ _("Done!") }}';
+        else button.innerText = '{{ _("Failed.") }}';
       })
-      .catch(() => button.innerText = 'Failed.')
+      .catch(() => button.innerText = '{{ _("Failed.") }}')
       .finally(() => {
         button.disabled = true;
         button.style.opacity = 0.5;

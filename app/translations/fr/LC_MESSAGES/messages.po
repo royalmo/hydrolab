@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-12 19:48+0100\n"
+"POT-Creation-Date: 2024-01-20 01:12+0100\n"
 "PO-Revision-Date: 2023-05-12 23:34+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -458,6 +458,19 @@ msgstr "Confirmation de réception"
 #: app/templates/pages/sensor_information.html.j2:209
 msgid "Last Downlink Water Now Seconds"
 msgstr "Temps d'arrosage du dernier downlink"
+
+#: app/templates/pages/sensor_information.html.j2:239
+msgid "Requesting"
+msgstr "Envoi"
+
+#: app/templates/pages/sensor_information.html.j2:243
+msgid "Done!"
+msgstr "Fait !"
+
+#: app/templates/pages/sensor_information.html.j2:244
+#: app/templates/pages/sensor_information.html.j2:246
+msgid "Failed."
+msgstr "Erreur."
 
 #: app/templates/pages/sensors.html.j2:6
 msgid "Registered sensors"
